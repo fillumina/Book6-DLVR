@@ -42,21 +42,21 @@ In the first stage of a Transformer model, the input text is converted into embe
 
 In tokenization, the input sequence $X = \{x_1, x_2, \dots, x_T\}$ is split into individual tokens, where each token $x_i$ corresponds to a word or subword unit. For each token, a unique identifier $t_i$ is assigned from a pre-defined vocabulary $V$. Formally, we can express this as:
 
-$x_i \mapsto t_i \quad \text{where} \quad t_i \in \{1, 2, \dots, |V|\}$
+$$x_i \mapsto t_i \quad \text{where} \quad t_i \in \{1, 2, \dots, |V|\}$$
 
 The token identifiers are then mapped to a continuous vector space using a learned embedding matrix $E \in \mathbb{R}^{|V| \times d}$ , where $d$ is the embedding dimension. The token embeddings for the input sequence are represented as:
 
-$\mathbf{E} = \{E(t_1), E(t_2), \dots, E(t_T)\}$
+$$\mathbf{E} = \{E(t_1), E(t_2), \dots, E(t_T)\}$$
 
 Here, $E(t_i)$ is the $d$-dimensional vector corresponding to the token $t_i$. For example, in GPT-2, the vocabulary $V$ has 50,257 tokens and the embedding dimension $d = 768$. Thus, the embedding matrix contains approximately $50,257 \times 768$ parameters.
 
 Since Transformers lack a built-in mechanism to handle sequential information, positional encodings are added to the token embeddings to retain information about the order of tokens in a sequence. The positional encoding is defined using sine and cosine functions, as proposed in Vaswani et al. (2017):
 
-$PE_{(t, 2i)} = \sin\left(\frac{t}{10000^{\frac{2i}{d}}}\right), \quad PE_{(t, 2i+1)} = \cos\left(\frac{t}{10000^{\frac{2i+1}{d}}}\right)$
+$$PE_{(t, 2i)} = \sin\left(\frac{t}{10000^{\frac{2i}{d}}}\right), \quad PE_{(t, 2i+1)} = \cos\left(\frac{t}{10000^{\frac{2i+1}{d}}}\right)$$
 
 where $t$ is the position index in the sequence, $i$ indexes the dimension of the encoding vector, and $d$ is the dimensionality of the embeddings. The final representation for each token is obtained by summing the token embedding and its corresponding positional encoding:
 
-$\mathbf{Z}_t = E(t) + PE(t)$
+$$\mathbf{Z}_t = E(t) + PE(t)$$
 
 Thus, $\mathbf{Z}_t$ captures both the semantic meaning of the token and its positional information.
 
@@ -64,13 +64,13 @@ The core of the Transformer model lies in the Transformer block, which consists 
 
 Once the input embeddings have passed through all the Transformer blocks, the model is ready to make predictions about the next token. This is achieved by projecting the final hidden representations into the vocabulary space. Given the final token representations $\mathbf{Z}$, the model computes a logit for each token in the vocabulary using a linear transformation:
 
-$L = \mathbf{Z} W_O + b_O$
+$$L = \mathbf{Z} W_O + b_O$$
 
 where $W_O \in \mathbb{R}^{d \times |V|}$ is the output weight matrix and $b_O$ is a bias term. The logits $L \in \mathbb{R}^{|V|}$ represent the unnormalized probabilities of each token in the vocabulary being the next token in the sequence.
 
 To convert the logits into a probability distribution, the softmax function is applied:
 
-$P(y = i \mid \mathbf{Z}) = \frac{e^{L_i}}{\sum_{j=1}^{|V|} e^{L_j}}$
+$$P(y = i \mid \mathbf{Z}) = \frac{e^{L_i}}{\sum_{j=1}^{|V|} e^{L_j}}$$
 
 where $P(y = i \mid \mathbf{Z})$ represents the probability of token $i$ being the next token in the sequence.
 
@@ -286,25 +286,25 @@ The multi-head self-attention mechanism is the cornerstone of the Transformer ar
 
 At the heart of the multi-head self-attention mechanism is the scaled dot-product attention, a function that computes the attention scores between every pair of tokens in the input sequence. Given an input sequence of tokens $\{t_1, t_2, \dots, t_T\}$, each token is first mapped to an embedding vector. These embeddings are then transformed into three vectors for each token: the Query $Q$, Key $K$, and Value $V$. These vectors are generated through learned linear transformations:
 
-$Q = Z W_Q, \quad K = Z W_K, \quad V = Z W_V$
+$$Q = Z W_Q, \quad K = Z W_K, \quad V = Z W_V$$
 
 Here, $Z \in \mathbb{R}^{T \times d}$ represents the input embeddings, where $T$ is the length of the sequence, and $d$ is the dimensionality of the embeddings. $W_Q,W_K, W_V \in \mathbb{R}^{d \times d_k}$ are the learned projection matrices that map the embeddings into lower-dimensional query, key, and value spaces. The parameter $d_k$ represents the dimensionality of these projections, typically chosen such that $d_k = d/h$, where $h$ is the number of attention heads.
 
 The purpose of the query and key vectors is to compute an attention score between each pair of tokens in the sequence. This score reflects how much focus or importance token $t_i$ should give to token $t_j$. The attention score between two tokens is computed as the scaled dot product between their respective query and key vectors:
 
-$\text{Attention}(Q_i, K_j) = \frac{Q_i K_j^T}{\sqrt{d_k}}$
+$$\text{Attention}(Q_i, K_j) = \frac{Q_i K_j^T}{\sqrt{d_k}}$$
 
 The scaling factor $\frac{1}{\sqrt{d_k}}$ is applied to prevent the dot product from becoming too large, which could lead to vanishing or exploding gradients during training, particularly when the dimensionality $d_k$ is large. Without this scaling, the dot-product values could grow excessively large, and the softmax function, which will be applied next, could lead to near-zero gradients. Thus, the scaling factor stabilizes the gradient dynamics, allowing for more efficient learning.
 
 Once the attention scores are computed, they are transformed into attention weights using the softmax function. This step ensures that the attention scores for each query token sum to one, converting raw scores into a probability distribution:
 
-$\alpha_{ij} = \frac{\exp\left( \frac{Q_i K_j^T}{\sqrt{d_k}} \right)}{\sum_{k=1}^{T} \exp\left( \frac{Q_i K_k^T}{\sqrt{d_k}} \right)}$
+$$\alpha_{ij} = \frac{\exp\left( \frac{Q_i K_j^T}{\sqrt{d_k}} \right)}{\sum_{k=1}^{T} \exp\left( \frac{Q_i K_k^T}{\sqrt{d_k}} \right)}$$
 
 Here, $\alpha_{ij}$ represents the normalized attention weight, which indicates the relevance of token $t_j$ to token $t_i$. The softmax function normalizes the attention scores across all tokens in the sequence, ensuring that the sum of the weights for any given query token equals 1. The intuition behind this normalization is to provide a mechanism by which each token distributes its "attention" over the entire sequence, focusing more on tokens that are deemed relevant based on their context and semantics.
 
 Once the attention weights are calculated, the next step is to compute the output representation for each token. This is done by taking a weighted sum of the value vectors $V$. The value vectors contain the actual information from the input tokens, and the attention weights dictate how much each value contributes to the final output:
 
-$O_i = \sum_{j=1}^{T} \alpha_{ij} V_j$
+$$O_i = \sum_{j=1}^{T} \alpha_{ij} V_j$$
 
 In this equation, $O_i$ is the output vector for token $t_i$, which is a weighted sum of all value vectors $V_j$, where $j$ ranges over all tokens in the sequence. The attention weights $\alpha_{ij}$ determine how much focus token $t_i$ places on token $t_j$ when constructing its output representation. Tokens that are more contextually relevant receive higher attention weights, while less relevant tokens contribute less to the final output.
 
@@ -314,15 +314,15 @@ While the scaled dot-product attention mechanism is powerful, it is limited in i
 
 Formally, for each head $h$, the model computes separate query, key, and value vectors:
 
-$Q^{(h)} = Z W_Q^{(h)}, \quad K^{(h)} = Z W_K^{(h)}, \quad V^{(h)} = Z W_V^{(h)}$
+$$Q^{(h)} = Z W_Q^{(h)}, \quad K^{(h)} = Z W_K^{(h)}, \quad V^{(h)} = Z W_V^{(h)}$$
 
 Each head calculates its own attention weights and output vectors:
 
-$O_i^{(h)} = \sum_{j=1}^{T} \alpha_{ij}^{(h)} V_j^{(h)}$
+$$O_i^{(h)} = \sum_{j=1}^{T} \alpha_{ij}^{(h)} V_j^{(h)}$$
 
 After all attention heads have computed their outputs, the results are concatenated and projected back into the original embedding space using a learned weight matrix $W_O$:
 
-$\text{MultiHead}(Q, K, V) = \text{Concat}(O_1^{(1)}, O_1^{(2)}, \dots, O_1^{(h)}) W_O$
+$$\text{MultiHead}(Q, K, V) = \text{Concat}(O_1^{(1)}, O_1^{(2)}, \dots, O_1^{(h)}) W_O$$
 
 By using multiple heads, the model can attend to different parts of the sequence simultaneously, capturing a wider variety of patterns and dependencies. For example, in a machine translation task, one attention head might focus on syntactic relationships (e.g., subject-verb agreement), while another head captures semantic relationships (e.g., how the subject relates to the object across a sentence). This parallel attention mechanism allows the model to learn both local and global dependencies effectively.
 
@@ -341,11 +341,11 @@ An important extension of self-attention is masked self-attention, which is cruc
 
 In masked self-attention, the attention mechanism is modified by applying a mask to the attention scores. Specifically, a mask is applied to the upper triangle of the attention matrix, ensuring that tokens can only attend to previous tokens in the sequence and not future tokens. The attention scores for future tokens are set to negative infinity before applying the softmax function, effectively preventing the model from accessing them. Formally, the attention score becomes:
 
-$\text{MaskedAttention}(Q_i, K_j) = \begin{cases} \frac{Q_i K_j^T}{\sqrt{d_k}} & \text{if } j \leq i \\ -\infty & \text{if } j > i \end{cases}$
+$$\text{MaskedAttention}(Q_i, K_j) = \begin{cases} \frac{Q_i K_j^T}{\sqrt{d_k}} & \text{if } j \leq i \\ -\infty & \text{if } j > i \end{cases}$$
 
 This ensures that during generation, each token only focuses on tokens that precede it in the sequence. After applying the mask, the softmax function converts the attention scores into probabilities:
 
-$\alpha_{ij} = \frac{\exp\left( \frac{Q_i K_j^T}{\sqrt{d_k}} \right)}{\sum_{k=1}^{i} \exp\left( \frac{Q_i K_k^T}{\sqrt{d_k}} \right)}$
+$$\alpha_{ij} = \frac{\exp\left( \frac{Q_i K_j^T}{\sqrt{d_k}} \right)}{\sum_{k=1}^{i} \exp\left( \frac{Q_i K_k^T}{\sqrt{d_k}} \right)}$$
 
 By masking future tokens, the model is forced to generate each token based only on the tokens that have already been generated, thus enabling sequential generation without "peeking" ahead in the sequence. This mechanism is crucial for autoregressive tasks, such as text generation, where the model must predict each token in turn without knowledge of the future context.
 
@@ -522,9 +522,9 @@ In Transformer models, one of the fundamental challenges arises from their relia
 
 The most common approach to positional encoding in Transformers is based on sinusoidal functions, a continuous and deterministic method that encodes the position of each token in the sequence. The advantage of using sinusoidal functions is that the encoding is smooth, continuous, and periodic, making it well-suited to capture relationships between tokens, even for long sequences. Formally, given a sequence of length $T$ and an embedding dimension $d$, the positional encoding for each token at position $\text{pos}$ and dimension index $i$ within the embedding is computed using the following functions:
 
-$PE_{\text{pos}, 2i} = \sin\left(\frac{\text{pos}}{10000^{\frac{2i}{d}}}\right)$
+$$PE_{\text{pos}, 2i} = \sin\left(\frac{\text{pos}}{10000^{\frac{2i}{d}}}\right)$$
 
-$PE_{\text{pos}, 2i+1} = \cos\left(\frac{\text{pos}}{10000^{\frac{2i}{d}}}\right)$
+$$PE_{\text{pos}, 2i+1} = \cos\left(\frac{\text{pos}}{10000^{\frac{2i}{d}}}\right)$$
 
 In these equations, $\text{pos}$ represents the position of the token in the sequence, and $i$ indexes the embedding dimension. The sine function is used for even indices of the embedding, while the cosine function is used for odd indices. The rationale for using these two distinct functions is that they provide different but complementary ways of encoding positional information, ensuring that the positional encoding is unique for each position in the sequence.
 
@@ -532,7 +532,7 @@ The denominator $10000^{\frac{2i}{d}}$ ensures that the frequencies of the sine 
 
 Once these positional encodings are computed, they are added element-wise to the token embeddings. The final input to the Transformer becomes the sum of the content-based embedding (which captures the meaning of the token) and the positional encoding (which captures the position of the token in the sequence):
 
-$\mathbf{Z} = \mathbf{E} + \mathbf{PE}$
+$$\mathbf{Z} = \mathbf{E} + \mathbf{PE}$$
 
 Here, $\mathbf{E}$ represents the matrix of token embeddings, and $\mathbf{PE}$ is the matrix of positional encodings. This combination allows the model to take into account both the semantic content of the tokens and their order within the sequence.
 
@@ -546,7 +546,7 @@ In relative positional encoding, the focus shifts from the absolute positions of
 
 Mathematically, the attention score between two tokens $t_i$ and $t_j$ in relative positional encoding is modified by introducing a bias term that depends on the relative distance between the two tokens:
 
-$a_{i,j} = \frac{Q_i \cdot K_j^T}{\sqrt{d_k}} + b(i - j)$
+$$a_{i,j} = \frac{Q_i \cdot K_j^T}{\sqrt{d_k}} + b(i - j)$$
 
 Here, $a_{i,j}$ is the attention score between token $t_i$ and token $t_j$, $Q_i$ and $K_j$ are the query and key vectors for tokens $i$ and $j$, and $b(i - j)$ is a learnable bias term that depends on the relative distance $i - j$ between the two tokens. This term allows the model to adjust the attention score based on how far apart the tokens are, providing the model with a way to account for local context in the sequence.
 
@@ -783,7 +783,7 @@ In the Transformer architecture, each block is composed of not only the self-att
 
 After the multi-head self-attention mechanism, the outputs for each token are passed through a feed-forward neural network or multi-layer perceptron (MLP). The MLP consists of two linear transformations with a non-linear activation function between them. Mathematically, given an input vector $X$, the feed-forward operation in a Transformer is defined as:
 
-$\text{MLP}(X) = \text{GELU}(X W_1 + b_1) W_2 + b_2$
+$$\text{MLP}(X) = \text{GELU}(X W_1 + b_1) W_2 + b_2$$
 
 In this formulation, $W_1 \in \mathbb{R}^{d \times 4d}$ and $W_2 \in \mathbb{R}^{4d \times d}$ are learned weight matrices, where $d$ is the dimensionality of the input representation, and $4d$ is the expanded dimensionality in the hidden layer. The biases $b_1$ and $b_2$ are vectors of appropriate sizes. The activation function GELU (Gaussian Error Linear Unit) introduces non-linearity, allowing the model to capture more complex relationships in the data.
 
@@ -791,13 +791,13 @@ The two linear transformations and the GELU activation function work together to
 
 More formally, the feed-forward network can be viewed as a composition of two affine transformations and an activation function:
 
-$\text{FFN}(X) = W_2 (\sigma(W_1 X + b_1)) + b_2$
+$$\text{FFN}(X) = W_2 (\sigma(W_1 X + b_1)) + b_2$$
 
 Here, $X \in \mathbb{R}^{d}$ is the input vector, $W_1 \in \mathbb{R}^{d \times 4d}$ and $W_2 \in \mathbb{R}^{4d \times d}$ are the weight matrices, and $b_1 \in \mathbb{R}^{4d}$ and $b_2 \in \mathbb{R}^{d}$ are the bias terms. The function $\sigma$ represents a non-linear activation function, such as ReLU or GELU. This non-linearity is critical for the network's ability to approximate complex functions and learn hierarchical features.
 
 The function GELU, which has become a common choice in Transformer-based models, such as BERT, is smoother than the more commonly used ReLU. Mathematically, the GELU function is defined as:
 
-$\text{GELU}(x) = 0.5x \left(1 + \text{erf}\left(\frac{x}{\sqrt{2}}\right)\right)$
+$$\text{GELU}(x) = 0.5x \left(1 + \text{erf}\left(\frac{x}{\sqrt{2}}\right)\right)$$
 
 where $\text{erf}(x)$ is the error function. Unlike ReLU, which is a piecewise linear function, GELU introduces smoothness into the activation, which improves the gradient flow and enhances learning, especially for large-scale models.
 
@@ -809,7 +809,7 @@ In deep Transformer architectures, stabilizing the training process is essential
 
 Layer normalization normalizes the input across the feature dimensions for each token in the sequence. Given an input $X$, layer normalization transforms it as follows:
 
-$\hat{X} = \frac{X - \mu}{\sqrt{\sigma^2 + \epsilon}} \cdot \gamma + \beta$
+$$\hat{X} = \frac{X - \mu}{\sqrt{\sigma^2 + \epsilon}} \cdot \gamma + \beta$$
 
 Here, $\mu$ and $\sigma^2$ are the mean and variance of the input computed across the features, $\gamma$ and $\beta$ are learned scale and shift parameters, and $\epsilon$ is a small constant added for numerical stability. The purpose of layer normalization is to ensure that the inputs to each layer have a mean of zero and a variance of one, which prevents instability in the gradient updates and improves the model’s convergence.
 
@@ -817,13 +817,13 @@ Unlike batch normalization, which normalizes across the entire batch of data, la
 
 In addition to layer normalization, residual connections are employed to help stabilize the training process. Residual connections, also known as skip connections, involve adding the input of a layer directly to its output. Mathematically, the residual connection can be expressed as:
 
-$\text{Output} = \text{Layer}(X) + X$
+$$\text{Output} = \text{Layer}(X) + X$$
 
 This simple addition prevents the gradients from shrinking too much as they pass through many layers, mitigating the vanishing gradient problem. The combination of residual connections and layer normalization ensures that information flows smoothly through the network, allowing it to retain useful features from earlier layers and update them through subsequent layers without destabilizing the training process.
 
 The use of activation functions like ReLU or GELU in the feed-forward layers introduces the necessary non-linearity to the model. Without non-linearity, the model would behave like a linear system, severely limiting its ability to model complex data. ReLU, the traditional choice, is a simple and computationally efficient function that outputs the input directly if it is positive and outputs zero otherwise:
 
-$\text{ReLU}(x) = \max(0, x)$
+$$\text{ReLU}(x) = \max(0, x)$$
 
 However, the smoother GELU activation function is preferred in many modern Transformer architectures. The smoothness of GELU results in better gradient behavior and often leads to improved performance on tasks like natural language understanding, where subtle variations in input data require more nuanced activation functions.
 
@@ -1127,7 +1127,7 @@ BERT is one of the most influential Transformer variants, specifically designed 
 
 Mathematically, BERT applies the self-attention mechanism to the entire input sequence. For each token $t_i$ and $t_j$, the attention score is computed using scaled dot-product attention:
 
-$a_{i,j} = \frac{Q_i \cdot K_j^T}{\sqrt{d_k}}$
+$$a_{i,j} = \frac{Q_i \cdot K_j^T}{\sqrt{d_k}}$$
 
 where $Q_i$ and $K_j$ represent the query and key vectors of tokens $t_i$ and $t_j$, respectively, and $d_k$ is the dimensionality of the key vectors. This formulation allows BERT to attend to all tokens in the sequence simultaneously, producing a highly contextualized representation. BERT's bidirectional approach is particularly advantageous for language tasks requiring a deep understanding of context and relationships between words in both directions.
 
@@ -1135,7 +1135,7 @@ In contrast to BERT, GPT is a generative model based on the decoder portion of t
 
 GPT enforces its unidirectional constraint by applying a mask to the attention scores, preventing any token from attending to future tokens. The attention score is modified as follows:
 
-$a_{i,j} = \begin{cases} \frac{Q_i \cdot K_j^T}{\sqrt{d_k}} & \text{if } j \leq i \\ -\infty & \text{if } j > i \end{cases}$
+$$a_{i,j} = \begin{cases} \frac{Q_i \cdot K_j^T}{\sqrt{d_k}} & \text{if } j \leq i \\ -\infty & \text{if } j > i \end{cases}$$
 
 This ensures that the model does not "peek" into future tokens during sequence generation, maintaining the causal structure. GPT's ability to generate text that is both contextually appropriate and grammatically coherent has made it widely adopted for various generative tasks, including creative writing, conversational agents, and code generation.
 
@@ -1147,7 +1147,7 @@ The Vision Transformer (ViT) marks a significant departure from traditional CNNs
 
 Each patch embedding undergoes the multi-head self-attention mechanism:
 
-$a_{i,j} = \frac{Q_i \cdot K_j^T}{\sqrt{d_k}}$
+$$a_{i,j} = \frac{Q_i \cdot K_j^T}{\sqrt{d_k}}$$
 
 where $Q_i$ and $K_j$ represent the query and key vectors of image patches $p_i$ and $p_j$, respectively. The attention mechanism allows each patch to attend to all other patches, enabling ViT to capture both local and global dependencies within an image. Unlike CNNs, which rely on localized filters to process images, ViT can model long-range relationships across different regions of an image, making it particularly effective for tasks that benefit from a global understanding, such as image classification and object detection.
 
@@ -1160,7 +1160,7 @@ A typical multimodal Transformer processes two streams of data: one for vision (
 
 After these independent encodings, the model introduces cross-modal attention layers, allowing the model to align and integrate information from both modalities. For instance, in VQA, the text (the question) acts as a query, and the image patches serve as keys and values. The cross-modal attention score between a word token $t_i$ and an image patch $p_j$ is given by:
 
-$a_{i,j} = \frac{Q_i \cdot K_j^T}{\sqrt{d_k}}$
+$$a_{i,j} = \frac{Q_i \cdot K_j^T}{\sqrt{d_k}}$$
 
 where $Q_i$ represents the query vector from the text modality and $K_j$ represents the key vector from the image modality. This allows the model to focus on relevant visual regions based on the textual input, facilitating tasks like generating answers or captions.
 
@@ -1560,7 +1560,7 @@ Training Transformer models poses unique challenges due to their depth and compl
 
 At the core of training Transformers is the use of a cross-entropy loss function for tasks like sequence-to-sequence prediction or text classification. This loss function compares the predicted probabilities for each token in the sequence with the true target labels, penalizing incorrect predictions and adjusting the model's weights accordingly. Given an input sequence $x = (x_1, x_2, \dots, x_T)$ and corresponding output labels $y = (y_1, y_2, \dots, y_T)$, the cross-entropy loss is computed as:
 
-$L = - \sum_{t=1}^T \log P(y_t | x_1, \dots, x_T)$
+$$L = - \sum_{t=1}^T \log P(y_t | x_1, \dots, x_T)$$
 
 where $P(y_t | x_1, \dots, x_T)$ is the probability of the correct token $y_t$ at the time step $t$, given the input sequence. This loss is minimized through an optimization algorithm, typically Adam, which is an adaptive learning rate optimizer that adjusts the learning rate for each parameter individually based on the first and second moments of the gradients.
 
@@ -1568,17 +1568,17 @@ Training deep Transformers is computationally expensive, particularly due to the
 
 One of the critical factors in training Transformers is the choice of hyperparameters, particularly the learning rate and batch size. Transformers are sensitive to the learning rate, with a high learning rate often leading to instability and divergence during training. To mitigate this, a learning rate warm-up strategy is commonly used, where the learning rate is gradually increased over the initial steps of training and then decayed. This allows the model to stabilize before making larger updates to the weights. Mathematically, the learning rate schedule might be defined as:
 
-$\eta(t) = \eta_0 \cdot \min \left( \frac{t}{t_{\text{warmup}}}, \frac{1}{\sqrt{t}} \right)$
+$$\eta(t) = \eta_0 \cdot \min \left( \frac{t}{t_{\text{warmup}}}, \frac{1}{\sqrt{t}} \right)$$
 
 where $\eta_0$ is the base learning rate, $t$ is the current training step, and $t_{\text{warmup}}$ is the warm-up period. This strategy helps avoid large updates early in training, which can lead to poor convergence.
 
 In addition to learning rate schedules, regularization techniques such as dropout and weight decay are essential for preventing overfitting in Transformers. Dropout is applied to both the attention weights and the outputs of the feed-forward layers, randomly zeroing out a fraction of the activations during training to prevent the model from becoming overly dependent on specific neurons. Mathematically, dropout can be described as:
 
-$\tilde{h} = h \cdot \text{Bernoulli}(p)$
+$$\tilde{h} = h \cdot \text{Bernoulli}(p)$$
 
 where $h$ is the hidden layer, $p$ is the dropout rate, and $\tilde{h}$ is the layer after dropout is applied. Typical dropout rates range from 0.1 to 0.3 in Transformer models. Weight decay, another regularization technique, involves penalizing large weights by adding an $L_2$ regularization term to the loss function:
 
-$L_{\text{total}} = L + \lambda \sum_i w_i^2$
+$$L_{\text{total}} = L + \lambda \sum_i w_i^2$$
 
 where $L$ is the original loss, $\lambda$ is the weight decay coefficient, and $w_i$ are the model weights. This helps reduce overfitting by preventing the model from assigning too much importance to any particular weight.
 

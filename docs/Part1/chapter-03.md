@@ -10,7 +10,7 @@ Artificial Neural Networks (ANNs) are the backbone of many deep learning systems
 
 Mathematically, a neuron takes an input vector $\mathbf{x} = [x_1, x_2, \dots, x_n]$ and computes a weighted sum of the inputs, where $\mathbf{w} = [w_1, w_2, \dots, w_n]$ represents the corresponding weights for each input. The bias term $b$ is added to account for any offset, and the result is passed through an activation function $f(z)$. Formally, the output of the neuron is given by:
 
-$ z = \mathbf{w}^T \mathbf{x} + b = w_1 x_1 + w_2 x_2 + \dots + w_n x_n + b $
+$$ z = \mathbf{w}^T \mathbf{x} + b = w_1 x_1 + w_2 x_2 + \dots + w_n x_n + b $$
 
 Here, $f(z)$ introduces non-linearity, allowing the network to model complex relationships between inputs and outputs. Without activation functions, a neural network would behave as a linear system, no matter how many layers it has, limiting its capacity to model complex, non-linear data distributions.
 
@@ -21,7 +21,7 @@ The architecture of ANNs is organized into layers: the *input layer*, which rece
 
 Different types of neural networks are tailored for specific tasks. The simplest is the *Feedforward Neural Network (FNN)*, where the data flows in one direction from input to output without any feedback loops. FNNs are used primarily for static tasks, such as classification and regression. The mathematical formulation in feedforward networks involves matrix operations, where the input vector is multiplied by a weight matrix for each layer, and the result is passed through an activation function. In matrix notation, for a layer with weights $\mathbf{W}$ and biases $\mathbf{b}$, the output of layer $l$ is:
 
-$ \mathbf{a}^{(l)} = f(\mathbf{W}^{(l)} \mathbf{a}^{(l-1)} + \mathbf{b}^{(l)}) $
+$$ \mathbf{a}^{(l)} = f(\mathbf{W}^{(l)} \mathbf{a}^{(l-1)} + \mathbf{b}^{(l)}) $$
 
 This iterative computation continues layer by layer until the output layer is reached.
 
@@ -31,25 +31,25 @@ This iterative computation continues layer by layer until the output layer is re
 
 Activation functions play a crucial role in introducing non-linearity into neural networks, enabling them to model complex patterns. The sigmoid activation function, defined as:
 
-$ f(z) = \frac{1}{1 + e^{-z}} $
+$$ f(z) = \frac{1}{1 + e^{-z}} $$
 
 maps the input $z$ to a range between 0 and 1, making it useful for binary classification problems. However, the sigmoid function can suffer from vanishing gradients, where the gradient becomes too small for effective learning in deep networks.
 
 The hyperbolic tangent (Tanh) function, given by:
 
-$ f(z) = \frac{2}{1 + e^{-2z}} - 1 $
+$$ f(z) = \frac{2}{1 + e^{-2z}} - 1 $$
 
 maps the input to the range (-1, 1). Like sigmoid, Tanh can still encounter vanishing gradients in deep networks, but its output is zero-centered, which makes it more suitable for certain tasks than sigmoid.
 
 The Rectified Linear Unit (ReLU), defined as:
 
-$ f(z) = \max(0, z) $
+$$ f(z) = \max(0, z) $$
 
 is widely used in modern deep networks due to its simplicity and effectiveness. ReLU addresses the vanishing gradient problem, as it does not saturate for large values of $z$, allowing gradients to flow more effectively during training.
 
 A typical neural network consists of an input layer, several hidden layers, and an output layer. The forward propagation process involves feeding input data through each layer, applying weighted sums and activation functions, and ultimately generating a prediction at the output layer. This process can be understood as a composition of matrix-vector operations, where each layer computes:
 
-$ \mathbf{a}^{(l)} = f(\mathbf{W}^{(l)} \mathbf{a}^{(l-1)} + \mathbf{b}^{(l)}) $
+$$ \mathbf{a}^{(l)} = f(\mathbf{W}^{(l)} \mathbf{a}^{(l-1)} + \mathbf{b}^{(l)}) $$
 
 Here, $\mathbf{W}^{(l)}$ represents the weight matrix of layer $l$, and $\mathbf{b}^{(l)}$ represents the bias vector. The output $\mathbf{a}^{(l)}$ is passed as input to the next layer until the final output is produced.
 
@@ -166,7 +166,7 @@ Deep Neural Networks (DNNs) form the foundation of modern deep learning, extendi
 
 Mathematically, the output of each layer in a DNN is computed through a linear transformation followed by a non-linear activation function. For a layer $l$, the output $\mathbf{a}^{(l)}$ is expressed as:
 
-$ \mathbf{a}^{(l)} = f(\mathbf{W}^{(l)} \mathbf{a}^{(l-1)} + \mathbf{b}^{(l)}) $
+$$ \mathbf{a}^{(l)} = f(\mathbf{W}^{(l)} \mathbf{a}^{(l-1)} + \mathbf{b}^{(l)}) $$
 
 where $\mathbf{W}^{(l)}$ is the weight matrix for the connections between layers $l-1$ and $l$, $\mathbf{b}^{(l)}$ is the bias vector, and $\mathbf{b}^{(l)}$ is the activation function (e.g., ReLU). This recursive structure allows DNNs to extract increasingly complex features from the data, which is why they are particularly effective in tasks like image classification, natural language processing, and reinforcement learning.
 
@@ -177,13 +177,13 @@ Training DNNs poses challenges such as the *vanishing gradient* and *exploding g
 
 Convolutional Neural Networks (CNNs) represent a powerful architecture designed specifically for image and spatial data processing. Unlike fully connected layers, CNNs use *convolutional layers* to exploit the spatial structure of the input. Each convolutional layer applies small, learnable filters (kernels) across the image to extract local features like edges and textures. These filters move (convolve) across the input image, computing the dot product between the filter and the local receptive field of the image. This operation is formalized as:
 
-$ S(i, j) = (I * F)(i, j) = \sum_{m} \sum_{n} I(i + m, j + n) F(m, n) $
+$$ S(i, j) = (I * F)(i, j) = \sum_{m} \sum_{n} I(i + m, j + n) F(m, n) $$
 
 where $I$ is the input image, $F$ is the filter, and $S(i, j)$ represents the value of the resulting feature map at position $(i, j)$. By applying multiple filters, CNNs generate different feature maps that capture various characteristics of the input, such as edges, corners, and textures.
 
 The *pooling layer*, typically applied after a convolutional layer, serves to down-sample the spatial dimensions of the feature maps while retaining essential information. For instance, max-pooling selects the maximum value in each local region, reducing the size of the feature maps and increasing computational efficiency while providing translation invariance. The process can be written as:
 
-$ P(i, j) = \max \{ S(i+m, j+n) \} $
+$$ P(i, j) = \max \{ S(i+m, j+n) \} $$
 
 Max-pooling is the most common form, but average-pooling and other variations can be used depending on the task.
 
@@ -241,7 +241,7 @@ This code implements a 2D convolution operation in Rust using the `ndarray` crat
 
 Recurrent Neural Networks (RNNs) are designed to process sequential data, such as time series, speech, or text, by incorporating feedback loops that allow information to persist over time. Unlike feedforward networks, where the input flows in one direction, RNNs maintain a hidden state that captures information from previous time steps. The hidden state is updated at each time step based on the current input and the previous hidden state. Formally, the hidden state at time step ttt is defined as:
 
-$h_t = f(W_h h_{t-1} + W_x x_t)$
+$$h_t = f(W_h h_{t-1} + W_x x_t)$$
 
 where $h_t$ is the hidden state at time $t$, $h_{t-1}$ is the hidden state from the previous time step, $x_t$ is the current input, and $W_h$ and $W_x$ are the weight matrices. The activation function $f$ (commonly tanh or ReLU) introduces non-linearity, allowing the network to capture complex temporal dependencies in the data.
 
@@ -252,17 +252,17 @@ Despite their ability to model sequential data, basic RNNs suffer from the vanis
 
 Mathematically, an LSTM network can be described by the following set of equations for each time step ttt:
 
-$ F_t = \sigma(W_f x_t + U_f h_{t-1} + b_f) \quad \text{(forget gate)} $
+$$ F_t = \sigma(W_f x_t + U_f h_{t-1} + b_f) \quad \text{(forget gate)} $$
 
-$ I_t = \sigma(W_i x_t + U_i h_{t-1} + b_i) \quad \text{(input gate)} $
+$$ I_t = \sigma(W_i x_t + U_i h_{t-1} + b_i) \quad \text{(input gate)} $$
 
-$ \tilde{C}_t = \tanh(W_C x_t + U_C h_{t-1} + b_C) \quad \text{(candidate cell state)} $
+$$ \tilde{C}_t = \tanh(W_C x_t + U_C h_{t-1} + b_C) \quad \text{(candidate cell state)} $$
 
-$ C_t = f_t \odot C_{t-1} + i_t \odot  $
+$$ C_t = f_t \odot C_{t-1} + i_t \odot  $$
 
-$ O_t = \sigma(W_o x_t + U_o h_{t-1} + b_o) \quad \text{(output gate)} $
+$$ O_t = \sigma(W_o x_t + U_o h_{t-1} + b_o) \quad \text{(output gate)} $$
 
-$ H_t = o_t \odot \tanh(C_t) \quad \text{(new hidden state)} $
+$$ H_t = o_t \odot \tanh(C_t) \quad \text{(new hidden state)} $$
 
 LSTMs have become a staple in tasks requiring long-term memory, such as machine translation, speech recognition, and time series forecasting. GRUs simplify the LSTM architecture by combining the forget and input gates into a single *update gate*, making them computationally more efficient while maintaining the ability to capture long-term dependencies.
 
@@ -314,35 +314,35 @@ In summary, CNNs and RNNs form the backbone of deep learning architectures for i
 
 Backpropagation is a fundamental algorithm used in neural network training, allowing efficient computation of the gradient of the loss function with respect to each weight in the network. It relies on the chain rule of calculus to propagate the error backwards through the network, adjusting weights in each layer to minimize the loss function. Mathematically, let’s consider a neural network where the predicted output is denoted by $\hat{y} = f(\mathbf{W}, \mathbf{x})$, with $\mathbf{W}$ representing the set of weights and $\mathbf{x}$ as the input data. The goal of training the network is to minimize a loss function $L(\hat{y}, y)$, where $y$ represents the true labels. The backpropagation algorithm calculates the gradient of the loss with respect to each weight $W$ using the chain rule, as given by:
 
-$ \frac{\partial L}{\partial W} = \frac{\partial L}{\partial \hat{y}} \cdot \frac{\partial \hat{y}}{\partial W} $
+$$ \frac{\partial L}{\partial W} = \frac{\partial L}{\partial \hat{y}} \cdot \frac{\partial \hat{y}}{\partial W} $$
 
 This calculation propagates backwards from the output layer to the input layer, updating the weights according to the computed gradients. The weights in each layer are then adjusted based on gradient descent, where the weight update rule is:
 
-$ W^{(l)} \leftarrow W^{(l)} - \eta \frac{\partial L}{\partial W^{(l)}} $
+$$ W^{(l)} \leftarrow W^{(l)} - \eta \frac{\partial L}{\partial W^{(l)}} $$
 
 Here, $\eta$ represents the learning rate, a hyperparameter that controls the size of the weight updates. The purpose of backpropagation is to minimize the overall error by propagating gradients that inform each weight on how to adjust to reduce the loss.
 
 The choice of the loss function is critical in guiding the learning process. Two widely used loss functions are Mean Squared Error (MSE) and Cross-Entropy. The Mean Squared Error (MSE) is used in regression tasks and is mathematically defined as:
 
-$ L_{\text{MSE}}(\hat{y}, y) = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 $
+$$ L_{\text{MSE}}(\hat{y}, y) = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 $$
 
 In this equation, $y_i$ denotes the true label, while $\hat{y}_i$ is the predicted value. MSE calculates the average squared difference between the predicted values and the actual values, providing a measure of how well the model performs. The gradient of the MSE with respect to the predicted output is:
 
-$ \frac{\partial L_{\text{MSE}}}{\partial \hat{y}} = -\frac{2}{n} (y - \hat{y}) $
+$$ \frac{\partial L_{\text{MSE}}}{\partial \hat{y}} = -\frac{2}{n} (y - \hat{y}) $$
 
 In classification tasks, Cross-Entropy is a more suitable loss function. For binary classification, Cross-Entropy is defined as:
 
-$ L_{\text{Cross-Entropy}}(\hat{y}, y) = -\frac{1}{n} \sum_{i=1}^{n} \left[ y_i \log(\hat{y}_i) + (1 - y_i) \log(1 - \hat{y}_i) \right] $
+$$ L_{\text{Cross-Entropy}}(\hat{y}, y) = -\frac{1}{n} \sum_{i=1}^{n} \left[ y_i \log(\hat{y}_i) + (1 - y_i) \log(1 - \hat{y}_i) \right] $$
 
 Cross-Entropy measures the dissimilarity between the predicted probabilities $\hat{y}_i$ and the true labels $y_i$, which take values in $\{0, 1\}$. The gradient of the Cross-Entropy loss is given by:
 
-$ \frac{\partial L_{\text{Cross-Entropy}}}{\partial \hat{y}} = -\frac{y}{\hat{y}} + \frac{1 - y}{1 - \hat{y}} $
+$$ \frac{\partial L_{\text{Cross-Entropy}}}{\partial \hat{y}} = -\frac{y}{\hat{y}} + \frac{1 - y}{1 - \hat{y}} $$
 
 These loss functions define the optimization objective, which backpropagation seeks to minimize by adjusting the weights through gradient descent.
 
 Gradient descent is the optimization algorithm used in conjunction with backpropagation to update the network’s weights. The basic idea is to take steps in the direction of the negative gradient of the loss function with respect to the weights. There are three main variants of gradient descent: Standard Gradient Descent, Stochastic Gradient Descent (SGD), and Mini-batch Gradient Descent. Standard Gradient Descent computes the gradient of the loss over the entire training dataset before updating the weights. This method, while accurate, can be computationally expensive for large datasets. Stochastic Gradient Descent, in contrast, updates the weights after computing the gradient on each individual training sample. This results in faster updates but introduces higher variance in the weight updates, which can lead to noisy learning. Mini-batch Gradient Descent strikes a balance by computing the gradient over a small subset (mini-batch) of the training data, combining the efficiency of SGD with the stability of Standard Gradient Descent. The general update rule for gradient descent is:
 
-$ W \leftarrow W - \eta \frac{1}{n} \sum_{i=1}^{n} \nabla_W L(\hat{y}^{(i)}, y^{(i)}) $
+$$ W \leftarrow W - \eta \frac{1}{n} \sum_{i=1}^{n} \nabla_W L(\hat{y}^{(i)}, y^{(i)}) $$
 
 where $n$ is the size of the mini-batch, $\eta$ is the learning rate, and $\nabla_W L$ is the gradient of the loss function with respect to the weights.
 
@@ -446,29 +446,29 @@ Optimization algorithms are critical to neural network training, as they dictate
 
 Stochastic Gradient Descent (SGD) is the foundation of most optimization algorithms. The primary principle of SGD is to adjust the weights based on the gradient of the loss function with respect to the weights for each mini-batch or individual training example. Mathematically, the weight update rule in SGD is:
 
-$ W \leftarrow W - \eta \nabla_W L(\hat{y}, y) $
+$$ W \leftarrow W - \eta \nabla_W L(\hat{y}, y) $$
 
 where $\eta$ is the learning rate, and $\nabla_W L(\hat{y}, y)$ is the gradient of the loss function $L$ with respect to the weights $W$. While SGD is effective, it can suffer from slow convergence and oscillation, particularly in the presence of steep or flat regions of the loss surface.
 
 To address these issues, variants of SGD have been developed, such as the *momentum* technique. Momentum helps accelerate convergence by accumulating a velocity vector $v_t$ in the direction of the gradient, effectively “smoothing” the updates:
 
-$ v_t = \gamma v_{t-1} + \eta \nabla_W L(\hat{y}, y) $
+$$ v_t = \gamma v_{t-1} + \eta \nabla_W L(\hat{y}, y) $$
 
-$ W \leftarrow W - v_t $
+$$ W \leftarrow W - v_t $$
 
 Here, $\gamma$ is the momentum factor, typically set between 0.9 and 0.99. Momentum allows the optimizer to build speed in directions with consistent gradients and dampen oscillations in directions with high curvature.
 
 Adam (Adaptive Moment Estimation) builds on both momentum and RMSprop by maintaining separate estimates of the first and second moments of the gradients (the mean and the variance). Adam computes moving averages of the gradient mtm_tmt (the first moment) and the squared gradient vtv_tvt (the second moment) at each iteration:
 
-$ m_t = \beta_1 m_{t-1} + (1 - \beta_1) \nabla_W L(\hat{y}, y) $
+$$ m_t = \beta_1 m_{t-1} + (1 - \beta_1) \nabla_W L(\hat{y}, y) $$
 
-$ v_t = \beta_2 v_{t-1} + (1 - \beta_2) (\nabla_W L(\hat{y}, y))^2 $
+$$ v_t = \beta_2 v_{t-1} + (1 - \beta_2) (\nabla_W L(\hat{y}, y))^2 $$
 
 The parameters $\beta_1$ and $\beta_2$ control the decay rates for the first and second moments, respectively. The weights are then updated as follows:
 
-$ \hat{m_t} = \frac{m_t}{1 - \beta_1^t}, \quad \hat{v_t} = \frac{v_t}{1 - \beta_2^t} $
+$$ \hat{m_t} = \frac{m_t}{1 - \beta_1^t}, \quad \hat{v_t} = \frac{v_t}{1 - \beta_2^t} $$
 
-$ W \leftarrow W - \eta \frac{\hat{m_t}}{\sqrt{\hat{v_t}} + \epsilon} $
+$$ W \leftarrow W - \eta \frac{\hat{m_t}}{\sqrt{\hat{v_t}} + \epsilon} $$
 
 Adam automatically adapts the learning rate for each parameter based on the magnitudes of the gradients, making it particularly effective for problems with sparse gradients or noisy updates. RMSprop, a precursor to Adam, only adapts the learning rate based on the moving average of the squared gradients, making it suitable for problems with rapidly changing gradients.
 
@@ -476,7 +476,7 @@ The choice of optimizer has a significant impact on the performance of the neura
 
 Learning rate scheduling is another crucial technique that helps control the convergence of neural networks. The learning rate controls the size of the updates during gradient descent, and its value can affect the training dynamics. A high learning rate may lead to instability, while a low learning rate can slow down convergence. Learning rate scheduling gradually decreases the learning rate as training progresses, allowing the optimizer to take larger steps early in training and smaller, more refined steps later. One common scheduling strategy is exponential decay, where the learning rate decreases exponentially after each epoch:
 
-$ \eta_t = \eta_0 e^{-\lambda t} $
+$$ \eta_t = \eta_0 e^{-\lambda t} $$
 
 Here, $\eta_0$ is the initial learning rate, $t$ is the current epoch, and $\lambda$ is the decay rate. Another popular approach is the step decay schedule, where the learning rate is reduced by a factor after a fixed number of epochs. These strategies help the network avoid overshooting the optimal solution and ensure better convergence towards a local or global minimum.
 
@@ -571,27 +571,27 @@ In neural network training, understanding and addressing overfitting and underfi
 
 Regularization techniques like L1 and L2 regularization are among the most commonly used strategies to prevent overfitting by penalizing large weights. In L2 regularization, also known as weight decay, the objective function is modified by adding a term proportional to the square of the weights. The new loss function becomes:
 
-$ L_{\text{total}} = L_{\text{original}} + \lambda \sum_{i} W_i^2 $
+$$ L_{\text{total}} = L_{\text{original}} + \lambda \sum_{i} W_i^2 $$
 
 Here, $L_{\text{original}}$ represents the original loss function (such as cross-entropy or mean squared error), $W_i$ is the weight of the $i$-th connection, and $\lambda$ is the regularization strength, a hyperparameter that controls the amount of penalty applied. The gradient of this regularized loss with respect to the weights is:
 
-$ \frac{\partial L_{\text{total}}}{\partial W_i} = \frac{\partial L_{\text{original}}}{\partial W_i} + 2 \lambda W_i∂Wi​ $
+$$ \frac{\partial L_{\text{total}}}{\partial W_i} = \frac{\partial L_{\text{original}}}{\partial W_i} + 2 \lambda W_i∂Wi​ $$
 
 This extra term $2 \lambda W_i$ ensures that during gradient descent, large weights are penalized, thereby preventing the model from overfitting by relying too heavily on any specific feature.
 
 L1 regularization modifies the loss function by adding the absolute values of the weights, which promotes sparsity in the model. The L1 regularized loss is given by:
 
-$ L_{\text{total}} = L_{\text{original}} + \lambda \sum_{i} |W_i| $
+$$ L_{\text{total}} = L_{\text{original}} + \lambda \sum_{i} |W_i| $$
 
 In this case, the gradient of the regularized loss is:
 
-$ \frac{\partial L_{\text{total}}}{\partial W_i} = \frac{\partial L_{\text{original}}}{\partial W_i} + \lambda \cdot \text{sign}(W_i) $
+$$ \frac{\partial L_{\text{total}}}{\partial W_i} = \frac{\partial L_{\text{original}}}{\partial W_i} + \lambda \cdot \text{sign}(W_i) $$
 
 where $\text{sign}(W_i)$ is the sign function, which returns +1 or -1 depending on the sign of $W_i$. L1 regularization tends to produce sparse weight matrices, as the absolute value penalty encourages small weights to become zero, leading to a simpler model that is less prone to overfitting.
 
 Dropout is another widely used regularization technique in deep learning that randomly "drops" a fraction of neurons during each forward pass in training. Dropout effectively prevents the network from becoming too reliant on any particular subset of neurons by forcing the network to learn redundant representations. Dropout can be mathematically described by multiplying the activations of neurons by a random binary mask $\mathbf{r}$, where each element of $\mathbf{r}$ is sampled from a Bernoulli distribution with probability $p$, the dropout rate. The forward pass for a layer with dropout is:
 
-$ \mathbf{a}^{(l)}_{\text{dropout}} = \mathbf{a}^{(l)} \odot \mathbf{r} $
+$$ \mathbf{a}^{(l)}_{\text{dropout}} = \mathbf{a}^{(l)} \odot \mathbf{r} $$
 
 where $\odot$ denotes element-wise multiplication. The dropout rate ppp determines the fraction of neurons that are set to zero. At test time, the dropout mechanism is turned off, but the weights are scaled by $1 - p$ to account for the fact that more neurons are active during inference than during training.
 
@@ -599,15 +599,15 @@ Early stopping is another technique used to prevent overfitting by monitoring th
 
 Evaluating the performance of a neural network requires careful consideration of various metrics that go beyond just accuracy. Accuracy is the ratio of correctly classified instances to the total number of instances, but it can be misleading, especially when the dataset is imbalanced. Precision, recall, and F1 score are metrics that provide a more detailed view of model performance. Precision measures the fraction of positive predictions that are actually correct:
 
-$ \text{Precision} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Positives}} $
+$$ \text{Precision} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Positives}} $$
 
 Recall measures the fraction of actual positives that are correctly identified:
 
-$ \text{Recall} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Negatives}} $
+$$ \text{Recall} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Negatives}} $$
 
 The F1 score is the harmonic mean of precision and recall, providing a single metric that balances both:
 
-$ F1 = 2 \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}} $
+$$ F1 = 2 \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}} $$
 
 Another important metric is the AUC-ROC (Area Under the Receiver Operating Characteristic Curve), which measures the model’s ability to distinguish between classes across different thresholds. AUC-ROC is particularly useful in binary classification problems, as it provides insight into the trade-off between the true positive rate and false positive rate.
 

@@ -23,11 +23,11 @@ Similarly, in natural language processing (NLP), deep learning transforms raw te
 
 The mathematical foundation of deep learning begins with the perceptron, introduced by Frank Rosenblatt in 1958, which represents the simplest form of a neural network. The perceptron is a binary classifier that maps an input vector $\mathbf{x} = [x_1, x_2, \dots, x_n]$ to an output $y$ by computing a weighted sum of its inputs and applying an activation function. Mathematically, the perceptron is expressed as:
 
-$ y = f\left(\sum_{i=1}^{n} w_i x_i + b\right), $
+$$ y = f\left(\sum_{i=1}^{n} w_i x_i + b\right), $$
 
 where $\mathbf{w} = [w_1, w_2, \dots, w_n]$ are the learnable weights, $b$ is the bias term, and $f$ is the activation function. In its original form, the perceptron used a step activation function defined as:
 
-$ f(z) = \begin{cases} 1 & \text{if } z \geq 0, \\ 0 & \text{if } z < 0, \end{cases} $
+$$ f(z) = \begin{cases} 1 & \text{if } z \geq 0, \\ 0 & \text{if } z < 0, \end{cases} $$
 
 where $z = \sum_{i=1}^{n} w_i x_i + b$. The perceptron outputs 1 if the weighted sum of its inputs exceeds a threshold (set implicitly by the bias term) and 0 otherwise.
 
@@ -187,7 +187,7 @@ The analysis of the XOR problem and the limitations of the perceptron not only c
 
 An MLP adds hidden layers between the input and output, with each layer composed of multiple perceptrons (neurons). Unlike the perceptron, MLPs replace the step activation function with differentiable non-linear functions such as the sigmoid, hyperbolic tangent (tanh), or rectified linear unit (ReLU): $\text{ReLU: } f(z) = \max(0, z)$. The architecture of an MLP with $L$ layers can be expressed as:
 
-$ \mathbf{y} = f_L\left(\mathbf{W}_L f_{L-1}\left(\mathbf{W}_{L-1} \cdots f_1\left(\mathbf{W}_1 \mathbf{x} + \mathbf{b}_1\right) + \mathbf{b}_{L-1}\right) + \mathbf{b}_L\right), $
+$$ \mathbf{y} = f_L\left(\mathbf{W}_L f_{L-1}\left(\mathbf{W}_{L-1} \cdots f_1\left(\mathbf{W}_1 \mathbf{x} + \mathbf{b}_1\right) + \mathbf{b}_{L-1}\right) + \mathbf{b}_L\right), $$
 
 where $\mathbf{W}_i$ and $\mathbf{b}_i$ are the weights and biases of the $i$-th layer, and $f_i$ is the activation function for that layer. The inclusion of hidden layers allows MLPs to learn hierarchical and non-linear mappings, enabling them to model complex functions and classify non-linearly separable data.
 
@@ -406,13 +406,13 @@ Activation functions are mathematical operations applied element-wise to the out
 
 The training of neural networks centers around the optimization of a loss function, which quantifies the error between the network’s predictions and the true targets. Loss functions are chosen based on the task at hand. For instance, in regression tasks, the mean squared error (MSE) is commonly used, while in classification tasks, the cross-entropy loss is the standard. The process of training involves minimizing this loss function using gradient-based optimization techniques, most notably gradient descent. Gradient descent updates the network’s parameters by calculating the gradient of the loss with respect to the weights and biases:
 
-$\theta \leftarrow \theta - \eta \nabla_\theta \mathcal{L}, $
+$$\theta \leftarrow \theta - \eta \nabla_\theta \mathcal{L}, $$
 
 where $\theta$ represents the parameters, $\eta$ is the learning rate, and $\nabla_\theta \mathcal{L}$ is the gradient of the loss function $\mathcal{L}$. This iterative update process drives the network toward a configuration that minimizes the loss. While traditional gradient descent requires the entire dataset to compute updates, stochastic gradient descent (SGD) introduces randomness by computing updates based on small batches of data, striking a balance between computational efficiency and convergence stability.
 
 The ability of neural networks to learn hierarchical representations stems from their layered structure, where each layer captures progressively abstract features. For example, in an image classification task, the first layer might detect edges, the second layer combines these edges to recognize shapes, and deeper layers assemble these shapes into higher-level concepts such as objects. This progression is mathematically represented by composing multiple linear and non-linear transformations:
 
-$ \mathbf{h}^{(l)} = f\left(\mathbf{W}^{(l)} \mathbf{h}^{(l-1)} + \mathbf{b}^{(l)}\right), $
+$$ \mathbf{h}^{(l)} = f\left(\mathbf{W}^{(l)} \mathbf{h}^{(l-1)} + \mathbf{b}^{(l)}\right), $$
 
 where $\mathbf{h}^{(l-1)}$ is the input to the $l$-th layer, $\mathbf{W}^{(l)}$ and $\mathbf{b}^{(l)}$ are the weights and biases of the $l$-th layer, and $f$ is the activation function. The architecture of a neural network—encompassing the number of layers, the size of each layer, and the types of layers—determines its capacity to learn and generalize. Larger and deeper networks have greater representational power but also risk overfitting, a challenge that can be addressed through regularization techniques like weight decay and dropout.
 
@@ -603,13 +603,13 @@ While linear algebra provides the structure, calculus powers the learning proces
 
 The chain rule, a fundamental principle in calculus, enables the efficient computation of gradients in deep networks through the backpropagation algorithm. For a composed function $f(g(h(x)))$, the chain rule states:
 
-$ \frac{d}{dx} f(g(h(x))) = f'(g(h(x))) \cdot g'(h(x)) \cdot h'(x). $
+$$ \frac{d}{dx} f(g(h(x))) = f'(g(h(x))) \cdot g'(h(x)) \cdot h'(x). $$
 
 In neural networks, this principle is applied recursively to propagate gradients backward from the output layer to the input layer. Each layer contributes to the overall gradient, ensuring that all parameters are updated effectively. Without this mathematical mechanism, training deep neural networks would be computationally infeasible.
 
 Deep learning often operates in environments with uncertainty, making probability theory a cornerstone of the field. Probability provides the tools to model uncertainty, quantify randomness, and make predictions under uncertain conditions. For example, a neural network’s output for classification tasks is typically treated as a probability distribution over classes, computed using the softmax function:
 
-$ \text{Softmax}(z_i) = \frac{e^{z_i}}{\sum_{j=1}^C e^{z_j}}, $
+$$ \text{Softmax}(z_i) = \frac{e^{z_i}}{\sum_{j=1}^C e^{z_j}}, $$
 
 where $z_i$ is the raw score for class $i$, and $C$ is the total number of classes.
 
@@ -619,7 +619,7 @@ Stochastic processes, like stochastic gradient descent (SGD), inherently involve
 
 At the heart of deep learning lies optimization, the process of adjusting model parameters to minimize the loss function. The most common optimization algorithm is gradient descent, which iteratively updates parameters in the direction that reduces the loss:
 
-$ \theta \leftarrow \theta - \eta \nabla_\theta \mathcal{L}, $
+$$ \theta \leftarrow \theta - \eta \nabla_\theta \mathcal{L}, $$
 
 where $\theta$ represents the parameters, $\eta$ is the learning rate, and $\nabla_\theta \mathcal{L}$ is the gradient of the loss function $\mathcal{L}$ with respect to $\theta$.
 

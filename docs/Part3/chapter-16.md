@@ -50,7 +50,7 @@ At the core of reinforcement learning lies the *Markov Decision Process* (MDP), 
 
 The objective in an MDP is to learn a policy $\pi(a \mid s)$ that maximizes the expected cumulative discounted reward:
 
-$ \mathbb{E}\left[\sum_{t=0}^{\infty} \gamma^t R(s_t, a_t) \mid \pi\right], $
+$$ \mathbb{E}\left[\sum_{t=0}^{\infty} \gamma^t R(s_t, a_t) \mid \pi\right], $$
 
 where $s_t$ and $a_t$ denote the state and action at time $t$. A policy can be deterministic $\pi(s) = a$ or stochastic $\pi(a \mid s)$ gives the probability of selecting action $a$ given state $s$). The value function $V^\pi(s)$ represents the expected return starting from state $s$ under policy $\pi$, and the action-value function $Q^\pi(s, a)$ represents the expected return for taking action $a$ in state $s$ and following $\pi$ thereafter. These functions are fundamental for evaluating the quality of policies.
 
@@ -58,7 +58,7 @@ One of the central challenges in reinforcement learning is the exploration-explo
 
 In Q-learning, the Q-value update rule is defined as:
 
-$ Q(s, a) \leftarrow Q(s, a) + \alpha \left[ R(s, a) + \gamma \max_{a'} Q(s', a') - Q(s, a) \right], $
+$$ Q(s, a) \leftarrow Q(s, a) + \alpha \left[ R(s, a) + \gamma \max_{a'} Q(s', a') - Q(s, a) \right], $$
 
 where $\alpha$ is the learning rate, $\gamma$ is the discount factor, $s'$ is the next state after taking action $a$, and $a'$ is the action that maximizes the Q-value in the next state. This update aims to reduce the temporal difference error, which is the discrepancy between the current Q-value and the value obtained from a one-step lookahead.
 
@@ -237,11 +237,11 @@ Deep Q-Networks (DQN) represent a significant advancement in reinforcement learn
 
 The primary objective of Q-learning is to learn an optimal action-value function $Q^*(s, a)$, which represents the expected cumulative reward (or return) when starting from state sss, taking action $a$, and subsequently following an optimal policy. The Bellman optimality equation defines the relationship between optimal Q-values as follows:
 
-$ Q^*(s, a) = \mathbb{E}_{s'} \left[ R(s, a) + \gamma \max_{a'} Q^*(s', a') \mid s, a \right], $
+$$ Q^*(s, a) = \mathbb{E}_{s'} \left[ R(s, a) + \gamma \max_{a'} Q^*(s', a') \mid s, a \right], $$
 
 where $s'$ is the next state reached after taking action $a$ in state $s$, $R(s, a)$ is the immediate reward received for that action, and $\gamma \in [0, 1]$ is the discount factor that determines the importance of future rewards. A higher value of $\gamma$ places greater emphasis on long-term rewards, while a lower value focuses more on immediate rewards. In DQN, the Q-network approximates $Q(s, a; \theta)$ using gradient descent to minimize the temporal difference (TD) error, which measures the discrepancy between the predicted Q-values and the target Q-values computed using the Bellman equation. The loss function for training the Q-network is defined as:
 
-$ \mathcal{L}(\theta) = \mathbb{E}_{(s, a, r, s') \sim \mathcal{D}} \left[ \left( r + \gamma \max_{a'} Q(s', a'; \theta^-) - Q(s, a; \theta) \right)^2 \right], $
+$$ \mathcal{L}(\theta) = \mathbb{E}_{(s, a, r, s') \sim \mathcal{D}} \left[ \left( r + \gamma \max_{a'} Q(s', a'; \theta^-) - Q(s, a; \theta) \right)^2 \right], $$
 
 where $\mathcal{D}$ is the replay buffer storing past experiences as tuples $(s, a, r, s')$, and $\theta^-$ represents the parameters of a target network that is a delayed copy of the Q-network. The loss function aims to minimize the squared difference between the target Q-value $y$ (computed using the target network) and the Q-network's prediction, thereby iteratively adjusting $\theta$ to improve the network’s accuracy.
 
@@ -249,13 +249,13 @@ To stabilize training and address the problem of correlated experiences, DQN int
 
 Another essential mechanism is the use of target networks to provide stable targets for the Q-learning updates. Instead of using the same Q-network to compute both the predicted and target Q-values, DQN maintains a target Q-network with parameters $\theta^-$, which is updated less frequently. Typically, the parameters of the target network are set to the Q-network's parameters $\theta$ after a fixed number of iterations, creating a more stable target for computing the TD error. The target value is computed as:
 
-$ y = r + \gamma \max_{a'} Q(s', a'; \theta^-), $
+$$ y = r + \gamma \max_{a'} Q(s', a'; \theta^-), $$
 
 where $y$ is the target Q-value used to update the Q-network. By using a delayed target network, the DQN reduces the likelihood of divergence during training, preventing rapid fluctuations in target values that could destabilize the learning process.
 
 A significant challenge in DQN is overestimation bias, which occurs when the Q-network tends to overestimate the value of certain actions. This bias arises because the same network is used to select the action (via $\max_{a'}$) and to evaluate it. Over time, this can lead the agent to develop suboptimal policies, as it might favor actions that are wrongly perceived as valuable. Double DQN (DDQN) addresses this issue by decoupling the action selection and action evaluation steps. In DDQN, the Q-network is used to select the action, but the target network is used to evaluate the action’s value. The update rule for DDQN is:
 
-$ y = r + \gamma Q(s', \arg\max_{a'} Q(s', a'; \theta); \theta^-), $
+$$ y = r + \gamma Q(s', \arg\max_{a'} Q(s', a'; \theta); \theta^-), $$
 
 where $\arg\max_{a'} Q(s', a'; \theta)$ selects the action using the Q-network, but the value is computed using the target network $\theta^-$. This approach reduces the overestimation bias, resulting in more accurate action-value estimates and improved policy stability. The reduction of bias through this technique is critical in environments with noisy rewards or complex dynamics, where overestimation can otherwise lead to degraded performance.
 
@@ -607,7 +607,7 @@ The target network is updated periodically to synchronize its weights with the m
 
 During each episode, the agent selects actions either randomly (for exploration) or based on the Q-values output by the network. The selected action is executed in the environment, which returns the next state and reward. These interactions are stored in the replay buffer. When the buffer contains enough experiences, the agent samples a batch to update the Q-network using stochastic gradient descent (SGD). The network computes the current Q-values for each state-action pair, and the target Q-values are calculated using the Bellman equation:
 
-$ y = r + \gamma \max_{a'} Q(s', a'; \theta^-), $
+$$ y = r + \gamma \max_{a'} Q(s', a'; \theta^-), $$
 
 where $r$ is the immediate reward, $s'$ is the next state, $\gamma$ is the discount factor, and $\theta^-$ are the parameters of the target network. The loss function minimizes the squared difference between the predicted Q-values and these target Q-values, allowing the Q-network to improve its predictions over time.
 
@@ -621,7 +621,7 @@ In summary, Deep Q-Networks (DQN) extend the capabilities of reinforcement learn
 
 Policy Gradient Methods represent a fundamental approach in reinforcement learning (RL), offering a direct way to optimize a policy without the intermediate step of estimating value functions. Unlike value-based methods like Q-learning, which aim to estimate the value of taking certain actions in specific states, policy gradient methods directly adjust the parameters of the policy to maximize the expected rewards. These methods are particularly advantageous in environments with continuous action spaces, where the discrete nature of value-based methods may be inadequate. A policy in this context is a function $\pi_{\theta}(a \mid s)$ that outputs a probability distribution over actions aaa, given a state $s$, parameterized by $\theta$, which are the weights of a neural network. The objective of policy gradient methods is to find the optimal parameters $\theta$ that maximize the expected cumulative reward:
 
-$ J(\theta) = \mathbb{E}_{\tau \sim \pi_{\theta}} \left[ \sum_{t=0}^{\infty} \gamma^t R(s_t, a_t) \right], $
+$$ J(\theta) = \mathbb{E}_{\tau \sim \pi_{\theta}} \left[ \sum_{t=0}^{\infty} \gamma^t R(s_t, a_t) \right], $$
 
 where $\tau$ represents a trajectory $(s_0, a_0, s_1, a_1, \ldots)$ generated by the policy $\pi_{\theta}$, $R(s_t, a_t)$ is the reward received at time $t$, and $\gamma \in [0,1]$ is the discount factor that determines the weight of future rewards relative to immediate rewards. The goal is to adjust $\theta$ such that the policy $\pi_{\theta}$ generates trajectories that maximize $J(\theta)$, effectively guiding the agent towards strategies that yield higher long-term rewards.
 
@@ -630,33 +630,33 @@ where $\tau$ represents a trajectory $(s_0, a_0, s_1, a_1, \ldots)$ generated by
 
 The Policy Gradient Theorem provides the mathematical basis for computing the gradient of the expected reward $J(\theta)$ with respect to the policy parameters $\theta$. It states that the gradient can be expressed as:
 
-$ \nabla_{\theta} J(\theta) = \mathbb{E}_{\tau \sim \pi_{\theta}} \left[ \sum_{t=0}^{\infty} \nabla_{\theta} \log \pi_{\theta}(a_t \mid s_t) G_t \right], $
+$$ \nabla_{\theta} J(\theta) = \mathbb{E}_{\tau \sim \pi_{\theta}} \left[ \sum_{t=0}^{\infty} \nabla_{\theta} \log \pi_{\theta}(a_t \mid s_t) G_t \right], $$
 
 where $G_t$ is the reward-to-go or the cumulative future reward from time ttt:
 
-$ G_t = \sum_{k=t}^{\infty} \gamma^{k-t} R(s_k, a_k). $
+$$ G_t = \sum_{k=t}^{\infty} \gamma^{k-t} R(s_k, a_k). $$
 
 The term $\nabla_{\theta} \log \pi_{\theta}(a_t \mid s_t)$ is known as the score function or policy gradient, which measures how the probability of selecting a particular action changes as the policy parameters are adjusted. This expression shows that the gradient of $J(\theta)$ is the expected value of the product of the score function and the reward-to-go $G_t$. By weighting the gradient with the cumulative rewards, the method effectively encourages actions that lead to higher rewards, updating the parameters $\theta$ in the direction that improves the expected outcome.
 
 A practical implementation of the Policy Gradient Theorem is the REINFORCE algorithm, which is a Monte Carlo policy gradient method. Unlike Temporal Difference (TD) learning methods, REINFORCE estimates the gradient by sampling complete trajectories from the environment. The policy parameters $\theta$ are updated using the following rule:
 
-$ \theta \leftarrow \theta + \alpha \nabla_{\theta} \log \pi_{\theta}(a_t \mid s_t) G_t, $
+$$ \theta \leftarrow \theta + \alpha \nabla_{\theta} \log \pi_{\theta}(a_t \mid s_t) G_t, $$
 
 where $\alpha$ is the learning rate, controlling the step size during parameter updates. At each iteration, the agent interacts with the environment to collect trajectories, computes the gradient of the log-probabilities weighted by the cumulative rewards, and adjusts the policy parameters accordingly. This iterative process gradually improves the policy. However, due to the variance inherent in sampling entire trajectories, REINFORCE often suffers from high variance in its gradient estimates, which can slow down or destabilize the learning process.
 
 One of the main challenges in policy gradient methods, particularly in REINFORCE, is the high variance in gradient estimates, which can result in slow convergence. To address this, a baseline function $b(s_t)$ can be introduced to reduce variance without introducing bias into the gradient estimation:
 
-$ \nabla_{\theta} J(\theta) = \mathbb{E}_{\tau \sim \pi_{\theta}} \left[ \sum_{t=0}^{\infty} \nabla_{\theta} \log \pi_{\theta}(a_t \mid s_t) (G_t - b(s_t)) \right]. $
+$$ \nabla_{\theta} J(\theta) = \mathbb{E}_{\tau \sim \pi_{\theta}} \left[ \sum_{t=0}^{\infty} \nabla_{\theta} \log \pi_{\theta}(a_t \mid s_t) (G_t - b(s_t)) \right]. $$
 
 A common choice for $b(s_t)$ is the state-value function $V^{\pi}(s)$, which estimates the expected return starting from state $s$. By subtracting $V^{\pi}(s)$ from $G_t$, we obtain the advantage function:
 
-$ A^{\pi}(s, a) = G_t - V^{\pi}(s), $
+$$ A^{\pi}(s, a) = G_t - V^{\pi}(s), $$
 
 which measures how much better taking action aaa in state $s$ is compared to the average performance at state $s$. This adjustment does not change the expected value of the gradient but can significantly reduce its variance, leading to more stable and efficient learning.
 
 Sample efficiency is another challenge for policy gradient methods, as they often require a large number of interactions with the environment to converge. To improve sample efficiency, Advantage Actor-Critic (A2C) methods are commonly employed. These methods combine the policy gradient approach (the actor) with a critic, which estimates the value function $V^{\pi}(s)$. The actor updates the policy parameters using the advantage estimates:
 
-$ A^{\pi}(s, a) = Q^{\pi}(s, a) - V^{\pi}(s), $
+$$ A^{\pi}(s, a) = Q^{\pi}(s, a) - V^{\pi}(s), $$
 
 where $Q^{\pi}(s, a)$ is the action-value function, representing the expected return when taking action $a$ in state $s$ and following the policy $\pi$ thereafter. The critic learns to minimize the mean squared error between $V^{\pi}(s)$ and the observed returns, providing a more stable estimate of the value function. This allows the actor to focus on actions that provide higher-than-average returns, improving the overall efficiency of the learning process.
 
@@ -1210,25 +1210,25 @@ The integration of these two components allows for a structured approach to lear
 
 At the heart of actor-critic methods is the Advantage Function, denoted as $A^{\pi}(s, a)$, which quantifies how much better or worse an action aaa is compared to the average action that the policy would take in state sss. The advantage function is mathematically defined as:
 
-$ A^{\pi}(s, a) = Q^{\pi}(s, a) - V^{\pi}(s), $
+$$ A^{\pi}(s, a) = Q^{\pi}(s, a) - V^{\pi}(s), $$
 
 where $Q^{\pi}(s, a)$ is the action-value function, representing the expected cumulative reward when starting from state $s$, taking action $a$, and following policy $\pi$ thereafter, and $V^{\pi}(s)$ is the state-value function, representing the expected return starting from state $s$ under policy $\pi$. The advantage function effectively measures how an action compares to the average outcome expected in a given state. It allows the actor to adjust the policy parameters to favor actions that result in higher-than-expected rewards.
 
 Actor-critic methods leverage Temporal Difference (TD) learning to update both the actor and the critic. The TD error serves as a critical learning signal, capturing the difference between the critic’s estimated value and the actual observed reward. The TD error is calculated as:
 
-$ \delta_t = r_t + \gamma V^{\pi}(s_{t+1}) - V^{\pi}(s_t), $
+$$ \delta_t = r_t + \gamma V^{\pi}(s_{t+1}) - V^{\pi}(s_t), $$
 
 where $r_t$ is the reward received after taking action $a_t$ in state $s_t$, $\gamma$ is the discount factor that balances the importance of immediate and future rewards, $V^{\pi}(s_{t+1})$ is the estimated value of the next state, and $V^{\pi}(s_t)$ is the estimated value of the current state. The TD error quantifies how the observed reward and the value estimate of the next state deviate from the current state's value estimate.
 
 The critic is updated by minimizing the squared TD error:
 
-$ \mathcal{L}_{\text{critic}}(w) = \delta_t^2. $
+$$ \mathcal{L}_{\text{critic}}(w) = \delta_t^2. $$
 
 This loss function encourages the critic to refine its value estimates so that they align more closely with the rewards received during the agent's interaction with the environment.
 
 The actor uses the TD error to adjust its policy parameters $\theta$ through stochastic gradient ascent:
 
-$ \nabla_{\theta} J(\theta) \approx \delta_t \nabla_{\theta} \log \pi_{\theta}(a_t \mid s_t). $
+$$ \nabla_{\theta} J(\theta) \approx \delta_t \nabla_{\theta} \log \pi_{\theta}(a_t \mid s_t). $$
 
 Here, $\nabla_{\theta} \log \pi_{\theta}(a_t \mid s_t)$ represents the gradient of the log-probability of the action taken, indicating how the likelihood of selecting action ata_tat changes with respect to $\theta$. This gradient is weighted by the TD error, allowing the actor to adjust its policy towards actions that lead to higher-than-expected rewards, improving the policy over time.
 
@@ -1236,17 +1236,17 @@ Actor-critic methods can suffer from instability during training, as the actor�
 
 Advantage Actor-Critic (A2C) utilizes multiple workers that interact with copies of the environment in parallel. These workers collect trajectories, compute gradients, and average them before applying updates to a global policy. This parallelism reduces the variance of the policy updates by averaging over a diverse set of experiences. The policy gradient in A2C uses the advantage function, computed as:
 
-$ \nabla_{\theta} J(\theta) = \mathbb{E}\left[ A^{\pi}(s_t, a_t) \nabla_{\theta} \log \pi_{\theta}(a_t \mid s_t) \right], $
+$$ \nabla_{\theta} J(\theta) = \mathbb{E}\left[ A^{\pi}(s_t, a_t) \nabla_{\theta} \log \pi_{\theta}(a_t \mid s_t) \right], $$
 
 where the advantage estimate is often derived from the TD error:
 
-$ A^{\pi}(s_t, a_t) \approx r_t + \gamma V^{\pi}(s_{t+1}) - V^{\pi}(s_t). $
+$$ A^{\pi}(s_t, a_t) \approx r_t + \gamma V^{\pi}(s_{t+1}) - V^{\pi}(s_t). $$
 
 By combining the experiences from multiple workers, A2C improves the stability of updates and accelerates the learning process.
 
 Proximal Policy Optimization (PPO) addresses instability by introducing a clipped objective function that prevents large policy updates, which can destabilize training. The PPO objective is:
 
-$ \mathcal{L}_{\text{PPO}}(\theta) = \mathbb{E}\left[\min\left( r_t(\theta) A^{\pi}(s_t, a_t), \text{clip}(r_t(\theta), 1 - \epsilon, 1 + \epsilon) A^{\pi}(s_t, a_t) \right)\right], $
+$$ \mathcal{L}_{\text{PPO}}(\theta) = \mathbb{E}\left[\min\left( r_t(\theta) A^{\pi}(s_t, a_t), \text{clip}(r_t(\theta), 1 - \epsilon, 1 + \epsilon) A^{\pi}(s_t, a_t) \right)\right], $$
 
 where $r_t(\theta) = \frac{\pi_{\theta}(a_t \mid s_t)}{\pi_{\theta_{\text{old}}}(a_t \mid s_t)}$ is the ratio of the new and old policy probabilities, and $\epsilon$ is a small positive value that controls the allowable change. The clipping mechanism ensures that the updated policy does not deviate too drastically from the old policy, maintaining a balance between exploration and policy stability. This makes PPO one of the most robust and widely used algorithms in RL, particularly in environments with continuous action spaces.
 
@@ -1916,7 +1916,7 @@ Model Predictive Control (MPC) benefits significantly from the speed and efficie
 
 MARL focuses on environments where multiple agents interact, each seeking to optimize its own policy while potentially influencing or cooperating with other agents. Formally, MARL can be modeled using Markov Games, an extension of the Markov Decision Process (MDP) framework. A Markov Game is defined by the tuple $(S, \{A_i\}_{i=1}^N, P, \{R_i\}_{i=1}^N, \gamma)$, where $S$ represents the set of states, $A_i$ is the action space of agent $i$, $P(s' \mid s, a_1, \ldots, a_N)$ defines the transition probability from state $s$ to $s'$ given the actions of all agents, $R_i(s, a_1, \ldots, a_N)$ is the reward function for agent $i$, and $\gamma$ is the discount factor. Each agent iii learns a policy $\pi_{\theta_i}(a_i \mid s)$ parameterized by $\theta_i$ that aims to maximize its own expected cumulative reward:
 
-$ J_i(\theta_i) = \mathbb{E}\left[\sum_{t=0}^{\infty} \gamma^t R_i(s_t, a_1^t, \ldots, a_N^t) \right]. $
+$$ J_i(\theta_i) = \mathbb{E}\left[\sum_{t=0}^{\infty} \gamma^t R_i(s_t, a_1^t, \ldots, a_N^t) \right]. $$
 
 The key challenge in MARL is that each agent's environment is partially determined by the policies of other agents, making the environment non-stationary from the perspective of any single agent. This requires sophisticated coordination and learning strategies, such as centralized training with decentralized execution (CTDE), where agents are trained using global information but act independently during deployment. MARL has practical applications in robotic swarm systems, where multiple robots need to coordinate for tasks like search-and-rescue missions, and in autonomous driving, where cars must navigate traffic while adapting to the behaviors of other vehicles on the road.
 
@@ -2032,13 +2032,13 @@ Training involves iteratively updating the policy networks using gradient descen
 
 HRL aims to solve complex tasks by breaking them into simpler, manageable subtasks. This is achieved by defining a hierarchy of policies, where a high-level policy chooses goals or sub-policies, and low-level policies focus on achieving those specific goals. The framework is often modeled using a Semi-Markov Decision Process (SMDP), which extends the MDP to include options or actions that take variable amounts of time. Formally, the value function of an option $o$ starting from state sss under policy $\pi$ is:
 
-$ V^{\pi}(s, o) = \mathbb{E}\left[\sum_{k=0}^{T-1} \gamma^k r_{t+k} + \gamma^T V^{\pi}(s_{t+T}) \mid s, o\right], $
+$$ V^{\pi}(s, o) = \mathbb{E}\left[\sum_{k=0}^{T-1} \gamma^k r_{t+k} + \gamma^T V^{\pi}(s_{t+T}) \mid s, o\right], $$
 
 where $T$ is the time until the option ooo terminates. HRL is especially useful in tasks that have a natural decomposition, such as navigation in unknown terrain, where a high-level policy might decide between exploring a new area or returning to a base, and low-level policies handle specific movement commands. This method allows for greater sample efficiency by focusing learning on smaller, more focused problems at each level of the hierarchy.
 
 Meta-Reinforcement Learning (meta-RL) focuses on enabling agents to learn how to adapt to new tasks quickly. Unlike traditional RL, which optimizes a policy for a single task, meta-RL seeks to optimize a meta-policy that can generalize across a range of tasks. The goal is to maximize the expected reward over a distribution of tasks $\mathcal{T}$, where each task $\mathcal{T}$ has its own dynamics and reward structure. Formally, the objective is:
 
-$ J(\theta) = \mathbb{E}_{\mathcal{T} \sim p(\mathcal{T})} \left[\mathbb{E}_{\tau \sim \pi_{\theta}}\left[\sum_{t=0}^{\infty} \gamma^t R_{\mathcal{T}}(s_t, a_t)\right]\right], $
+$$ J(\theta) = \mathbb{E}_{\mathcal{T} \sim p(\mathcal{T})} \left[\mathbb{E}_{\tau \sim \pi_{\theta}}\left[\sum_{t=0}^{\infty} \gamma^t R_{\mathcal{T}}(s_t, a_t)\right]\right], $$
 
 where $p(\mathcal{T})$ represents the distribution over tasks. Techniques like Model-Agnostic Meta-Learning (MAML) are used to find initial policy parameters $\theta$ that can be quickly adapted to new tasks with a few gradient updates. This capability is crucial in scenarios such as robotics, where robots may need to adapt to different objects or environments without extensive retraining. It is also valuable in personalized healthcare, where an agent might adjust treatment strategies based on individual patient responses.
 
@@ -2196,7 +2196,7 @@ Training proceeds by optimizing the policies using gradient-based methods. The l
 
 MBRL introduces the concept of learning a model of the environment's dynamics, enabling the agent to plan future actions by simulating trajectories. Instead of directly learning a policy, MBRL involves learning a transition function $\hat{P}(s' \mid s, a)$ and a reward function $\hat{R}(s, a)$ that approximate the true dynamics. The learned model can be used to generate imaginary rollouts or simulations of possible future states, which are then used to update the policy. The objective in MBRL is to solve:
 
-$ \max_{\pi} \mathbb{E}_{s_0 \sim p(s_0)}\left[\sum_{t=0}^{H} \gamma^t \hat{R}(s_t, \pi(s_t))\right], $
+$$ \max_{\pi} \mathbb{E}_{s_0 \sim p(s_0)}\left[\sum_{t=0}^{H} \gamma^t \hat{R}(s_t, \pi(s_t))\right], $$
 
 where $H$ is the planning horizon. By allowing the agent to simulate interactions with the environment, MBRL can significantly improve sample efficiency, as the agent can learn from imagined experiences. MBRL is particularly useful in applications like robotic manipulation and autonomous flight, where real-world interactions are expensive or time-consuming. For instance, in a robotic setting, an MBRL agent could learn the dynamics of an object and plan actions to move it to a desired position without excessive physical trials.
 

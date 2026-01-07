@@ -34,11 +34,11 @@ EBMs are also gaining interest for their potential in multi-task learning and st
 
 The core components of an EBM include the energy function, the data distribution, and the concept of negative sampling. The energy function, $E(x, y)$, assigns a scalar value to the input-output pair $(x, y)$. Lower values of $E(x, y)$ indicate that $y$ is more likely to be a compatible output for input $x$, while higher values imply the opposite. To derive a probability distribution from the energy function, EBMs use the Boltzmann distribution:
 
-$ p(y | x) = \frac{e^{-E(x, y)}}{Z(x)} $
+$$ p(y | x) = \frac{e^{-E(x, y)}}{Z(x)} $$
 
 where $Z(x)$ is the partition function or normalization constant given by:
 
-$Z(x) = \sum_{y} e^{-E(x, y)}$
+$$Z(x) = \sum_{y} e^{-E(x, y)}$$
 
 The partition function ensures that the distribution sums to one, making it a valid probability distribution. However, computing $Z(x)$ can be extremely challenging in practice, especially for high-dimensional data, as it involves summing over all possible states $y$. This difficulty is a major obstacle in EBMs, and a significant portion of research and practical implementation focuses on methods to approximate or avoid direct calculation of the partition function.
 
@@ -174,17 +174,17 @@ Learning and inference in Energy-Based Models (EBMs) involve the estimation of t
 
 Mathematically, the goal of learning in EBMs is to maximize the likelihood of the data. Given an energy function $E_\theta(x, y)$ parameterized by $\theta$, the probability distribution over the output $y$ given the input $x$ is defined as:
 
-$ p_\theta(y | x) = \frac{e^{-E_\theta(x, y)}}{Z_\theta(x)} $
+$$ p_\theta(y | x) = \frac{e^{-E_\theta(x, y)}}{Z_\theta(x)} $$
 
 where $Z_\theta(x)$ is the partition function, given by:
 
-$Z_\theta(x) = \sum_{y} e^{-E_\theta(x, y)}$
+$$Z_\theta(x) = \sum_{y} e^{-E_\theta(x, y)}$$
 
 The partition function is crucial for normalizing the distribution, but it is often intractable to compute, especially for high-dimensional data. To estimate the parameters $\theta$, one approach is to use maximum likelihood estimation (MLE), which involves computing the gradient of the log-likelihood. However, due to the intractable nature of the partition function, calculating the exact gradient is impractical. Instead, contrastive divergence (CD) is often used as an approximation.
 
 Contrastive divergence simplifies the learning process by approximating the gradient of the log-likelihood using a method that starts with real data samples and performs a limited number of updates to generate negative samples. These negative samples are used to estimate the gradient, allowing the model to adjust the energy function to assign lower energy to real data and higher energy to negative samples. Specifically, the parameter update rule in contrastive divergence can be expressed as:
 
-$ \Delta \theta \propto \frac{\partial E_\theta(x, y^+)}{\partial \theta} - \frac{\partial E_\theta(x, y^-)}{\partial \theta} $
+$$ \Delta \theta \propto \frac{\partial E_\theta(x, y^+)}{\partial \theta} - \frac{\partial E_\theta(x, y^-)}{\partial \theta} $$
 
 where $y^+$ represents a positive (real) sample and $y^-$ represents a negative (generated) sample. By iteratively updating the parameters using these gradients, the model gradually shapes the energy landscape to better fit the data distribution.
 

@@ -325,15 +325,15 @@ Challenges in federated learning are primarily related to the distributed nature
 
 Mathematically, let $\mathcal{D}_i$ represent the local dataset on device $i$, and let $\theta_t$ represent the global model parameters at time ttt. During the local training on device iii, the model updates are computed as:
 
-$ \theta_{i,t+1} = \theta_t - \eta \nabla_{\theta_t} \mathcal{L}_i(\theta_t, \mathcal{D}_i) $
+$$ \theta_{i,t+1} = \theta_t - \eta \nabla_{\theta_t} \mathcal{L}_i(\theta_t, \mathcal{D}_i) $$
 
 Where $\eta$ is the learning rate, and $\mathcal{L}_i$ is the local loss function for device $i$. These updates $\theta_{i,t+1}$ are then sent to the central server, which aggregates them (typically through weighted averaging) to update the global model:
 
-$ \theta_{t+1} = \frac{1}{N} \sum_{i=1}^{N} \theta_{i,t+1} $
+$$ \theta_{t+1} = \frac{1}{N} \sum_{i=1}^{N} \theta_{i,t+1} $$
 
 Privacy-preserving techniques such as differential privacy (DP), secure multi-party computation (SMPC), and homomorphic encryption (HE) are employed to ensure that the updates themselves do not leak sensitive information. In differential privacy, noise is added to the model updates to obscure the contribution of individual data points, making it impossible to infer personal information from the updates. Differential privacy ensures that the probability of generating any specific output does not change significantly when any single data point is added or removed from the dataset. This is formalized as:
 
-$ P(\mathcal{M}(D_1) = o) \leq e^{\epsilon} P(\mathcal{M}(D_2) = o) $
+$$ P(\mathcal{M}(D_1) = o) \leq e^{\epsilon} P(\mathcal{M}(D_2) = o) $$
 
 Where $D_1$ and $D_2$ are datasets differing by a single entry, $\mathcal{M}$ is the mechanism (e.g., the learning algorithm), and $\epsilon$ is the privacy budget, controlling the amount of noise added.
 
@@ -526,20 +526,20 @@ To understand the landscape of self-supervised and unsupervised learning, it’s
 
 In self-supervised learning, techniques like contrastive learning, autoencoders, and transformer-based pre-training are widely used. Contrastive learning aims to bring similar samples (positive pairs) closer in representation space while pushing dissimilar samples (negative pairs) apart. Formally, given a pair of samples $(x_i, x_j)$, a contrastive loss function can be expressed as:
 
-$ \mathcal{L}_{\text{contrastive}} = -\log \frac{\exp(\text{sim}(h(x_i), h(x_j)) / \tau)}{\sum_{k=1}^{N} \exp(\text{sim}(h(x_i), h(x_k)) / \tau)} $
+$$ \mathcal{L}_{\text{contrastive}} = -\log \frac{\exp(\text{sim}(h(x_i), h(x_j)) / \tau)}{\sum_{k=1}^{N} \exp(\text{sim}(h(x_i), h(x_k)) / \tau)} $$
 
 Where $\text{sim}(h(x_i), h(x_j))$ represents the cosine similarity between the embeddings $h(x_i)$ and $h(x_j)$, and $\tau$ is a temperature parameter controlling the sharpness of the output distribution.
 
 In autoencoders, the model learns to compress data into a latent space and then reconstruct it. The goal is to minimize the reconstruction error, where the encoder maps the input $x$ to a latent representation $z$, and the decoder reconstructs $\hat{x}$ from $z$:
 
-$ \mathcal{L}_{\text{autoencoder}} = || x - \hat{x} ||^2 $
+$$ \mathcal{L}_{\text{autoencoder}} = || x - \hat{x} ||^2 $$
 
 ![Figure](../../images/4HG3uqNnfrrynHQ7lsB4-tKi9oJ5DKNKddrg69du3-v1.png)
 **Figure 6:** Unsupervised Learning Models like Dimensionality Reduction, Clustering and Density Estimation
 
 Unsupervised learning focuses on tasks like clustering, where the objective is to group similar data points together. K-means clustering, for example, minimizes the intra-cluster variance, with the loss function:
 
-$ \mathcal{L}_{\text{k-means}} = \sum_{i=1}^{N} \min_{\mu_j \in C} || x_i - \mu_j ||^2 $
+$$ \mathcal{L}_{\text{k-means}} = \sum_{i=1}^{N} \min_{\mu_j \in C} || x_i - \mu_j ||^2 $$
 
 Where $C$ represents the set of cluster centroids, and $\mu_j$ is the centroid of cluster $j$.
 

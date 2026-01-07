@@ -60,11 +60,11 @@ Mathematically, assume we have a dataset $D = \{x_1, x_2, \dots, x_N\}$ with $N$
 
 The local gradients are then averaged across all $P$ processors to obtain the global gradient:
 
-$\nabla_{\theta} L(\theta) = \frac{1}{P} \sum_{i=1}^{P} \nabla_{\theta} L_i(\theta)$
+$$\nabla_{\theta} L(\theta) = \frac{1}{P} \sum_{i=1}^{P} \nabla_{\theta} L_i(\theta)$$
 
 This global gradient is used to update the model parameters:
 
-$\theta^{(t+1)} = \theta^{(t)} - \eta \nabla_{\theta} L(\theta)$
+$$\theta^{(t+1)} = \theta^{(t)} - \eta \nabla_{\theta} L(\theta)$$
 
 This approach is known as synchronous training, where all processors wait for each other to compute gradients before updating the model parameters. In contrast, asynchronous training allows each processor to update the model parameters independently, leading to potentially faster convergence but at the cost of possible stale gradients, which could affect the accuracy of the model.
 
@@ -151,17 +151,17 @@ In contrast to data parallelism, where the model is replicated across devices an
 
 Given an input $x$, the forward pass is performed in stages:
 
-$h_1 = f_1(x, \theta_1) \quad (on\ processor\ 1)$
+$$h_1 = f_1(x, \theta_1) \quad (on\ processor\ 1)$$
 
-$h_2 = f_2(h_1, \theta_2) \quad (on\ processor\ 2)$
+$$h_2 = f_2(h_1, \theta_2) \quad (on\ processor\ 2)$$
 
-$\vdots$
+$$\vdots$$
 
-$y = f_n(h_{n-1}, \theta_n) \quad (on\ processor\ n)$
+$$y = f_n(h_{n-1}, \theta_n) \quad (on\ processor\ n)$$
 
 During backpropagation, the gradient calculation also follows this chain, with each processor computing the gradients for its part of the model and passing the intermediate gradients to the previous stage:
 
-$\nabla_{\theta_i} L = \frac{\partial L}{\partial \theta_i} = \frac{\partial L}{\partial h_i} \cdot \frac{\partial h_i}{\partial \theta_i}$
+$$\nabla_{\theta_i} L = \frac{\partial L}{\partial \theta_i} = \frac{\partial L}{\partial h_i} \cdot \frac{\partial h_i}{\partial \theta_i}$$
 
 The challenge is ensuring that communication between processors is efficient, as each processor must send and receive intermediate activations and gradients during forward and backward passes. This introduces communication overhead, particularly when large volumes of data need to be transferred between devices.
 
@@ -226,15 +226,15 @@ Let $L(\theta; x, y)$ represent the loss function of a model parameterized by $\
 
 The gradient of the loss function with respect to $\theta$, calculated on the $i$-th worker node, is:
 
-$\nabla_{\theta} L_i(\theta) = \frac{1}{|D_i|} \sum_{(x,y) \in D_i} \nabla_{\theta} L(\theta; x, y)$
+$$\nabla_{\theta} L_i(\theta) = \frac{1}{|D_i|} \sum_{(x,y) \in D_i} \nabla_{\theta} L(\theta; x, y)$$
 
 In a synchronous distributed training setup, the gradients computed by all nodes are aggregated to form a global gradient:
 
-$\nabla_{\theta} L(\theta) = \frac{1}{N} \sum_{i=1}^{N} \nabla_{\theta} L_i(\theta)$
+$$\nabla_{\theta} L(\theta) = \frac{1}{N} \sum_{i=1}^{N} \nabla_{\theta} L_i(\theta)$$
 
 This global gradient is then used to update the model parameters:
 
-$\theta^{(t+1)} = \theta^{(t)} - \eta \nabla_{\theta} L(\theta)$
+$$\theta^{(t+1)} = \theta^{(t)} - \eta \nabla_{\theta} L(\theta)$$
 
 The challenge is ensuring that all nodes communicate efficiently to aggregate gradients without causing delays. In an asynchronous setup, each node updates the parameters independently, which may result in faster training but introduces the risk of using stale gradients, potentially affecting model convergence.
 
@@ -362,13 +362,13 @@ In federated learning, the training process occurs across multiple decentralized
 
 The central server aggregates the gradients from all participating devices:
 
-$\theta^{(t+1)} = \theta^{(t)} - \eta \frac{1}{N} \sum_{i=1}^{N} \nabla_{\theta} L_i(\theta)$
+$$\theta^{(t+1)} = \theta^{(t)} - \eta \frac{1}{N} \sum_{i=1}^{N} \nabla_{\theta} L_i(\theta)$$
 
 This approach ensures that data $D_i$ never leaves device $i$, thus preserving privacy while still benefiting from distributed training.
 
 Hyperparameter tuning can be formalized as an optimization problem where we seek to find the hyperparameters $\lambda \in \Lambda$ that minimize the model’s validation loss $L_{val}(\theta(\lambda))$:
 
-$\lambda^* = \arg \min_{\lambda \in \Lambda} L_{val}(\theta(\lambda))λ∗=arg$
+$$\lambda^* = \arg \min_{\lambda \in \Lambda} L_{val}(\theta(\lambda))λ∗=arg$$
 
 In a distributed setting, this search process is parallelized across multiple nodes, using techniques such as grid search, random search, or Bayesian optimization. Each node evaluates a different combination of hyperparameters, and the results are aggregated to determine the best-performing set of hyperparameters.
 

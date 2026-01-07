@@ -388,7 +388,7 @@ Model checkpointing complements early stopping by periodically saving the model'
 
 Regularization techniques such as L2 regularization and dropout play a significant role in preventing overfitting. L2 regularization, also known as weight decay, adds a penalty to the loss function proportional to the square of the weights, encouraging the model to learn smaller weights, which helps in improving generalization. Mathematically, the L2 regularized loss function can be expressed as:
 
-$ L_{\text{reg}} = L + \lambda \sum_{i} w_i^2 $
+$$ L_{\text{reg}} = L + \lambda \sum_{i} w_i^2 $$
 
 where $L$ is the original loss function, $w_i$ are the model weights, and $\lambda$ is the regularization coefficient. By penalizing large weights, L2 regularization ensures that the model does not become overly complex, which helps in reducing overfitting.
 
