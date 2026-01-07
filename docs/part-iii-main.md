@@ -5,14 +5,14 @@
 
 ## **🧠 Chapters**
 
-- [14. Hyperparameter Optimization and Model Tuning](Part3/chapter-14/)
-- [15. Self-Supervised and Unsupervised Learning](Part3/chapter-15/)
-- [16. Deep Reinforcement Learning](Part3/chapter-16/)
-- [17. Model Explainability and Interpretability](Part3/chapter-17/)
-- [18. Kolmogorov-Arnolds Networks (KANs)](Part3/chapter-18/)
-- [19. Scalable Deep Learning and Distributed Training](Part3/chapter-19/)
-- [20. Building Large Language Models in Rust](Part3/chapter-20/)
-- [21. Emerging Trends and Research Frontiers](Part3/chapter-21/)
+- [14. Hyperparameter Optimization and Model Tuning](Part3/chapter-14.md)
+- [15. Self-Supervised and Unsupervised Learning](Part3/chapter-15.md)
+- [16. Deep Reinforcement Learning](Part3/chapter-16.md)
+- [17. Model Explainability and Interpretability](Part3/chapter-17.md)
+- [18. Kolmogorov-Arnolds Networks (KANs)](Part3/chapter-18.md)
+- [19. Scalable Deep Learning and Distributed Training](Part3/chapter-19.md)
+- [20. Building Large Language Models in Rust](Part3/chapter-20.md)
+- [21. Emerging Trends and Research Frontiers](Part3/chapter-21.md)
 
 
 ---
