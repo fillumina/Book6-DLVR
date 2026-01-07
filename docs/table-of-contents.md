@@ -16,37 +16,37 @@
 
 ### **Part I: Foundations**
 
-- [Chapter 1 - Introduction to Deep Learning](part-i/chapter-1/)
-- [Chapter 2 - Mathematical Foundations for Deep Learning](part-i/chapter-2/)
-- [Chapter 3 - Neural Networks and Backpropagation](part-i/chapter-3/)
-- [Chapter 4 - Deep Learning Crates in Rust Ecosystem](part-i/chapter-4/)
+- [Chapter 1 - Introduction to Deep Learning](Part1/chapter-01.md)
+- [Chapter 2 - Mathematical Foundations for Deep Learning](Part1/chapter-02.md)
+- [Chapter 3 - Neural Networks and Backpropagation](Part1/chapter-03.md)
+- [Chapter 4 - Deep Learning Crates in Rust Ecosystem](Part1/chapter-04.md)
 
 ---
 
 ### **Part II: Architectures**
 
-- [Chapter 5 - Introduction to Convolutional Neural Networks (CNNs)](part-ii/chapter-5/)
-- [Chapter 6 - Modern CNN Architectures](part-ii/chapter-6/)
-- [Chapter 7 - Introduction to Recurrent Neural Networks (RNNs)](part-ii/chapter-7/)
-- [Chapter 8 - Modern RNN Architectures](part-ii/chapter-8/)
-- [Chapter 9 - Self-Attention Mechanisms on CNN and RNN](part-ii/chapter-9/)
-- [Chapter 10 - Transformer Architectures](part-ii/chapter-10/)
-- [Chapter 11 - Generative Adversarial Networks (GANs)](part-ii/chapter-11/)
-- [Chapter 12 - Probabilistic Diffusion Models](part-ii/chapter-12/)
-- [Chapter 13 - Energy-Based Models (EBMs)](part-ii/chapter-13/)
+- [Chapter 5 - Introduction to Convolutional Neural Networks (CNNs)](Part2/chapter-05.md)
+- [Chapter 6 - Modern CNN Architectures](Part2/chapter-06.md)
+- [Chapter 7 - Introduction to Recurrent Neural Networks (RNNs)](Part2/chapter-07.md)
+- [Chapter 8 - Modern RNN Architectures](Part2/chapter-08.md)
+- [Chapter 9 - Self-Attention Mechanisms on CNN and RNN](Part2/chapter-09.md)
+- [Chapter 10 - Transformer Architectures](Part2/chapter-10.md)
+- [Chapter 11 - Generative Adversarial Networks (GANs)](Part2/chapter-11.md)
+- [Chapter 12 - Probabilistic Diffusion Models](Part2/chapter-12.md)
+- [Chapter 13 - Energy-Based Models (EBMs)](Part2/chapter-13.md)
 
 ---
 
 ### **Part III: Advanced Techniques**
 
-- [Chapter 14 - Hyperparameter Optimization and Model Tuning](part-iii/chapter-14/)
-- [Chapter 15 - Self-Supervised and Unsupervised Learning](part-iii/chapter-15/)
-- [Chapter 16 - Deep Reinforcement Learning](part-iii/chapter-16/)
-- [Chapter 17 - Model Explainability and Interpretability](part-iii/chapter-17/)
-- [Chapter 18 - Kolmogorov-Arnolds Networks (KANs)](part-iii/chapter-18/)
-- [Chapter 19 - Scalable Deep Learning and Distributed Training](part-iii/chapter-19/)
-- [Chapter 20 - Building Large Language Models in Rust](part-iii/chapter-20/)
-- [Chapter 21 - Emerging Trends and Research Frontiers](part-iii/chapter-21/)
+- [Chapter 14 - Hyperparameter Optimization and Model Tuning](Part3/chapter-14.md)
+- [Chapter 15 - Self-Supervised and Unsupervised Learning](Part3/chapter-15.md)
+- [Chapter 16 - Deep Reinforcement Learning](Part3/chapter-16.md)
+- [Chapter 17 - Model Explainability and Interpretability](Part3/chapter-17.md)
+- [Chapter 18 - Kolmogorov-Arnolds Networks (KANs)](Part3/chapter-18.md)
+- [Chapter 19 - Scalable Deep Learning and Distributed Training](Part3/chapter-19.md)
+- [Chapter 20 - Building Large Language Models in Rust](Part3/chapter-20.md)
+- [Chapter 21 - Emerging Trends and Research Frontiers](Part3/chapter-21.md)
 
 ### **Closing**
 

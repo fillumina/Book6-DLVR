@@ -5,10 +5,10 @@
 
 ## **🧠 Chapters**
 
-- [1. Introduction to Deep Learning](Part1/chapter-1.md)
-- [2. Mathematical Foundations for Deep Learning](Part1/chapter-2.md)
-- [3. Neural Networks and Backpropagation](Part1/chapter-3.md)
-- [4. Deep Learning Crates in Rust Ecosystem](Part1/chapter-4.md)
+- [1. Introduction to Deep Learning](Part1/chapter-01.md)
+- [2. Mathematical Foundations for Deep Learning](Part1/chapter-02.md)
+- [3. Neural Networks and Backpropagation](Part1/chapter-03.md)
+- [4. Deep Learning Crates in Rust Ecosystem](Part1/chapter-04.md)
 
 
 ---

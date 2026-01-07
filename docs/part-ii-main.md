@@ -6,11 +6,11 @@
 
 ## **🧠 Chapters**
 
-- [5. Introduction to Convolutional Neural Networks (CNNs)](Part2/chapter-5.md)
-- [6. Modern CNN Architectures](Part2/chapter-6.md)
-- [7. Introduction to Recurrent Neural Networks (RNNs)](Part2/chapter-7.md)
-- [8. Modern RNN Architectures](Part2/chapter-8.md)
-- [9. Self-Attention Mechanisms on CNN and RNN](Part2/chapter-9.md)
+- [5. Introduction to Convolutional Neural Networks (CNNs)](Part2/chapter-05.md)
+- [6. Modern CNN Architectures](Part2/chapter-06.md)
+- [7. Introduction to Recurrent Neural Networks (RNNs)](Part2/chapter-07.md)
+- [8. Modern RNN Architectures](Part2/chapter-08.md)
+- [9. Self-Attention Mechanisms on CNN and RNN](Part2/chapter-09.md)
 - [10. Transformer Architectures](Part2/chapter-10.md)
 - [11. Generative Adversarial Networks (GANs)](Part2/chapter-11.md)
 - [12. Probabilistic Diffusion Models](Part2/chapter-12.md)

@@ -16,22 +16,22 @@ This file contains a list of all available documents organized by directory.
 
 ## Part1
 
-- [chapter-1.md](Part1/chapter-1.md)
-- [chapter-2.md](Part1/chapter-2.md)
-- [chapter-3.md](Part1/chapter-3.md)
-- [chapter-4.md](Part1/chapter-4.md)
+- [chapter-1.md](Part1/chapter-01.md)
+- [chapter-2.md](Part1/chapter-02.md)
+- [chapter-3.md](Part1/chapter-03.md)
+- [chapter-4.md](Part1/chapter-04.md)
 
 ## Part2
 
+- [chapter-5.md](Part2/chapter-05.md)
+- [chapter-6.md](Part2/chapter-06.md)
+- [chapter-7.md](Part2/chapter-07.md)
+- [chapter-8.md](Part2/chapter-08.md)
+- [chapter-9.md](Part2/chapter-09.md)
 - [chapter-10.md](Part2/chapter-10.md)
 - [chapter-11.md](Part2/chapter-11.md)
 - [chapter-12.md](Part2/chapter-12.md)
 - [chapter-13.md](Part2/chapter-13.md)
-- [chapter-5.md](Part2/chapter-5.md)
-- [chapter-6.md](Part2/chapter-6.md)
-- [chapter-7.md](Part2/chapter-7.md)
-- [chapter-8.md](Part2/chapter-8.md)
-- [chapter-9.md](Part2/chapter-9.md)
 
 ## Part3
 
