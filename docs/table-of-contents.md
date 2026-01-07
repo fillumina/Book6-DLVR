@@ -69,32 +69,17 @@ The book is designed to guide readers from foundational concepts to advanced tec
 
 ### **Guidance for Readers**
 
-<h4 class="mb-3" style="color: #00A3C4;">For Students 🎓</h4>
+#### For Students
 
 If you are new to deep learning or Rust, this book is designed to be your structured guide. Start with Part I to build your foundation, and explore Rust's deep learning ecosystem. Part II will familiarize you with CNNs, RNNs, Transformers, and more, while hands-on exercises and projects ensure practical understanding alongside theoretical depth.
 
-<h4 class="mb-3" style="color: #00A3C4;">For Professionals 💼</h4>
+#### For Professionals
 
 Engineers and practitioners will find invaluable insights for building performant and scalable deep learning systems. Part III focuses on distributed training, optimization, and integrating deep learning with Rust’s capabilities, ensuring you can deploy solutions effectively in production environments.
 
-<h4 class="mb-3" style="color: #00A3C4;">For Researchers 🔬</h4>
+#### For Researchers
 
 Dive into advanced techniques like Probabilistic Diffusion Models, EBMs, and Self-Supervised Learning. The cutting-edge topics and Rust-centric approach will inspire experimentation and provide the groundwork for pushing the boundaries of deep learning research.
 
 No matter your background, *DLVR - Deep Learning via Rust* offers a blend of theory, implementation, and real-world applications, making it an indispensable resource for anyone looking to innovate in the field of deep learning.
 
-<style>
-.structure-section {
-margin-bottom: 40px;
-border-left: 4px solid #00A3C4;
-padding-left: 20px;
-}
-.guidance-card {
-transition: box-shadow 0.3s ease-in-out;
-background-color: #f9f9f9;
-border: 1px solid #ddd;
-}
-.guidance-card:hover {
-box-shadow: 0 0 15px rgba(0, 163, 196, 0.5);
-}
-</style>

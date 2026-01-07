@@ -1,7 +1,6 @@
 > **Note:**
 **"*The important thing is not to stop questioning. Curiosity has its own reason for existing.*" — Albert Einstein**
 
-> **Note:**
 
 This book, *Deep Learning via Rust (DLVR)*, is an extension of the rigorous academic instruction provided in the Applied Deep Learning course at the Data Science Center (DSC) of the University of Indonesia (UI). The objective of this book is to equip students and practitioners with the most advanced and effective tools for deep learning training and deployment, ensuring they are well-prepared to address the increasingly complex challenges that define the frontier of artificial intelligence and machine learning.
 
@@ -13,14 +12,8 @@ This book is the result of a collaborative effort, with the RantAI team playing 
 
 I invite you to engage with this book with an open and inquisitive mind. The journey through deep learning is challenging but immensely rewarding. My hope is that this book will not only enhance your technical skills but also inspire a deeper understanding and passion for the field. Embrace the complexities and nuances presented in these pages, and let them guide you toward becoming a highly skilled scientist and engineer, capable of contributing to the cutting edge of technology.
 
-<center>
 Jakarta, August 17, 2024
-
-&nbsp;
-
-&nbsp;
 
 **Prof. Alhadi Bustamam, Ph.D**<br>
 Data Science Center - Universitas Indonesia
 
-</center>

@@ -1,7 +1,6 @@
 > **Note:**
 **"*What I cannot create, I do not understand.*" — Richard Feynman**
 
-> **Note:**
 
 As we enter the age of Generative AI (GenAI), deep learning has evolved from a powerful tool for specific tasks to the very foundation of transformative innovations across industries. From large language models driving natural language processing advancements to AI-generated art, content, and decision-making systems, deep learning is at the core of GenAI's capabilities. The demand for AI models that are scalable, efficient, and reliable has never been higher, pushing both academic research and industry applications to new frontiers.
 
@@ -17,14 +16,8 @@ This book is not just a guide—it’s a comprehensive journey into the future o
 
 In a world where AI is driving rapid digital transformation, mastering deep learning in Rust will empower you to create AI solutions that are both innovative and production-ready. We hope that *DLVR* becomes a game-changing resource that enables you to thrive in the AI-driven future, where performance, scalability, and security are key. Let *DLVR* be your guide as you embark on this exciting journey, where Rust and deep learning converge to shape the future of AI in the GenAI era.
 
-<center>
 
 Jakarta, August 17, 2024
 
-&nbsp;
-
-&nbsp;
-
 **Founding Team of RantAI**
 
-</center>

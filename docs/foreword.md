@@ -1,7 +1,6 @@
 > **Note:**
 **"*I was born not knowing and have had only a little time to change that here and there.*" — Richard Feynman**
 
-> **Note:**
 
 In the field of deep learning, Python has established itself as the de facto standard for neural network implementation, largely due to its user-friendly syntax and extensive libraries. However, in the development of this book, *Deep Learning via Rust (DLVR)*, we have deliberately chosen Rust as the primary programming language. Rust’s low-level nature and system-level control offer exceptional flexibility in hardware adaptation, making it uniquely suited for optimizing performance in complex computational environments. This choice is driven by the increasing need for high-performance computing in both academic research and industrial applications, where the demands for efficiency, scalability, and precision are paramount.
 
@@ -15,12 +14,9 @@ I encourage you to approach this material with a commitment to deep understandin
 
 The journey to mastering deep learning is not one that can be rushed. I invite you to take your time with this book, engaging with the material in a deliberate and thoughtful manner. The *DLVR* book is designed to facilitate a deep and reflective learning process, equipping you with the knowledge and skills necessary to excel in the field of deep learning. Whether your goal is to advance academic research or to drive innovation in industry, the insights you gain from this text will be invaluable.
 
-<center>
 
 Jakarta, August 17, 2024
 
-&nbsp;
 
 **Dr. Risman Adnan Mattotorang**
 
-</center>

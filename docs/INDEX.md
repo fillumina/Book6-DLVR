@@ -43,4 +43,3 @@ This file contains a list of all available documents organized by directory.
 - [chapter-19.md](Part III/chapter-19.md)
 - [chapter-20.md](Part III/chapter-20.md)
 - [chapter-21.md](Part III/chapter-21.md)
-

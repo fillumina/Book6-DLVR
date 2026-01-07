@@ -1,8 +1,6 @@
 > **Note:**
 **"*An expert is a man who has made all the mistakes which can be made, in a narrow field.*" — Niels Bohr**
 
-> **Note:**
-
 In the fast-paced and ever-evolving landscape of Artificial Intelligence and Machine Learning (AI/ML), the ability to master deep learning techniques is a defining characteristic of those who drive innovation and lead in research and development. While proficiency in widely used languages like Python forms a necessary foundation, it is the capability to delve into low-level implementations, optimize performance, and leverage cutting-edge tools like Rust that truly distinguishes leading engineers and researchers.
 
 *Deep Learning via Rust (DLVR)* is designed to bridge the gap between theoretical understanding and practical application, offering a comprehensive exploration of deep learning through the lens of Rust. This book addresses the critical need for efficiency, scalability, and precision in model training and deployment, providing readers with the knowledge and tools necessary to build high-performance deep learning systems. From foundational neural network principles to advanced optimization and quantum machine learning potential, *DLVR* equips you with the skills to push the boundaries of AI in both academic and industrial settings.
@@ -17,12 +15,7 @@ As you explore the first edition of *DLVR*, take pride in the meticulous approac
 
 We hope this book serves as a catalyst for your growth as a machine learning engineer and researcher. Embrace the challenges and opportunities that come with mastering deep learning through Rust, and let your journey toward innovation and excellence in AI/ML be marked by the significant achievements that follow.
 
-<center>
 
 Jakarta, August 17, 2024
-
-&nbsp;
-
 **The Founding Team of RantAI**
 
-</center>
