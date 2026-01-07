@@ -1,1 +1,3 @@
-# Book6-DLVR
+# Book6-DLVR: Deep Learning Via Rust
+
+This is a conversion to pure [markdown](https://www.markdownguide.org/) of the content of the site [GitHub - RantAI-dev/Book6-DLVR](https://github.com/RantAI-dev/Book6-DLVR).  That makes it easier to study, read and improve but if all you need is to read it on a browser you can find it rendered by the authors here: [Deep Learning via Rust](https://dlvr.rantai.dev/docs/deep-learning-via-rust/).
