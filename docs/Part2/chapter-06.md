@@ -202,7 +202,9 @@ The VGG architecture, introduced by Simonyan and Zisserman in 2014, is one of th
 
 Formally, a $3 \times 3$ convolutional filter can be represented as:
 
-$$ y[i,j] = \sum_{m=0}^{2} \sum_{n=0}^{2} W[m,n] \cdot x[i+m,j+n] + b $$
+$$
+y[i,j] = \sum_{m=0}^{2} \sum_{n=0}^{2} W[m,n] \cdot x[i+m,j+n] + b
+$$
 
 where $x[i,j]$ is the input pixel value, $W[m,n]$ represents the filter weights, and $b$ is the bias term. This operation applies the filter over the input image, transforming it into a feature map. VGG extends this by applying multiple layers of such small filters, with each layer progressively learning more complex patterns.
 
@@ -378,7 +380,9 @@ The ResNet (Residual Network) architecture represents a major leap forward in de
 
 Mathematically, the core idea behind ResNet can be formalized as follows: instead of learning an underlying mapping $H(x)$, the network learns a residual mapping $F(x) = H(x) - x$. This allows the model to reformulate the learning task as learning the difference (residual) between the input and the desired output:
 
-$$ y = F(x) + x $$
+$$
+y = F(x) + x
+$$
 
 Here, $F(x)$ represents the transformation learned by a series of convolutional layers, while $x$ is the original input that is added back to the output. This simple but powerful technique allows gradients to flow through the network more effectively, as the identity mapping xxx ensures that information is preserved across layers. In turn, this mitigates the vanishing gradient problem and enables the network to maintain accuracy even as the number of layers increases.
 
@@ -767,13 +771,17 @@ Inception networks represent a significant advancement in Convolutional Neural N
 
 The original Inception module (also known as Inception v1) is composed of multiple parallel paths, each of which applies a different type of operation to the input data. These paths include $1 \times 1$, $3 \times 3$, and $5 \times 5$ convolutions, along with a max pooling operation. The results from these different paths are concatenated together to form the output. Mathematically, if $x$ represents the input and $f_{1 \times 1}(x), f_{3 \times 3}(x), f_{5 \times 5}(x)$, and pooling $p(x)$ are the outputs from the different paths, the output of the Inception module is the concatenation of these results:
 
-$$ y = \text{Concat}(f_{1 \times 1}(x), f_{3 \times 3}(x), f_{5 \times 5}(x), p(x)) $$
+$$
+y = \text{Concat}(f_{1 \times 1}(x), f_{3 \times 3}(x), f_{5 \times 5}(x), p(x))
+$$
 
 This approach allows the network to learn both local features (using smaller filters) and global patterns (using larger filters) simultaneously, providing a robust mechanism for handling a wide variety of feature sizes in the data.
 
 A key innovation in the Inception v1 architecture was the use of $1 \times 1$ convolutions to reduce the dimensionality of the input before applying larger filters like $3 \times 3$ and $5 \times 5$. This dimensionality reduction technique significantly improves the computational efficiency of the network by reducing the number of input channels for the larger convolutions, thereby lowering the number of parameters and the computational cost. Formally, a $1 \times 1$ convolution can be expressed as:
 
-$$ y[i,j] = \sum_{c=1}^{C} W_c x[i,j,c] $$
+$$
+y[i,j] = \sum_{c=1}^{C} W_c x[i,j,c]
+$$
 
 where $x[i,j,c]$ represents the input pixel value at location $(i,j)$ and channel $c$, and $W_c$ is the learned weight for channel $c$. This operation reduces the number of channels in the input while preserving the spatial resolution, making it an effective tool for controlling the computational complexity of the network.
 
@@ -961,13 +969,17 @@ The DenseNet (Densely Connected Convolutional Networks) architecture is a modern
 
 Mathematically, the output of the $l^{th}$ layer in a DenseNet is defined as:
 
-$$x_l = H_l([x_0, x_1, ..., x_{l-1}])$$
+$$
+x_l = H_l([x_0, x_1, ..., x_{l-1}])
+$$
 
 where $[x_0, x_1, ..., x_{l-1}]$ represents the concatenation of the feature maps from all previous layers, and $H_l(\cdot)$ is the operation (e.g., convolution, activation) applied at the current layer. This formulation contrasts with traditional CNNs, where each layer receives only the output of the previous layer. By concatenating the outputs of all preceding layers, DenseNet promotes feature reuse, allowing the model to use earlier features in later stages of the network.
 
 One of the key components of DenseNet is the concept of a growth rate. The growth rate controls how much information each new layer contributes to the network. A smaller growth rate means that each layer adds a limited number of new feature maps, leading to more compact models. Conversely, a larger growth rate increases the number of features learned by each layer, potentially improving performance but at the cost of increased model size. The number of feature maps at layer lll in a DenseNet is given by:
 
-$$f_l = f_0 + l \cdot k$$
+$$
+f_l = f_0 + l \cdot k
+$$
 
 where $f_0$ is the number of input feature maps, $l$ is the layer index, and $k$ is the growth rate. This linear growth ensures that the model remains manageable in size, even as the depth increases.
 
@@ -1074,11 +1086,15 @@ EfficientNet represents a major breakthrough in deep learning architectures by i
 
 At the heart of EfficientNet's scaling method is the compound coefficient $\phi$, which determines how much the network's depth, width, and input resolution should be scaled. Formally, the scaling for each dimension is defined as follows:
 
-$$ \text{depth scale} = \alpha^\phi, \quad \text{width scale} = \beta^\phi, \quad \text{resolution scale} = \gamma^\phi $$
+$$
+\text{depth scale} = \alpha^\phi, \quad \text{width scale} = \beta^\phi, \quad \text{resolution scale} = \gamma^\phi
+$$
 
 Here, $\alpha$, $\beta$, and $\gamma$ are constants that control the rate of scaling for depth, width, and resolution, respectively, while $\phi$ is the compound scaling factor. These constants are chosen such that:
 
-$$ \alpha \cdot \beta^2 \cdot \gamma^2 \approx 2 $$
+$$
+\alpha \cdot \beta^2 \cdot \gamma^2 \approx 2
+$$
 
 This constraint ensures that the model grows in a balanced way, doubling the computational cost while maintaining a balanced increase in all three dimensions. In this way, EfficientNet avoids over-expanding one dimension at the expense of others, leading to a more efficient network.
 

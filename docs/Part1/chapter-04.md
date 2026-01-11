@@ -13,9 +13,13 @@ Rust, as a systems-level programming language, offers a unique blend of performa
 
 Mathematically, deep learning involves the optimization of large, multidimensional parameter spaces. Each layer in a neural network can be represented as a set of weight matrices $W$ and bias vectors $b$, where forward propagation computes the activations $\mathbf{a}^{(l)}$ for each layer $l$ based on the input data $\mathbf{x}$ and weight parameters. The typical operation of forward propagation for a layer in a neural network is:
 
-$$ \mathbf{z}^{(l)} = W^{(l)} \mathbf{a}^{(l-1)} + b^{(l)} $$
+$$
+\mathbf{z}^{(l)} = W^{(l)} \mathbf{a}^{(l-1)} + b^{(l)}
+$$
 
-$$ \mathbf{a}^{(l)} = f(\mathbf{z}^{(l)}) $$
+$$
+\mathbf{a}^{(l)} = f(\mathbf{z}^{(l)})
+$$
 
 where $f$ is a non-linear activation function such as ReLU, sigmoid, or tanh. The objective in deep learning is to minimize the loss function $L(\hat{y}, y)$, where $\hat{y}$ is the predicted output and $y$ is the true label. Gradient-based optimization methods, such as stochastic gradient descent (SGD) or Adam, are used to compute the gradients of the loss function with respect to the weights and adjust them iteratively to reduce the loss.
 
@@ -92,13 +96,17 @@ The `tch-rs` crate serves as a Rust wrapper for the widely-used PyTorch library,
 
 Mathematically, deep learning relies on tensor operations as the foundation of neural network computations. Tensors are multi-dimensional arrays that generalize matrices to higher dimensions, and they are used to store data, weights, activations, and gradients. In deep learning models, the forward propagation involves matrix multiplications, element-wise operations, and other tensor manipulations, all of which are efficiently handled by the `tch-rs` crate through PyTorch’s backend. For example, given a weight matrix $W$, bias vector $b$, and input $x$, the output $z$ for a fully connected neural network layer can be computed as:
 
-$$z = W \cdot x + b$$
+$$
+z = W \cdot x + b
+$$
 
 In `tch-rs`, this operation is performed using its tensor API, which mirrors PyTorch’s native API but provides Rust’s memory safety guarantees and type system.
 
 One of the core features of the `tch-rs` crate is its support for automatic differentiation, which is essential for training deep learning models. Automatic differentiation allows for the computation of gradients with respect to model parameters during backpropagation. This is critical for optimization algorithms such as stochastic gradient descent (SGD) or Adam, which adjust the model's parameters to minimize the loss function. When performing backpropagation, the chain rule is applied to compute gradients across multiple layers. For instance, given a loss function $L$ and parameters $W$, the gradient $\frac{\partial L}{\partial W}$ is computed automatically using autograd:
 
-$$ \frac{\partial L}{\partial W} = \frac{\partial L}{\partial z} \cdot \frac{\partial z}{\partial W} $$
+$$
+\frac{\partial L}{\partial W} = \frac{\partial L}{\partial z} \cdot \frac{\partial z}{\partial W}
+$$
 
 The`tch-rs` automates this process using PyTorch’s autograd engine, which tracks operations on tensors and computes gradients efficiently. This feature enables developers to focus on model architecture and training logic without manually implementing gradient computations, which can be error-prone and computationally intensive.
 
@@ -207,9 +215,13 @@ The `burn` crate is a modular and flexible deep learning framework in Rust that 
 
 At the mathematical level, deep learning revolves around tensor operations, model architectures, optimization algorithms, and training procedures. A typical neural network layer can be described mathematically as:
 
-$$ z^{(l)} = W^{(l)} a^{(l-1)} + b^{(l)} $$
+$$
+z^{(l)} = W^{(l)} a^{(l-1)} + b^{(l)}
+$$
 
-$$ a^{(l)} = f(z^{(l)}) $$
+$$
+a^{(l)} = f(z^{(l)})
+$$
 
 where $z^{(l)}$ is the pre-activation output of the $l$-th layer, $W^{(l)}$ represents the weight matrix, $b^{(l)}$ is the bias vector, $a^{(l)}$ is the activation, and $f$ is the non-linear activation function (e.g., ReLU, Sigmoid). Optimizing the network’s parameters involves computing the gradients $\nabla_W L$ using backpropagation and updating the weights iteratively through optimizers like SGD or Adam. The `burn` crate provides a modular way to define these layers, optimizers, and the training loop, allowing users to customize and experiment with different architectures.
 
@@ -293,13 +305,19 @@ The `tch-rs` and `burn` crates both provide powerful tools for building deep lea
 
 Both `tch-rs` and `burn` offer robust tensor operations as the foundation for building deep learning models. In deep learning, tensors are multi-dimensional arrays that store data, model weights, and intermediate outputs. Core operations, such as matrix multiplication, element-wise transformations, and reductions, form the backbone of model training and inference. Mathematically, these operations can be expressed as:
 
-$$ \mathbf{z} = \mathbf{W} \cdot \mathbf{a} + \mathbf{b} $$
+$$
+\mathbf{z} = \mathbf{W} \cdot \mathbf{a} + \mathbf{b}
+$$
 
-$$ \mathbf{a}^{(l)} = f(\mathbf{z}^{(l)}) $$
+$$
+\mathbf{a}^{(l)} = f(\mathbf{z}^{(l)})
+$$
 
 Here, $\mathbf{W}$ and $\mathbf{b}$ are the weight matrix and bias vector for layer $l$, and $f$ represents the non-linear activation function (e.g., ReLU, tanh, sigmoid). The goal of training is to adjust the parameters $\mathbf{W}$ and $\mathbf{b}$ by minimizing the loss function $L(\hat{y}, y)$ using optimization methods such as stochastic gradient descent (SGD) or the Adam optimizer. Backpropagation calculates gradients with respect to model parameters using the chain rule:
 
-$$ \nabla_W L = \frac{\partial L}{\partial W} = \frac{\partial L}{\partial z} \cdot \frac{\partial z}{\partial W} $$
+$$
+\nabla_W L = \frac{\partial L}{\partial W} = \frac{\partial L}{\partial z} \cdot \frac{\partial z}{\partial W}
+$$
 
 In tch-rs, tensor operations and gradient computations are handled by PyTorch’s backend, one of the most optimized deep learning frameworks globally. PyTorch’s design includes highly efficient implementations of linear algebra routines, automatic differentiation, and GPU acceleration via CUDA. Since tch-rs is a Rust wrapper for PyTorch, it inherits these performance benefits without requiring Rust-native implementations. For example, when performing matrix multiplications or convolutions, tch-rs directly delegates these operations to PyTorch’s highly-tuned libraries. As a result, models built using tch-rs can match or even exceed the performance of models written in Python, especially when training large-scale models on GPUs.
 
@@ -325,9 +343,13 @@ The open-source nature of Rust's deep learning crates, such as `tch-rs` or `burn
 
 Mathematically, the potential for extending these frameworks lies in the addition of new models, layers, optimizers, and custom operations that enhance functionality. For instance, creating novel neural network layers—such as attention mechanisms or custom recurrent units—can extend the applicability of these frameworks to more complex tasks. Consider the implementation of a new optimizer, say a variant of the Adam optimizer, which adjusts the learning rates dynamically based on momentum and gradients. The core idea of the Adam algorithm is to compute running averages of both the gradient and its square:
 
-$$ m_t = \beta_1 m_{t-1} + (1 - \beta_1) g_t $$
+$$
+m_t = \beta_1 m_{t-1} + (1 - \beta_1) g_t
+$$
 
-$$ v_t = \beta_2 v_{t-1} + (1 - \beta_2) g_t^2 $$
+$$
+v_t = \beta_2 v_{t-1} + (1 - \beta_2) g_t^2
+$$
 
 where $g_t$ is the gradient at time step $t$, and $m_t$ and $v_t$ are estimates of the first and second moments, respectively. Extending a framework like `burn` to include a variant of Adam could involve modifying the moment update equations, or introducing new hyperparameters for controlling the learning rate adjustment. Understanding these mathematical foundations is crucial when contributing new features to deep learning crates.
 

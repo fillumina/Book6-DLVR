@@ -13,17 +13,23 @@ Model explainability and interpretability are crucial for understanding the beha
 
 The trade-off between model complexity and interpretability is a fundamental issue in machine learning. Simple models, such as linear regression or decision trees, are inherently interpretable because their structure is easy to understand and visualize. For example, in a linear regression model, the relationship between inputs $X$ and outputs $Y$ is given by:
 
-$$ Y = X \beta + \epsilon $$
+$$
+Y = X \beta + \epsilon
+$$
 
 where $X$ represents the input features, $\beta$ is a vector of coefficients, and $\epsilon$ is the error term. Each coefficient $\beta_i$ directly indicates how a change in the corresponding feature $X_i$ influences $Y$. However, such models may lack the flexibility to capture complex relationships in data. On the other hand, deep learning models, like Convolutional Neural Networks (CNNs) and Recurrent Neural Networks (RNNs), can learn highly non-linear mappings but often act as "black boxes" due to the intricate interactions between numerous layers and parameters. For instance, a deep neural network might represent the output as:
 
-$$ Y = f(X, \theta) $$
+$$
+Y = f(X, \theta)
+$$
 
 where $f$ is a non-linear function with parameters $\theta$ learned through backpropagation. Understanding how changes in $X$ propagate through multiple layers to influence $Y$ requires specialized interpretability techniques, such as gradient-based methods, activation visualizations, or attention mechanisms.
 
 The concept of global explanations is designed to provide a broad understanding of how a model behaves across the entire input space, offering insights into the relative importance of features in influencing model predictions. This is in contrast to local explanations, which focus on understanding a specific prediction for an individual instance. For global explanations, a common approach involves computing the importance of each feature by evaluating how changes in that feature influence the model’s overall behavior. One mathematical method for estimating the global importance of a feature $X_j$ involves analyzing the gradient of the model's loss $L$ with respect to $X_j$. This approach averages the absolute values of these gradients across all samples, capturing the sensitivity of the model's output to changes in $X_j$. The formula for computing the feature importance is given by:
 
-$$ \text{Feature Importance}(X_j) = \frac{1}{N} \sum_{i=1}^N \left| \frac{\partial L}{\partial X_j^{(i)}} \right|, $$
+$$
+\text{Feature Importance}(X_j) = \frac{1}{N} \sum_{i=1}^N \left| \frac{\partial L}{\partial X_j^{(i)}} \right|,
+$$
 
 where $N$ represents the total number of samples, $\frac{\partial L}{\partial X_j^{(i)}}$ denotes the gradient of the loss with respect to feature $X_j$ for the $i$-th sample, and the absolute value captures the magnitude of sensitivity. This method highlights features that have the most significant impact on the model's predictions when averaged over all instances, providing a useful perspective on the overall behavior of complex models like neural networks or decision trees.
 
@@ -431,7 +437,9 @@ In deep learning, models like feed-forward neural networks or multi-layer percep
 
 Surrogate models are essential tools for interpreting these complex models. They work by training a simpler, more interpretable model to approximate the behavior of a complex model. The surrogate model, such as a decision tree or a linear regression, is trained to mimic the predictions of the more complex model over a particular input space. This allows practitioners to gain insights into how the complex model makes predictions without directly analyzing its intricate structure. The goal is to minimize the difference between the predictions of the complex model $f$ and the surrogate model $g$:
 
-$$ \min_g \sum_{(\mathbf{x}, y) \in \mathcal{D}} \left(f(\mathbf{x}) - g(\mathbf{x})\right)^2, $$
+$$
+\min_g \sum_{(\mathbf{x}, y) \in \mathcal{D}} \left(f(\mathbf{x}) - g(\mathbf{x})\right)^2,
+$$
 
 where $\mathbf{x}$ represents input data and $\mathcal{D}$ is the training dataset. The surrogate model $g$ provides a more interpretable approximation of the complex model $f$.
 
@@ -847,7 +855,9 @@ Perturbation-based methods are central to the functionality of LIME and SHAP. Th
 
 Shapley values form the theoretical basis for SHAP and offer a way to fairly attribute a model’s prediction to its input features. For a model $f$ and an input $\mathbf{x}$ with features $\{x_1, x_2, \ldots, x_n\}$, the Shapley value $\phi_i$ for feature $x_i$ is calculated as:
 
-$$ \phi_i = \sum_{S \subseteq N \setminus \{i\}} \frac{|S|! (|N| - |S| - 1)!}{|N|!} \left( f(S \cup \{i\}) - f(S) \right), $$
+$$
+\phi_i = \sum_{S \subseteq N \setminus \{i\}} \frac{|S|! (|N| - |S| - 1)!}{|N|!} \left( f(S \cup \{i\}) - f(S) \right),
+$$
 
 where $S$ is a subset of features excluding $x_i$, $N$ is the set of all features, and $f(S \cup \{i\})$ is the model's output when $x_i$ is included along with features in $S$. This approach ensures that each feature’s contribution is assessed in a balanced way across all possible combinations, offering a comprehensive view of the role of each feature in the model’s output.
 

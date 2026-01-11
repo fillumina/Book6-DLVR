@@ -8,7 +8,9 @@
 
 Kolmogorov-Arnolds Networks (KANs) stem from a profound theoretical insight provided by the Kolmogorov-Arnold representation theorem, which reshaped the understanding of function approximation in high-dimensional spaces. This theorem, initially formulated by Andrey Kolmogorov and refined by Vladimir Arnold, states that any continuous multivariate function $f: \mathbb{R}^n \rightarrow \mathbb{R}$ can be represented as a sum of continuous univariate functions. Formally, the theorem asserts that for any continuous function $f$ over $n$ variables, there exist continuous functions $\phi$ and $\psi$ such that:
 
-$$ f(x_1, x_2, \ldots, x_n) = \sum_{q=1}^{2n+1} \psi_q \left( \sum_{i=1}^n \phi_{qi}(x_i) \right). $$
+$$
+f(x_1, x_2, \ldots, x_n) = \sum_{q=1}^{2n+1} \psi_q \left( \sum_{i=1}^n \phi_{qi}(x_i) \right).
+$$
 
 In this formulation, the functions $\phi_{qi}$ and $\psi_q$ are univariate functions, which means they each depend on only a single variable. This decomposition allows a complex, high-dimensional function to be expressed as a combination of simpler, one-dimensional transformations. The theorem provides a theoretical underpinning for KANs, suggesting that even intricate relationships among variables can be captured using a layered approach that decomposes the problem into simpler components.
 
@@ -351,7 +353,9 @@ The second section of Chapter 18 on Kolmogorov-Arnolds Networks (KANs) delves in
 
 The classic KAN is rooted in the Kolmogorov-Arnold representation theorem, which demonstrates that any multivariate continuous function can be expressed as a superposition of continuous univariate functions. This approach offers a structured way to decompose high-dimensional functions into simpler components. However, to extend the network's power to represent more complex functions, researchers have developed variations that incorporate different structural designs. Layered KANs, for instance, build upon the idea of decomposing functions by introducing multiple layers that sequentially transform the input data. In this configuration, the network is designed such that each layer refines the previous one, gradually building a more nuanced approximation of the target function. Mathematically, the layered KAN can be written as:
 
-$$ f(x_1, x_2, \ldots, x_n) = \sum_{q=1}^{2n+1} \psi_q \left( \sum_{i=1}^n \phi^{(k)}_{qi} \left( \ldots \phi^{(1)}_{qi}(x_i) \right) \right), $$
+$$
+f(x_1, x_2, \ldots, x_n) = \sum_{q=1}^{2n+1} \psi_q \left( \sum_{i=1}^n \phi^{(k)}_{qi} \left( \ldots \phi^{(1)}_{qi}(x_i) \right) \right),
+$$
 
 where $\phi^{(k)}_{qi}$ represents the function at the $k$-th layer. Each layer applies a transformation that modifies the input, allowing the network to capture progressively more complex relationships. This structure is analogous to deep neural networks (DNNs), where the depth of the network enhances its capacity to learn from data by capturing patterns at different levels of abstraction. Unlike standard neural networks that treat multivariate interactions directly, layered KANs adhere to the Kolmogorov-Arnold philosophy by decomposing these interactions through a structured, layer-wise approach.
 
@@ -359,7 +363,9 @@ Parallel KAN architectures offer an alternative to layered designs by focusing o
 
 The choice of basis functions within KANs is critical in determining the network's effectiveness in approximating complex functions. Basis functions define the form of the univariate transformations $\phi_{qi}$. The selection of these functions directly influences the network’s ability to capture specific types of patterns in the data. For instance, polynomial basis functions, such as $\phi(x) = a_0 + a_1x + a_2x^2 + \ldots$, are well-suited for approximating smooth curves and polynomial-like behavior in functions. They can provide accurate approximations for relationships that are primarily linear or quadratic with minor variations. However, when dealing with periodic or oscillatory functions, such as those found in signal processing or time series data, Fourier basis functions become more appropriate. These are represented as:
 
-$$ \phi(x) = a_0 + \sum_{k=1}^{m} \left(a_k \cos(kx) + b_k \sin(kx)\right), $$
+$$
+\phi(x) = a_0 + \sum_{k=1}^{m} \left(a_k \cos(kx) + b_k \sin(kx)\right),
+$$
 
 where $a_k$ and $b_k$ are coefficients that adjust the frequency components of the basis functions. Using Fourier basis functions allows the KAN to naturally capture periodic trends, making the approximation smoother and more efficient for cyclic data. The flexibility in choosing basis functions enables KANs to be tailored for specific applications, offering a significant advantage over other models that may require more layers or parameters to achieve similar performance.
 
@@ -528,11 +534,15 @@ To provide a more robust and comprehensive explanation of training and optimizin
 
 Training a KAN involves minimizing a loss function $L(\theta)$ that measures the difference between the network's predictions $f(x; \theta)$ and the true values $y$, where $\theta$ represents the set of parameters (weights and biases) of the network. The typical objective is to find the parameter set $\theta^*$ that minimizes this loss:
 
-$$ \theta^* = \arg \min_{\theta} L(f(x; \theta), y). $$
+$$
+\theta^* = \arg \min_{\theta} L(f(x; \theta), y).
+$$
 
 This is often done using gradient-based optimization methods. Gradient descent is a fundamental algorithm for this purpose, where the parameters are iteratively updated according to:
 
-$$\theta_{t+1} = \theta_t - \eta \nabla_\theta L(f(x; \theta), y),$$
+$$
+\theta_{t+1} = \theta_t - \eta \nabla_\theta L(f(x; \theta), y),
+$$
 
 where $\eta$ is the learning rate, controlling the size of the steps taken during optimization, and $\nabla_\theta L$ is the gradient of the loss with respect to the parameters. In KANs, the gradient is calculated not only for the linear weights but also for the parameters of the univariate transformations used in the decomposition of the function.
 
@@ -540,27 +550,39 @@ The backpropagation algorithm is employed to compute these gradients efficiently
 
 Two prominent optimization algorithms used in training KANs are Stochastic Gradient Descent (SGD) and Adam. SGD updates the parameters using gradients computed from a subset (or batch) of the data, which adds noise to the gradient estimation but can help the model escape local minima:
 
-$$ \theta_{t+1} = \theta_t - \eta \cdot \frac{1}{|B|} \sum_{i \in B} \nabla_\theta L(f(x_i; \theta), y_i), $$
+$$
+\theta_{t+1} = \theta_t - \eta \cdot \frac{1}{|B|} \sum_{i \in B} \nabla_\theta L(f(x_i; \theta), y_i),
+$$
 
 where $B$ represents the batch of data points.
 
 Adam extends this by maintaining an adaptive learning rate for each parameter, combining the benefits of SGD with momentum. It uses two moment estimates:
 
-$$ m_t = \beta_1 m_{t-1} + (1 - \beta_1) \nabla_\theta L(f(x; \theta), y), $$
+$$
+m_t = \beta_1 m_{t-1} + (1 - \beta_1) \nabla_\theta L(f(x; \theta), y),
+$$
 
-$$ v_t = \beta_2 v_{t-1} + (1 - \beta_2) \nabla_\theta L(f(x; \theta), y)^2. $$
+$$
+v_t = \beta_2 v_{t-1} + (1 - \beta_2) \nabla_\theta L(f(x; \theta), y)^2.
+$$
 
 The parameters are then updated as follows:
 
-$$ \hat{m}_t = \frac{m_t}{1 - \beta_1^t}, \quad \hat{v}_t = \frac{v_t}{1 - \beta_2^t}, $$
+$$
+\hat{m}_t = \frac{m_t}{1 - \beta_1^t}, \quad \hat{v}_t = \frac{v_t}{1 - \beta_2^t},
+$$
 
-$$ \theta_{t+1} = \theta_t - \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}, $$
+$$
+\theta_{t+1} = \theta_t - \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon},
+$$
 
 where $\hat{m}_t$ and $\hat{v}_t$ are bias-corrected estimates of the first and second moments, and $\epsilon$ is a small constant to prevent division by zero.
 
 The choice of loss function depends on the problem domain. For regression tasks, the Mean Squared Error (MSE) is a common choice:
 
-$$ L(\theta) = \frac{1}{N} \sum_{i=1}^N (f(x_i; \theta) - y_i)^2, $$
+$$
+L(\theta) = \frac{1}{N} \sum_{i=1}^N (f(x_i; \theta) - y_i)^2,
+$$
 
 where $N$ is the number of samples. MSE emphasizes minimizing large errors, which is crucial for ensuring that the KAN provides accurate approximations over the entire input space.
 

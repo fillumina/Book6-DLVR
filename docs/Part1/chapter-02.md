@@ -52,7 +52,9 @@ This example performs matrix multiplication, a critical operation in neural netw
 
 In the context of linear algebra, eigenvectors and eigenvalues represent important properties of matrices. Given a square matrix $\mathbf{A}$, an eigenvector $\mathbf{v}$ satisfies the equation:
 
-$$\mathbf{A} \mathbf{v} = \lambda \mathbf{v}$$
+$$
+\mathbf{A} \mathbf{v} = \lambda \mathbf{v}
+$$
 
 where $\lambda$ is the eigenvalue associated with the eigenvector $\mathbf{v}$. In deep learning, eigenvectors and eigenvalues are often used in analyzing covariance matrices during techniques like Principal Component Analysis (PCA), which is useful for dimensionality reduction. PCA projects high-dimensional data onto a lower-dimensional space, where the eigenvectors represent the principal directions of variance, and the eigenvalues represent the magnitude of that variance. Dimensionality reduction helps in reducing computational complexity and improving generalization.
 
@@ -60,7 +62,9 @@ Eigenvectors also play a role in the stability analysis of optimization algorith
 
 Singular Value Decomposition (SVD) is another powerful tool in linear algebra, which decomposes a matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$ into three matrices:
 
-$$ \mathbf{A} = \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T $$
+$$
+\mathbf{A} = \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T
+$$
 
 Where:
 
@@ -87,7 +91,9 @@ This decomposition is key in reducing the dimensionality of data without sacrifi
 
 At the heart of neural networks is the concept of linear transformations. A neural network layer performs a linear transformation on the input data using weight matrices and bias vectors. For instance, given an input vector $\mathbf{x}$, the transformation in a fully connected layer is:
 
-$$ \mathbf{y} = \mathbf{W} \mathbf{x} + \mathbf{b} $$
+$$
+\mathbf{y} = \mathbf{W} \mathbf{x} + \mathbf{b}
+$$
 
 where:
 
@@ -143,15 +149,21 @@ At the heart of probability theory is the concept of random variables, which are
 
 The behavior of random variables is described by probability distributions. For discrete random variables, we use probability mass functions (PMF) to describe the likelihood of each possible outcome. For continuous random variables, we rely on probability density functions (PDF). The most fundamental quantity associated with a random variable is its expected value, or mean, which is the long-run average value of the variable. Mathematically, for a discrete random variable $X$, the expected value $\mathbb{E}[X]$ is defined as:
 
-$$ \mathbb{E}[X] = \sum_x x P(X = x) $$
+$$
+\mathbb{E}[X] = \sum_x x P(X = x)
+$$
 
 For a continuous random variable, the expected value is given by:
 
-$$ \mathbb{E}[X] = \int_{-\infty}^{\infty} x f_X(x) \, dx $$
+$$
+\mathbb{E}[X] = \int_{-\infty}^{\infty} x f_X(x) \, dx
+$$
 
 The variance of a random variable quantifies its spread or dispersion around the mean. This is crucial in deep learning, as variance helps in understanding the variability of model predictions and in detecting overfitting. The variance is defined as:
 
-$$ \text{Var}(X) = \mathbb{E}[(X - \mathbb{E}[X])^2] $$
+$$
+\text{Var}(X) = \mathbb{E}[(X - \mathbb{E}[X])^2]
+$$
 
 Both expected value and variance are essential for analyzing uncertainty and behavior in machine learning models.
 
@@ -180,7 +192,9 @@ Variance measures the spread of the data around the mean and is critical for und
 
 Covariance measures the degree to which two random variables change together. It helps in understanding relationships between different features in a dataset. For two random variables $X$ and $Y$, covariance is defined as:
 
-$$ \text{Cov}(X, Y) = \mathbb{E}[(X - \mathbb{E}[X])(Y - \mathbb{E}[Y])] $$
+$$
+\text{Cov}(X, Y) = \mathbb{E}[(X - \mathbb{E}[X])(Y - \mathbb{E}[Y])]
+$$
 
 In deep learning, covariance can be used to identify redundancies in input features or model parameters. High covariance between input features, for example, may indicate that some features are not contributing unique information to the model, leading to inefficiencies.
 
@@ -209,7 +223,9 @@ This code demonstrates how to compute covariance between two datasets, a measure
 
 Probability distributions are integral to many operations in deep learning, from modeling the distribution of data to making probabilistic predictions. One of the most widely used distributions is the Gaussian distribution, also known as the normal distribution. This distribution is characterized by its mean $\mu$ and variance $\sigma^2$, and is used to model the noise in data, initialize weights in neural networks, and estimate the uncertainty of predictions. The Gaussian distribution’s probability density function is given by:
 
-$$ f(x | \mu, \sigma^2) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\left( -\frac{(x - \mu)^2}{2 \sigma^2} \right) $$
+$$
+f(x | \mu, \sigma^2) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\left( -\frac{(x - \mu)^2}{2 \sigma^2} \right)
+$$
 
 In deep learning, weight initialization using Gaussian distributions helps ensure that neurons in the network start with diverse values, preventing symmetry and enhancing the model’s ability to learn. Additionally, the Gaussian distribution plays a key role in Bayesian Neural Networks and Variational Autoencoders (VAEs), where predictions are represented as distributions, allowing the model to capture uncertainty.
 
@@ -291,23 +307,31 @@ Calculus and optimization form the mathematical backbone of deep learning. In th
 
 At the heart of calculus is the concept of the derivative, which measures how a function changes as its input changes. In the context of deep learning, derivatives are used to determine how changes in the model’s parameters affect the loss function. Formally, the derivative of a function $f(x)$ with respect to $x$, denoted $f'(x)$, is the slope of the function at a particular point:
 
-$$ f'(x) = \lim_{\Delta x \to 0} \frac{f(x + \Delta x) - f(x)}{\Delta x} $$
+$$
+f'(x) = \lim_{\Delta x \to 0} \frac{f(x + \Delta x) - f(x)}{\Delta x}
+$$
 
 In multivariable functions, such as those in neural networks where the loss function depends on many parameters, we use the gradient. The gradient is a vector that contains the partial derivatives of the function with respect to each of its parameters. If $L(\theta_1, \theta_2, \dots, \theta_n)$ is the loss function, then the gradient is:
 
-$$ \nabla L(\theta) = \left( \frac{\partial L}{\partial \theta_1}, \frac{\partial L}{\partial \theta_2}, \dots, \frac{\partial L}{\partial \theta_n} \right) $$
+$$
+\nabla L(\theta) = \left( \frac{\partial L}{\partial \theta_1}, \frac{\partial L}{\partial \theta_2}, \dots, \frac{\partial L}{\partial \theta_n} \right)
+$$
 
 The gradient tells us the direction in which the loss function increases the fastest. In gradient-based optimization, we use this information to update the parameters in the direction that reduces the loss function.
 
 The Hessian matrix is a second-order derivative that provides information about the curvature of the loss function. It is particularly useful in optimization methods like Newton’s method, which rely on second-order information to update the parameters more efficiently. The Hessian matrix $H$ for a function $L(\theta)$ is given by:
 
-$$ H = \begin{bmatrix} \frac{\partial^2 L}{\partial \theta_1^2} & \frac{\partial^2 L}{\partial \theta_1 \partial \theta_2} & \cdots & \frac{\partial^2 L}{\partial \theta_1 \partial \theta_n} \\ \frac{\partial^2 L}{\partial \theta_2 \partial \theta_1} & \frac{\partial^2 L}{\partial \theta_2^2} & \cdots & \frac{\partial^2 L}{\partial \theta_2 \partial \theta_n} \\ \vdots & \vdots & \ddots & \vdots \\ \frac{\partial^2 L}{\partial \theta_n \partial \theta_1} & \frac{\partial^2 L}{\partial \theta_n \partial \theta_2} & \cdots & \frac{\partial^2 L}{\partial \theta_n^2} \end{bmatrix} $$
+$$
+H = \begin{bmatrix} \frac{\partial^2 L}{\partial \theta_1^2} & \frac{\partial^2 L}{\partial \theta_1 \partial \theta_2} & \cdots & \frac{\partial^2 L}{\partial \theta_1 \partial \theta_n} \\ \frac{\partial^2 L}{\partial \theta_2 \partial \theta_1} & \frac{\partial^2 L}{\partial \theta_2^2} & \cdots & \frac{\partial^2 L}{\partial \theta_2 \partial \theta_n} \\ \vdots & \vdots & \ddots & \vdots \\ \frac{\partial^2 L}{\partial \theta_n \partial \theta_1} & \frac{\partial^2 L}{\partial \theta_n \partial \theta_2} & \cdots & \frac{\partial^2 L}{\partial \theta_n^2} \end{bmatrix}
+$$
 
 While Hessians are rarely used in practical deep learning due to their computational cost, they play an important role in theoretical optimization.
 
 In deep learning, the most commonly used optimization algorithm is gradient descent. Gradient descent is an iterative optimization technique that updates the model parameters by moving them in the direction opposite to the gradient of the loss function. This process is repeated until the loss function reaches a minimum or an acceptable threshold. The update rule for gradient descent is:
 
-$$ \theta \leftarrow \theta - \eta \nabla L(\theta) $$
+$$
+\theta \leftarrow \theta - \eta \nabla L(\theta)
+$$
 
 where $\theta$ represents the model parameters, $\nabla L(\theta)$ is the gradient of the loss function with respect to the parameters, and η\\etaη is the learning rate, which controls the step size for each update.
 
@@ -321,7 +345,9 @@ These optimization techniques are essential for training deep learning models, a
 
 In neural networks, the process of training involves adjusting the weights and biases to minimize the loss function. To do this, we need to compute how changes in the weights and biases affect the loss. This is done using backpropagation, which relies on the chain rule of calculus. The chain rule allows us to compute the derivative of a composite function. If we have a function $f(g(x))$, the derivative of $f$ with respect to $x$ is:
 
-$$ \frac{df}{dx} = \frac{df}{dg} \cdot \frac{dg}{dx} $$
+$$
+\frac{df}{dx} = \frac{df}{dg} \cdot \frac{dg}{dx}
+$$
 
 In the context of neural networks, the chain rule is used to compute the gradient of the loss function with respect to each parameter by propagating the errors backward through the network. Each layer’s output is a function of the previous layer’s output, and the chain rule allows us to compute the gradient efficiently for all layers.
 
@@ -393,21 +419,29 @@ Linear models are fundamental to both traditional machine learning and deep lear
 
 At the heart of linear regression is the assumption that the target variable $y$ is a linear function of the input features $X$. The relationship between the inputs and the target is modeled as:
 
-$$ y = \mathbf{X} \cdot \mathbf{w} + b $$
+$$
+y = \mathbf{X} \cdot \mathbf{w} + b
+$$
 
 where $\mathbf{X}$ is a matrix of input features, $\mathbf{w}$ is a vector of weights (or coefficients), and $b$ is the bias (or intercept). Linear regression aims to find the best-fitting line by minimizing the mean squared error (MSE) loss function, which measures the average squared difference between the predicted and actual values:
 
-$$ \text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y_i})^2 $$
+$$
+\text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y_i})^2
+$$
 
 This simple model forms the foundation of many machine learning tasks, and in the context of deep learning, linear regression serves as a basic example of how models learn from data by adjusting parameters to minimize a loss function.
 
 Logistic regression is a natural extension of linear regression to the domain of binary classification. Instead of predicting continuous values, logistic regression models the probability that a given input belongs to a particular class. The model uses the logistic (or sigmoid) function to constrain the output between 0 and 1, representing probabilities:
 
-$$ P(y=1 | \mathbf{X}) = \sigma(\mathbf{X} \cdot \mathbf{w} + b) = \frac{1}{1 + \exp(-(\mathbf{X} \cdot \mathbf{w} + b))} $$
+$$
+P(y=1 | \mathbf{X}) = \sigma(\mathbf{X} \cdot \mathbf{w} + b) = \frac{1}{1 + \exp(-(\mathbf{X} \cdot \mathbf{w} + b))}
+$$
 
 The loss function for logistic regression is the binary cross-entropy (log-loss), which measures the difference between the true label and the predicted probability:
 
-$$ \text{Cross-entropy} = -\frac{1}{n} \sum_{i=1}^{n} \left[ y_i \log(\hat{y_i}) + (1 - y_i) \log(1 - \hat{y_i}) \right] $$
+$$
+\text{Cross-entropy} = -\frac{1}{n} \sum_{i=1}^{n} \left[ y_i \log(\hat{y_i}) + (1 - y_i) \log(1 - \hat{y_i}) \right]
+$$
 
 Logistic regression is often used as the final layer in neural networks for binary classification tasks. Both linear and logistic regression provide a simple yet powerful framework for understanding more complex neural network architectures.
 
@@ -425,7 +459,9 @@ Generalized linear models (GLMs) extend linear regression by allowing the depend
 
 Mathematically, a GLM models the conditional mean of the target variable $y$ as a function of the linear predictor $\mathbf{X} \cdot \mathbf{w} + b$:
 
-$$ g(\mathbb{E}[y | \mathbf{X}]) = \mathbf{X} \cdot \mathbf{w} + b $$
+$$
+g(\mathbb{E}[y | \mathbf{X}]) = \mathbf{X} \cdot \mathbf{w} + b
+$$
 
 where $g(\cdot)$ is the link function. GLMs provide flexibility for modeling different types of data (e.g., binary, count, continuous), making them highly versatile for a range of tasks in machine learning and deep learning. In deep learning, GLMs can be viewed as a special case of neural networks with no hidden layers.
 
@@ -437,11 +473,15 @@ One of the challenges in training linear models is overfitting, where the model 
 
 - L2 regularization adds a penalty proportional to the square of the weights:
 
-$$\text{L2 penalty} = \lambda \sum_{i=1}^{n} w_i^2$$
+$$
+\text{L2 penalty} = \lambda \sum_{i=1}^{n} w_i^2
+$$
 
 - L1 regularization adds a penalty proportional to the absolute value of the weights:
 
-$$\text{L1 penalty} = \lambda \sum_{i=1}^{n} |w_i|$$
+$$
+\text{L1 penalty} = \lambda \sum_{i=1}^{n} |w_i|
+$$
 
 These regularization terms are added to the loss function, discouraging the model from assigning too much importance to any one feature. Regularization is a crucial tool for improving generalization, especially in high-dimensional datasets.
 
@@ -523,13 +563,17 @@ Numerical methods are used to solve mathematical problems that are difficult or 
 
 Newton’s method is an iterative technique for finding the roots of a function, and it can also be used for optimization by finding points where the gradient of the loss function is zero. Newton’s method uses both the gradient (first derivative) and the Hessian (second derivative) of the function to update the parameters:
 
-$$ \theta_{t+1} = \theta_t - H^{-1} \nabla L(\theta_t) $$
+$$
+\theta_{t+1} = \theta_t - H^{-1} \nabla L(\theta_t)
+$$
 
 where $\nabla L(\theta_t)$ is the gradient of the loss function at $\theta_t$, and $H^{-1}$ is the inverse of the Hessian matrix. While Newton’s method can converge faster than gradient descent, it is computationally expensive because it requires computing and inverting the Hessian matrix, which can be infeasible for large models.
 
 In contrast, gradient descent is a more widely used numerical method in deep learning due to its simplicity and scalability. Gradient descent updates the model parameters by moving in the direction of the negative gradient of the loss function:
 
-$$ \theta_{t+1} = \theta_t - \eta \nabla L(\theta_t) $$
+$$
+\theta_{t+1} = \theta_t - \eta \nabla L(\theta_t)
+$$
 
 where $\eta$ is the learning rate, a hyperparameter that controls the size of the step. Gradient descent comes in several variants, including stochastic gradient descent (SGD), where the gradient is computed on a subset (mini-batch) of the data, and momentum or Adam, which introduces additional terms to accelerate convergence. These methods are essential for training large neural networks, as they provide a balance between computational efficiency and accuracy.
 

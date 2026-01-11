@@ -8,23 +8,33 @@
 
 Language models (LMs) are a fundamental task in natural language processing (NLP), where the goal is to estimate the probability distribution of sequences of words or characters. A language model assigns a probability $P(w_1, w_2, \dots, w_n)$ to a sequence of words $w_1, w_2, \dots, w_n$, which can be factorized using the chain rule of probability:
 
-$$P(w_1, w_2, \dots, w_n) = P(w_1) \prod_{t=2}^{n} P(w_t | w_1, w_2, \dots, w_{t-1})$$
+$$
+P(w_1, w_2, \dots, w_n) = P(w_1) \prod_{t=2}^{n} P(w_t | w_1, w_2, \dots, w_{t-1})
+$$
 
 This expression captures the sequential dependency of words, where the probability of a word wtw_twt is conditioned on all preceding words $w_1, w_2, \dots, w_{t-1}$. In practice, directly modeling such long dependencies is computationally challenging, particularly as the sequence grows longer. Early approaches to language modeling relied on Markov models, where it is assumed that the probability of the next word only depends on a finite number of previous words (denoted as the Markov property). For an $n$-gram model, this can be written as:
 
-$$P(w_t | w_1, w_2, \dots, w_{t-1}) \approx P(w_t | w_{t-n+1}, \dots, w_{t-1})$$
+$$
+P(w_t | w_1, w_2, \dots, w_{t-1}) \approx P(w_t | w_{t-n+1}, \dots, w_{t-1})
+$$
 
 However, this assumption is limiting because it ignores dependencies beyond the fixed context window, which can be critical for understanding long-range dependencies in natural language. Recurrent neural networks (RNNs) mitigate this by maintaining a hidden state $h_t$, which is updated recursively at each time step to capture information from all previous time steps. Thus, the probability of $w_t$ is now conditioned on the entire history of the sequence, implicitly addressing the limitations of the Markov assumption:
 
-$$h_t = f(h_{t-1}, x_t)$$
+$$
+h_t = f(h_{t-1}, x_t)
+$$
 
-$$P(w_t | w_1, w_2, \dots, w_{t-1}) = g(h_t)$$
+$$
+P(w_t | w_1, w_2, \dots, w_{t-1}) = g(h_t)
+$$
 
 Despite the advantages of standard RNNs, their ability to capture long-term dependencies is still limited due to issues like the vanishing gradient problem, as previously discussed. More sophisticated architectures such as Long Short-Term Memory (LSTM) and Gated Recurrent Units (GRU) introduced gating mechanisms to control information flow across time steps, enabling them to model longer dependencies. However, modern advances in RNN architectures, including Bidirectional RNNs, Deep RNNs, Encoder-Decoder architectures, and Attention mechanisms, have further improved their effectiveness, particularly in complex language modeling tasks.
 
 A limitation of standard (unidirectional) RNNs is that they can only capture information from the past (i.e., preceding time steps) when predicting the next word in a sequence. However, in many tasks, such as machine translation or text classification, understanding both the past and future context is crucial. For instance, when translating a sentence from one language to another, the meaning of a word often depends on words that come both before and after it. This is where Bidirectional RNNs (BiRNNs) come in. Bidirectional RNNs address this by processing the sequence in both directions: one RNN processes the input sequence from the start to the end (forward pass), and another processes it from the end to the start (backward pass). The hidden states from the forward and backward passes are concatenated at each time step, allowing the network to incorporate both past and future information:
 
-$$h_t = [\overrightarrow{h_t}, \overleftarrow{h_t}]$$
+$$
+h_t = [\overrightarrow{h_t}, \overleftarrow{h_t}]
+$$
 
 Where $\overrightarrow{h_t}$ is the hidden state from the forward RNN, and $\overleftarrow{h_t}$ is the hidden state from the backward RNN. This bidirectional processing allows BiRNNs to generate richer contextual representations of each word or token in the sequence. In language modeling, this results in a better understanding of the global context, leading to improved performance in tasks like speech recognition, where phonetic information benefits from both forward and backward dependencies.
 
@@ -32,31 +42,43 @@ While bidirectional processing improves the contextual understanding of sequence
 
 For a Deep RNN with $L$ layers, the hidden state at layer $l$ and time step $t$, denoted as $h_t^l$, is computed as:
 
-$$h_t^l = f(W_h^l h_{t-1}^l + W_x^l h_t^{l-1} + b_h^l)$$
+$$
+h_t^l = f(W_h^l h_{t-1}^l + W_x^l h_t^{l-1} + b_h^l)
+$$
 
 where $h_t^{l-1}$ is the hidden state from the previous layer. This hierarchical feature extraction is particularly beneficial in tasks like speech recognition and machine translation, where complex relationships across multiple levels of the sequence must be captured to generate meaningful predictions.
 
 Encoder-Decoder architectures are particularly important in tasks where the input and output sequences are of different lengths, such as machine translation, text summarization, or question-answering. In an Encoder-Decoder framework, the encoder processes the input sequence and compresses it into a fixed-length context vector, which is then passed to the decoder to generate the output sequence. Formally, for an input sequence $X = (x_1, x_2, \dots, x_T)$, the encoder generates a context vector ccc based on the hidden states from all time steps:
 
-$$c = f_{\text{enc}}(h_1, h_2, \dots, h_T)$$
+$$
+c = f_{\text{enc}}(h_1, h_2, \dots, h_T)
+$$
 
 The decoder then uses this context vector to generate the output sequence $Y = (y_1, y_2, \dots, y_T)$ by predicting each word step-by-step, conditioned on both the context and the previously generated words:
 
-$$y_t = f_{\text{dec}}(y_1, y_2, \dots, y_{t-1}, c)$$
+$$
+y_t = f_{\text{dec}}(y_1, y_2, \dots, y_{t-1}, c)
+$$
 
 However, a major limitation of the vanilla encoder-decoder architecture is that the fixed-length context vector may not be sufficient to capture all the information from the input sequence, especially when the input is long or complex. This leads to information loss and degraded performance.
 
 To address this issue, the Attention mechanism was introduced as a solution, enabling the decoder to focus on specific parts of the input sequence at each time step. Rather than relying solely on the fixed-length context vector, the Attention mechanism dynamically computes a weighted sum of the encoder’s hidden states based on their relevance to the current decoding step. Mathematically, the attention score $e_{t,s}$ is computed between the hidden state of the decoder at time step $t$ and the encoder hidden state at time step $s$:
 
-$$e_{t,s} = \text{score}(h_t, h_s)$$
+$$
+e_{t,s} = \text{score}(h_t, h_s)
+$$
 
 Typically, the score function is a dot product between the decoder’s hidden state and the encoder’s hidden state, but other formulations such as additive or multiplicative attention can be used. The attention weights $\alpha_{t,s}$ are then obtained by applying a softmax function to the scores:
 
-$$\alpha_{t,s} = \frac{\exp(e_{t,s})}{\sum_{s'} \exp(e_{t,s'})}$$
+$$
+\alpha_{t,s} = \frac{\exp(e_{t,s})}{\sum_{s'} \exp(e_{t,s'})}
+$$
 
 Finally, the context vector $c_t$ for time step $t$ is computed as the weighted sum of the encoder’s hidden states:
 
-$$c_t = \sum_s \alpha_{t,s} h_s$$
+$$
+c_t = \sum_s \alpha_{t,s} h_s
+$$
 
 The decoder uses this context vector $c_t$, which dynamically adjusts at each time step based on the relevance of different parts of the input sequence, to generate the next word in the sequence. The Attention mechanism has had a profound impact on tasks like machine translation, enabling models to better capture long-range dependencies and improving performance on tasks where specific parts of the input are crucial for generating the correct output.
 
@@ -228,25 +250,35 @@ Perplexity is a commonly used metric to evaluate language models, particularly f
 
 Given a sequence of tokens $w_1, w_2, \dots, w_T$, the goal of a language model is to estimate the probability of this sequence $P(w_1, w_2, \dots, w_T)$. Using the chain rule of probability, this can be factorized as:
 
-$$P(w_1, w_2, \dots, w_T) = P(w_1) P(w_2 | w_1) P(w_3 | w_1, w_2) \dots P(w_T | w_1, \dots, w_{T-1})$$
+$$
+P(w_1, w_2, \dots, w_T) = P(w_1) P(w_2 | w_1) P(w_3 | w_1, w_2) \dots P(w_T | w_1, \dots, w_{T-1})
+$$
 
 The perplexity $\mathcal{P}$ of the model over this sequence is defined as the geometric mean of the inverse probabilities of the predicted sequence:
 
-$$\mathcal{P}(w_1, w_2, \dots, w_T) = P(w_1, w_2, \dots, w_T)^{-\frac{1}{T}} = \left( \prod_{t=1}^{T} \frac{1}{P(w_t | w_1, \dots, w_{t-1})} \right)^{\frac{1}{T}}$$
+$$
+\mathcal{P}(w_1, w_2, \dots, w_T) = P(w_1, w_2, \dots, w_T)^{-\frac{1}{T}} = \left( \prod_{t=1}^{T} \frac{1}{P(w_t | w_1, \dots, w_{t-1})} \right)^{\frac{1}{T}}
+$$
 
 This expression is equivalent to:
 
-$$\mathcal{P}(w_1, w_2, \dots, w_T) = \exp\left( - \frac{1}{T} \sum_{t=1}^{T} \log P(w_t | w_1, \dots, w_{t-1}) \right)$$
+$$
+\mathcal{P}(w_1, w_2, \dots, w_T) = \exp\left( - \frac{1}{T} \sum_{t=1}^{T} \log P(w_t | w_1, \dots, w_{t-1}) \right)
+$$
 
 Thus, perplexity is the exponential of the average negative log-likelihood of the true sequence under the model's predicted distribution.
 
 The negative log-likelihood (or cross-entropy loss) for a sequence $w_1, w_2, \dots, w_T$ is:
 
-$$\text{Cross-Entropy} = - \frac{1}{T} \sum_{t=1}^{T} \log P(w_t | w_1, \dots, w_{t-1})$$
+$$
+\text{Cross-Entropy} = - \frac{1}{T} \sum_{t=1}^{T} \log P(w_t | w_1, \dots, w_{t-1})
+$$
 
 Perplexity is simply the exponentiation of this cross-entropy:
 
-$$\mathcal{P} = \exp(\text{Cross-Entropy})$$
+$$
+\mathcal{P} = \exp(\text{Cross-Entropy})
+$$
 
 Perplexity measures how well a language model predicts a sequence of words, with lower values indicating better performance. If the model predicts each word perfectly by assigning a probability of 1 to the correct word, the perplexity is 1, which is the optimal value. Higher perplexity values indicate that the model is more uncertain in its predictions, meaning it is assigning lower probabilities to the correct words. Perplexity can also be understood as the average number of choices the model considers at each step; for example, a perplexity of 100 suggests that the model is as uncertain as if it had to choose from 100 possibilities at each step. Thus, lower perplexity reflects higher confidence and accuracy in predictions, while higher perplexity signals greater uncertainty.
 
@@ -263,21 +295,29 @@ Bidirectional Recurrent Neural Networks (RNNs) are an effective extension of sta
 
 For a given time step $t$ in a character-level sequence $x_t$, the forward and backward RNNs maintain separate hidden states $\overrightarrow{h_t}$ and $\overleftarrow{h_t}$, where each RNN computes its hidden state update based on its respective direction. The forward RNN processes the sequence from left to right, updating its hidden state using:
 
-$$\overrightarrow{h_t} = \phi(W_{xh} x_t + W_{hh} \overrightarrow{h_{t-1}} + b_h)$$
+$$
+\overrightarrow{h_t} = \phi(W_{xh} x_t + W_{hh} \overrightarrow{h_{t-1}} + b_h)
+$$
 
 Meanwhile, the backward RNN processes the sequence from right to left, updating its hidden state as:
 
-$$\overleftarrow{h_t} = \phi(W_{xh} x_t + W_{hh} \overleftarrow{h_{t+1}} + b_h)$$
+$$
+\overleftarrow{h_t} = \phi(W_{xh} x_t + W_{hh} \overleftarrow{h_{t+1}} + b_h)
+$$
 
 where $\phi$ is the activation function, $W_{xh}$ and $W_{hh}$ are the weight matrices for the input and hidden states, and $b_h$ is the bias term.
 
 At each time step $t$, the hidden states from the forward and backward RNNs are concatenated to form the final hidden state hth_tht, which is passed to the output layer for character prediction:
 
-$$h_t = [\overrightarrow{h_t}, \overleftarrow{h_t}]$$
+$$
+h_t = [\overrightarrow{h_t}, \overleftarrow{h_t}]
+$$
 
 In deep bidirectional RNNs, these concatenated hidden states can be passed on to additional bidirectional layers to further capture complex patterns and dependencies in the sequence. The output layer then computes the predicted character distribution using the concatenated hidden state:
 
-$$y_t = \sigma(W_y h_t + b_y)$$
+$$
+y_t = \sigma(W_y h_t + b_y)
+$$
 
 where $W_y$ is the output weight matrix, $b_y$ is the bias, and $\sigma$ is the softmax function that converts the hidden state into a probability distribution over the possible next characters. The output layer is shared between the forward and backward RNNs, providing a unified prediction based on the combined context.
 
@@ -428,7 +468,9 @@ Deep Recurrent Neural Networks (Deep RNNs) represent an extension of traditional
 
 Mathematically, the forward pass of a Deep RNN at time step $t$ involves processing the input through multiple layers. If $H_t^{(l)}$represents the hidden state at time step $t$ for layer $l$, the equation governing the update at each layer is:
 
-$$H_t^{(l)} = f(W_h^{(l)} H_{t-1}^{(l)} + W_x^{(l)} H_t^{(l-1)} + b_h^{(l)})$$
+$$
+H_t^{(l)} = f(W_h^{(l)} H_{t-1}^{(l)} + W_x^{(l)} H_t^{(l-1)} + b_h^{(l)})
+$$
 
 Here, $f$ is the activation function (such as tanh or ReLU), $W_h^{(l)}$ and $W_x^{(l)}$ are the weight matrices, and $b_h^{(l)}$ is the bias term for layer $l$. This recursive process occurs across multiple layers, with each layer receiving as input the hidden states from the previous layer. The depth of the network allows the model to capture both low-level and high-level dependencies. Lower layers typically capture short-term features, while higher layers are able to focus on more abstract, long-term patterns.
 
@@ -436,7 +478,9 @@ The significance of depth in RNNs cannot be overstated, as deeper networks are m
 
 One of the primary challenges of training Deep RNNs is the vanishing gradient problem. As gradients are backpropagated through time, they tend to diminish exponentially, especially in deeper networks, making it difficult for the model to learn long-term dependencies. This is exacerbated by the depth of the network, where gradients must also be propagated through multiple layers. To mitigate this, techniques such as residual connections and skip connections are often employed. Residual connections allow the model to bypass certain layers by adding the input of a previous layer directly to the output of a later layer, which helps maintain the flow of gradients during backpropagation. Mathematically, a residual connection at layer $l$ can be written as:
 
-$$H_t^{(l)} = f(W_h^{(l)} H_{t-1}^{(l)} + W_x^{(l)} H_t^{(l-1)} + b_h^{(l)}) + H_t^{(l-2)}$$
+$$
+H_t^{(l)} = f(W_h^{(l)} H_{t-1}^{(l)} + W_x^{(l)} H_t^{(l-1)} + b_h^{(l)}) + H_t^{(l-2)}
+$$
 
 This skip connection improves gradient flow and stabilizes training, allowing the network to learn deeper representations without suffering from vanishing gradients.
 
@@ -590,41 +634,59 @@ Bahdanau attention, introduced by Dzmitry Bahdanau and colleagues in 2014, was d
 
 Mathematically, the Bahdanau attention mechanism works by first calculating an alignment score between the decoder hidden state $s_t$ at time step $t$ and each encoder hidden state $h_i$ corresponding to time step $i$ in the input sequence. The alignment score $a_{t,i}$ is computed using a feed-forward neural network:
 
-$$a_{t,i} = v_c^T \tanh(W_c [s_t; h_i])$$
+$$
+a_{t,i} = v_c^T \tanh(W_c [s_t; h_i])
+$$
 
 where $W_c$ is a weight matrix, $v_c$ is a learnable vector, and $[s_t; h_i]$ is the concatenation of the decoder hidden state $s_t$ and the encoder hidden state $h_i$. The alignment scores are then normalized using a softmax function to produce attention weights $\alpha_{t,i}$:
 
-$$\alpha_{t,i} = \frac{\exp(a_{t,i})}{\sum_{j} \exp(a_{t,j})}$$
+$$
+\alpha_{t,i} = \frac{\exp(a_{t,i})}{\sum_{j} \exp(a_{t,j})}
+$$
 
 The attention weights $\alpha_{t,i}$ represent how much focus should be placed on each encoder hidden state when generating the current output. These weights are used to compute a context vector $c_t$, which is a weighted sum of the encoder hidden states:
 
-$$c_t = \sum_{i} \alpha_{t,i} h_i$$
+$$
+c_t = \sum_{i} \alpha_{t,i} h_i
+$$
 
 The context vector $c_t$, summarizing the relevant parts of the input sequence, is then combined with the current decoder hidden state $s_t$ to generate the final output for that time step:
 
-$$\tilde{s_t} = \tanh(W_c [c_t; s_t])$$
+$$
+\tilde{s_t} = \tanh(W_c [c_t; s_t])
+$$
 
 where $W_c$ is a weight matrix. The Bahdanau attention mechanism allows the model to dynamically focus on relevant parts of the input sequence, improving its ability to handle long sequences and capture complex dependencies.
 
 Luong attention, introduced by Minh-Thang Luong in 2015, takes a different approach to calculating the alignment scores, using multiplicative operations rather than a feed-forward neural network. Luong attention computes the alignment score between the decoder hidden state $s_t$ and each encoder hidden state $h_i$ using a dot product:
 
-$$a_{t,i} = s_t^T h_i$$
+$$
+a_{t,i} = s_t^T h_i
+$$
 
 This approach is more computationally efficient than Bahdanau’s additive attention, especially when dealing with large datasets or long sequences. In some cases, Luong’s approach generalizes the dot product by applying a weight matrix $W_c$ to the encoder hidden states:
 
-$$a_{t,i} = s_t^T W_c h_i$$
+$$
+a_{t,i} = s_t^T W_c h_i
+$$
 
 After calculating the alignment scores $a_{t,i}$, Luong attention also applies a softmax function to compute attention weights $\alpha_{t,i}$, which are then used to compute the context vector:
 
-$$c_t = \sum_{i} \alpha_{t,i} h_i$$
+$$
+c_t = \sum_{i} \alpha_{t,i} h_i
+$$
 
 Luong attention introduces both global attention (where the model attends to all encoder hidden states) and local attention (where attention is restricted to a small window of encoder hidden states around the current input). After computing the context vector $c_t$, Luong attention either concatenates it with the decoder hidden state $s_t$ (in the global case) or uses it directly to generate the final output for that time step:
 
-$$\tilde{s_t} = \tanh(W_c [c_t; s_t])$$
+$$
+\tilde{s_t} = \tanh(W_c [c_t; s_t])
+$$
 
 or in some variants, simply uses:
 
-$$y_t = W_y c_t$$
+$$
+y_t = W_y c_t
+$$
 
 where $W_y$ is a learned weight matrix. Luong attention's multiplicative approach is computationally faster than Bahdanau attention and is particularly useful for tasks involving large amounts of data, although it can be less flexible than the additive method used by Bahdanau.
 
@@ -634,15 +696,21 @@ When applied to language models, attention enables the model to consider relevan
 
 The core architecture of attention-based RNNs can vary, but three prominent forms of attention are widely used: self-attention, encoder-decoder attention, and multi-head attention. In self-attention, the model computes the relevance of each time step in the input sequence with respect to every other time step. This allows the network to capture dependencies across the entire sequence without being constrained by strict positional order. Mathematically, self-attention can be formulated as follows. Given an input sequence of hidden states $h_1, h_2, \dots, h_T$, the attention score $a_{t,s}$ between time steps $t$ and $s$ is computed as:
 
-$$a_{t,s} = \text{score}(h_t, h_s)$$
+$$
+a_{t,s} = \text{score}(h_t, h_s)
+$$
 
 where the score function is often a dot product or a learned weight matrix. The attention weights $\alpha_{t,s}$ are then calculated using a softmax function to normalize the scores:
 
-$$\alpha_{t,s} = \frac{\exp(a_{t,s})}{\sum_{s'} \exp(a_{t,s'})}$$
+$$
+\alpha_{t,s} = \frac{\exp(a_{t,s})}{\sum_{s'} \exp(a_{t,s'})}
+$$
 
 The final context vector for time step ttt is computed as a weighted sum of the hidden states:
 
-$$c_t = \sum_s \alpha_{t,s} h_s$$
+$$
+c_t = \sum_s \alpha_{t,s} h_s
+$$
 
 This context vector $c_t$ is then used to make predictions at time step $t$. The advantage of self-attention is that it allows the model to attend to any part of the sequence, capturing long-range dependencies without the need for sequential processing, as is required in traditional RNNs.
 
@@ -650,11 +718,15 @@ In encoder-decoder attention, which is widely used in sequence-to-sequence model
 
 Multi-head attention, which is a more advanced form of attention, extends the self-attention mechanism by allowing the model to attend to different parts of the sequence simultaneously, using multiple sets of attention weights (heads). Each head captures a different aspect of the input dependencies, and the outputs of all heads are concatenated and linearly transformed to produce the final context vector. Mathematically, multi-head attention can be described as:
 
-$$\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \dots, \text{head}_h)W^O$$
+$$
+\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \dots, \text{head}_h)W^O
+$$
 
 where each head is computed as:
 
-$$\text{head}_i = \text{Attention}(Q W_i^Q, K W_i^K, V W_i^V)$$
+$$
+\text{head}_i = \text{Attention}(Q W_i^Q, K W_i^K, V W_i^V)
+$$
 
 Here, Q, $K$, and $V$ represent the query, key, and value matrices, respectively, and $W_i^Q$, $W_i^K$, and $W_i^V$ are the learned projection matrices for head iii. Multi-head attention allows the model to focus on different parts of the sequence simultaneously, capturing multiple aspects of the input dependencies.
 
@@ -846,13 +918,17 @@ In the realm of Generative AI (GenAI), Transformer-based RNNs have become partic
 
 The architecture of Transformer-based RNNs blends key components of both transformers and RNNs. At the core of this architecture is multi-head attention, a mechanism that allows the model to focus on different parts of the input sequence simultaneously, capturing long-range dependencies more effectively than standard RNNs. Each attention head computes the relevance of different time steps by projecting the input into query, key, and value vectors. The attention weights are computed as:
 
-$$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
+$$
+\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+$$
 
 where $Q$, $K$, and $V$ represent the query, key, and value matrices, and $d_k$ is the dimensionality of the keys. By using multiple attention heads, the model can capture different relationships within the sequence, and the outputs of all attention heads are concatenated and transformed to form the final context representation.
 
 In addition to multi-head attention, Transformer-based RNNs incorporate feed-forward networks and layer normalization to enhance learning stability and efficiency. The feed-forward network is applied to each time step independently, providing non-linearity and improving the model's ability to learn complex representations. The output of the feed-forward network is normalized through layer normalization, which stabilizes training by ensuring that the inputs to each layer have a consistent distribution. Mathematically, layer normalization for a layer input $x$ is given by:
 
-$$\hat{x} = \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} \cdot \gamma + \beta$$
+$$
+\hat{x} = \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} \cdot \gamma + \beta
+$$
 
 where $\mu$ and $\sigma^2$ are the mean and variance of the input, and $\gamma$ and$\beta$ are learnable parameters that scale and shift the normalized output. This ensures that the network learns more effectively, particularly in deep architectures.
 

@@ -28,7 +28,9 @@ The foundational ideas behind diffusion models can be traced back to early work 
 
 The central idea of diffusion models is to break the data generation process into two stages: a forward diffusion process and a reverse denoising process. This differs from GANs, which directly map random noise to data, and VAEs, which use a latent space representation. In diffusion models, the forward process corrupts the data by progressively adding noise, transforming the data distribution into random noise. This process can be viewed as a Markov chain, where at each time step, a small amount of Gaussian noise is introduced to the data. Mathematically, the forward process starts with clean data $x_0$ and progressively transforms it into a noisy version $x_t$ through a series of steps:
 
-$$ q(x_t | x_{t-1}) = \mathcal{N}(x_t; \sqrt{1 - \beta_t} x_{t-1}, \beta_t \mathbf{I}), $$
+$$
+q(x_t | x_{t-1}) = \mathcal{N}(x_t; \sqrt{1 - \beta_t} x_{t-1}, \beta_t \mathbf{I}),
+$$
 
 where $\beta_t$ is a variance schedule controlling how much noise is added at each time step. After several steps, the data becomes indistinguishable from pure noise.
 
@@ -37,7 +39,9 @@ where $\beta_t$ is a variance schedule controlling how much noise is added at ea
 
 The reverse process, which is learned during training, attempts to undo this noise step by step and recover the original data. This is where the generative capacity of the model comes into play. The reverse process aims to predict the original data from noisy data, and this is done by learning a series of denoising steps that reverse the Markov chain used in the forward process. The reverse process is modeled as a series of probabilistic transitions, where at each time step, the model estimates how to remove noise to return to a less noisy state:
 
-$$ p_\theta(x_{t-1} | x_t) = \mathcal{N}(x_{t-1}; \mu_\theta(x_t, t), \Sigma_\theta(x_t, t)). $$
+$$
+p_\theta(x_{t-1} | x_t) = \mathcal{N}(x_{t-1}; \mu_\theta(x_t, t), \Sigma_\theta(x_t, t)).
+$$
 
 Here, $\mu_\theta$ and $\Sigma_\theta$ are learned parameters of the model, representing the mean and variance of the reverse transition at each step.
 
@@ -59,7 +63,9 @@ Diffusion models offer several unique strengths compared to GANs and VAEs. Unlik
 
 From a probabilistic standpoint, diffusion models are closely related to Markov chains and stochastic processes. The forward diffusion process is modeled as a Markov process, where the state of the data at time step $t$ only depends on the previous state $t-1$. This is mathematically expressed as:
 
-$$ q(x_t | x_{t-1}) = \mathcal{N}(x_t; \mu_t(x_{t-1}), \Sigma_t) $$
+$$
+q(x_t | x_{t-1}) = \mathcal{N}(x_t; \mu_t(x_{t-1}), \Sigma_t)
+$$
 
 where $\mu_t(x_{t-1})$ is the mean and $\Sigma_t$ is the covariance matrix that defines the noise added at each time step. The reverse process is trained to approximate this Markov chain in reverse, allowing the model to sample from the original data distribution by gradually denoising a noisy sample.
 
@@ -275,13 +281,17 @@ The core idea behind the forward noising process can be understood as a Markov c
 
 Mathematically, the forward process can be described by a conditional probability distribution, where each $x_t$ is sampled based on the previous state $x_{t-1}$ using a Gaussian distribution. The formula for this transition is given by:
 
-$$ q(x_t | x_{t-1}) = \mathcal{N}(x_t; \sqrt{1 - \beta_t} x_{t-1}, \beta_t \mathbf{I}) $$
+$$
+q(x_t | x_{t-1}) = \mathcal{N}(x_t; \sqrt{1 - \beta_t} x_{t-1}, \beta_t \mathbf{I})
+$$
 
 where $\mathcal{N}$ represents a Gaussian distribution, and $\beta_t$ is a small positive constant known as the variance or noise scale at timestep $t$. The term $\sqrt{1 - \beta_t} x_{t-1}$ represents the scaled version of the previous state, ensuring that a portion of the original information is retained in the current state. On the other hand, the variance term $\beta_t \mathbf{I}$ adds a small amount of random noise, which is sampled from a normal distribution. As ttt increases, the amount of noise added grows, and the original data becomes progressively more corrupted.
 
 However, instead of performing this step-by-step corruption for each timestep, a key insight is that we can directly sample from the distribution at any arbitrary timestep $t$ without traversing through all the previous steps. This is possible because the forward noising process admits a closed-form solution, which allows us to compute the noisy version of the data at any given step. The formula for this direct sampling is:
 
-$$ q(x_t | x_0) = \mathcal{N}(x_t; \sqrt{\bar{\alpha}_t} x_0, (1 - \bar{\alpha}_t) \mathbf{I}) $$
+$$
+q(x_t | x_0) = \mathcal{N}(x_t; \sqrt{\bar{\alpha}_t} x_0, (1 - \bar{\alpha}_t) \mathbf{I})
+$$
 
 where $\bar{\alpha}_t = \prod_{i=1}^{t} (1 - \beta_i)$ represents the cumulative product of the noise scales up to timestep $t$. This closed-form solution is powerful because it tells us that we can generate a noisy version of the original data $x_0$ at any timestep $t$ simply by scaling the original data by $\sqrt{\bar{\alpha}_t}$ and adding Gaussian noise scaled by $\sqrt{1 - \bar{\alpha}_t}$.
 
@@ -504,13 +514,17 @@ The reverse denoising process in probabilistic diffusion models is where the mod
 
 Mathematically, the reverse process is expressed as a sequence of steps that estimate the conditional probability distribution $p_\theta(x_{t-1} | x_t)$, where $x_t$ represents the noisy data at step $t$, and $x_{t-1}$ represents the less noisy data at the previous time step. The model is trained to predict $x_{t-1}$ given $x_t$, thereby learning how to denoise the data step by step. The reverse process is modeled by the following conditional distribution:
 
-$$ p_\theta(x_{t-1} | x_t) = \mathcal{N}(x_{t-1}; \mu_\theta(x_t, t), \Sigma_\theta(t)) $$
+$$
+p_\theta(x_{t-1} | x_t) = \mathcal{N}(x_{t-1}; \mu_\theta(x_t, t), \Sigma_\theta(t))
+$$
 
 Here, $\mu_\theta(x_t, t)$ is the predicted mean of the denoised data at time step $t-1$, and $\Sigma_\theta(t)$ is the variance that models the uncertainty in the prediction. The neural network with parameters $\theta$ learns to predict $\mu_\theta$, which represents the denoised output.
 
 The denoising score, which estimates the gradient of the data distribution, plays a vital role in guiding the reverse process. The score essentially tells the model how much noise to remove at each step by predicting the gradient of the log-probability of the data with respect to the input. This score can be interpreted as a denoising signal that helps the model recover the clean data progressively. Mathematically, this can be seen as minimizing the score matching loss, where the model is trained to match the score function of the true data distribution.
 
-$$ L_{\text{score}} = \mathbb{E}_{q(x_t, x_0)} \left[ \| \nabla_{x_t} \log q(x_t | x_0) - \nabla_{x_t} \log p_\theta(x_t) \|^2 \right] $$
+$$
+L_{\text{score}} = \mathbb{E}_{q(x_t, x_0)} \left[ \| \nabla_{x_t} \log q(x_t | x_0) - \nabla_{x_t} \log p_\theta(x_t) \|^2 \right]
+$$
 
 This loss encourages the model to learn the correct denoising function by minimizing the difference between the true gradient of the data distribution and the predicted gradient from the model. The training process involves minimizing this loss over multiple time steps, ensuring that the model learns how to remove noise in a way that reconstructs the original data accurately.
 
@@ -764,7 +778,9 @@ Variational diffusion models extend traditional diffusion models by incorporatin
 
 The ELBO plays a central role in training variational diffusion models, optimizing the model by ensuring that it learns to effectively reconstruct the original data while regularizing the latent representations. Mathematically, the ELBO is defined as:
 
-$$ \text{ELBO} = \mathbb{E}_{q(x_0, x_1, \dots, x_T)} \left[ \log p_\theta(x_0 | x_1) - D_{\text{KL}}(q_\phi(x_t | x_{t-1}) \| p_\theta(x_t | x_{t-1})) \right] $$
+$$
+\text{ELBO} = \mathbb{E}_{q(x_0, x_1, \dots, x_T)} \left[ \log p_\theta(x_0 | x_1) - D_{\text{KL}}(q_\phi(x_t | x_{t-1}) \| p_\theta(x_t | x_{t-1})) \right]
+$$
 
 Here, $q_\phi$ represents the variational posterior distribution, which approximates the true posterior distribution over the latent variables at each time step. The ELBO consists of two components: the reconstruction term, which encourages the model to generate data that is as close as possible to the original data, and the Kullback-Leibler (KL) divergence term, which acts as a regularizer, ensuring that the learned variational posterior is close to the prior distribution. By optimizing the ELBO, variational diffusion models are able to strike a balance between accurately reconstructing the data and maintaining a meaningful latent space representation.
 
@@ -1016,7 +1032,9 @@ Tokenization involves breaking the input text into individual components known a
 
 After tokenization, text encoding is performed using a neural network, commonly a CLIP (Contrastive Language-Image Pretraining) model. CLIP is pre-trained on large datasets of text-image pairs, learning to map both text and images into a common vector space. Let $T$ be the token sequence of the prompt. The text encoder, parameterized by $\theta_T$, converts $T$ into a high-dimensional vector representation $z_T$, where the vector encodes semantic information relevant to the image generation task. Mathematically, the text encoding can be described as:
 
-$$z_T = f_{\theta_T}(T)$$
+$$
+z_T = f_{\theta_T}(T)
+$$
 
 This vector $z_T$ is critical for guiding the image generation process.
 
@@ -1024,13 +1042,17 @@ Stable Diffusion models rely on a forward and reverse diffusion process to gener
 
 In mathematical terms, let $x_0$ represent the final image to be generated and $x_T$ represent the initial random noise vector sampled from a Gaussian distribution $x_T \sim \mathcal{N}(0, I)$. The forward diffusion process adds Gaussian noise to the image representation at each timestep $t$, which transforms the clean image $x_0$ into a sequence of noisy images $x_1, x_2, \dots, x_T$ over time. The relationship between $x_t$ and $x_0$ is given by:
 
-$$q(x_t | x_0) = \mathcal{N}(x_t; \sqrt{\bar{\alpha}_t} x_0, (1 - \bar{\alpha}_t) I)$$
+$$
+q(x_t | x_0) = \mathcal{N}(x_t; \sqrt{\bar{\alpha}_t} x_0, (1 - \bar{\alpha}_t) I)
+$$
 
 where $\bar{\alpha}_t$ is the cumulative product of noise scales. The reverse process then aims to reconstruct $x_0$ from $x_T$ by progressively removing noise.
 
 At each timestep $t$, a neural network called UNet predicts the noise component that should be removed from the current image representation $x_t$. The UNet model takes three inputs: the noisy image representation $x_t$, the text representation $z_T$, and the current timestep $t$. The network learns to predict the noise $\epsilon_\theta(x_t, z_T, t)$ that corrupts the image:
 
-$$ \hat{x}_0 = \frac{x_t - \sqrt{1 - \alpha_t} \epsilon_\theta(x_t, z_T, t)}{\sqrt{\alpha_t}} $$
+$$
+\hat{x}_0 = \frac{x_t - \sqrt{1 - \alpha_t} \epsilon_\theta(x_t, z_T, t)}{\sqrt{\alpha_t}}
+$$
 
 where $\hat{x}_0$ is the predicted image at timestep $t$. The text representation $z_T$ helps guide the noise prediction so that the denoised image adheres closely to the prompt.
 
@@ -1039,13 +1061,17 @@ where $\hat{x}_0$ is the predicted image at timestep $t$. The text representatio
 
 To ensure that the generated image is strongly influenced by the text prompt, Stable Diffusion employs a guidance mechanism. This is done by introducing a guidance scale $w$ that adjusts the contribution of the text-conditioned noise relative to generic noise (noise generated with an empty prompt). Let $\epsilon_{\text{empty}}(x_t, t)$ represent the generic noise conditioned on an empty prompt. The final noise prediction used to refine the image is computed as:
 
-$$ \epsilon_\theta^{\text{final}}(x_t, z_T, t) = \epsilon_{\text{empty}}(x_t, t) + w \left( \epsilon_\theta(x_t, z_T, t) - \epsilon_{\text{empty}}(x_t, t) \right) $$
+$$
+\epsilon_\theta^{\text{final}}(x_t, z_T, t) = \epsilon_{\text{empty}}(x_t, t) + w \left( \epsilon_\theta(x_t, z_T, t) - \epsilon_{\text{empty}}(x_t, t) \right)
+$$
 
 where $w$ controls how strongly the image adheres to the text prompt. Larger values of $w$ increase adherence to the prompt but may decrease image quality if set too high.
 
 Once the noise has been predicted, Stable Diffusion refines the image representation by removing a portion of the predicted noise. The amount of noise removed is determined by a scheduler function, which controls how much of the predicted noise should be subtracted at each timestep. The updated image representation at timestep $t+1$ is calculated as:
 
-$$ x_{t+1} = \frac{1}{\sqrt{\alpha_t}} \left( x_t - \frac{1 - \alpha_t}{\sqrt{1 - \bar{\alpha}_t}} \epsilon_\theta^{\text{final}}(x_t, z_T, t) \right) $$
+$$
+x_{t+1} = \frac{1}{\sqrt{\alpha_t}} \left( x_t - \frac{1 - \alpha_t}{\sqrt{1 - \bar{\alpha}_t}} \epsilon_\theta^{\text{final}}(x_t, z_T, t) \right)
+$$
 
 This iterative refinement continues for a predefined number of timesteps, typically 50 or 100, where each step incrementally denoises the image representation until it converges to a final clean image $x_0$.
 
@@ -1056,7 +1082,9 @@ After the final refinement step, Stable Diffusion generates a high-resolution im
 
 Mathematically, the decoder function $g_\theta$ is applied to the final image representation x0x_0x0 to generate the image:
 
-$$I = g_\theta(x_0)$$
+$$
+I = g_\theta(x_0)
+$$
 
 where $I$ is the final output image. The decoder adds the final level of detail and texture, ensuring that the generated image is photorealistic or artistically coherent based on the prompt.
 

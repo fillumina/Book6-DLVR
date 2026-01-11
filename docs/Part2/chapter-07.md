@@ -19,7 +19,9 @@ Today, RNNs and their variants like LSTMs and GRUs are deeply embedded in numero
 
 At the heart of RNNs is the concept of sequence modeling, where the model processes input data as a series, one step at a time, while maintaining information from previous steps. This ability to retain a memory of past information is what sets RNNs apart from feedforward networks, which treat each input independently. In RNNs, hidden states serve as a memory mechanism that evolves over time to capture temporal dependencies in sequential data. The hidden state at each time step $t$ is influenced by the input at that time $x_t$ and the hidden state from the previous time step $H_{t-1}$. The mathematical formulation of RNNs is given by:
 
-$$ H_t = \phi(W_{xh}x_t + W_{hh}h_{t-1} + b_h) $$
+$$
+H_t = \phi(W_{xh}x_t + W_{hh}h_{t-1} + b_h)
+$$
 
 where:
 
@@ -33,13 +35,17 @@ where:
 
 The output at each time step $t$, $y_t$, is then computed as:
 
-$$ y_t = W_{hy}H_t + b_y $$
+$$
+y_t = W_{hy}H_t + b_y
+$$
 
 Backpropagation Through Time (BPTT) is the algorithm used to train Recurrent Neural Networks (RNNs) by applying the principles of standard backpropagation, but over time steps. BPTT extends traditional backpropagation by unrolling the RNN across multiple time steps, allowing the model to compute the gradients of the loss function with respect to each weight across the sequence. This enables the RNN to update its weights to better capture temporal dependencies in sequential data.
 
 Assume the RNN is solving a supervised learning task, where the true output at time $t$ is denoted by $\hat{y_t}$. The loss function $L_t$ at time $t$ is typically defined using a suitable loss function such as Mean Squared Error (MSE) for regression or Cross-Entropy Loss for classification:
 
-$$ L_t = \mathcal{L}(y_t, \hat{y_t}) $$
+$$
+L_t = \mathcal{L}(y_t, \hat{y_t})
+$$
 
 The total loss $L$ over the sequence is the sum of the losses at each time step: $L = \sum_{t=1}^{T} L_t$, where $T$ is the total number of time steps.
 
@@ -49,45 +55,67 @@ The loss at time $t$ depends not only on the hidden state at time $t$, $H_t$, bu
 
 The derivative of the loss $L_t$ at time ttt with respect to $W_{hy}$ is computed as:
 
-$$ \frac{\partial L_t}{\partial W_{hy}} = \frac{\partial L_t}{\partial y_t} \cdot \frac{\partial y_t}{\partial W_{hy}} = \delta_t \cdot H_t^T $$
+$$
+\frac{\partial L_t}{\partial W_{hy}} = \frac{\partial L_t}{\partial y_t} \cdot \frac{\partial y_t}{\partial W_{hy}} = \delta_t \cdot H_t^T
+$$
 
 where $\delta_t = \frac{\partial L_t}{\partial y_t}$ is the error term at time $t$.
 
 The error at the output layer is backpropagated through time to compute the gradients with respect to the hidden states $H_t$. The gradient of the loss with respect to the hidden state at time $t$ is:
 
-$$\frac{\partial L_t}{\partial H_t} = \delta_t \cdot W_{hy}$$
+$$
+\frac{\partial L_t}{\partial H_t} = \delta_t \cdot W_{hy}
+$$
 
 However, since the hidden state $H_t$ also influences the loss at future time steps, the total gradient of the loss with respect to $H_t$ includes contributions from future time steps:
 
-$$ \frac{\partial L}{\partial H_t} = \frac{\partial L_t}{\partial H_t} + \sum_{k=t+1}^{T} \frac{\partial L_k}{\partial H_t} $$
+$$
+\frac{\partial L}{\partial H_t} = \frac{\partial L_t}{\partial H_t} + \sum_{k=t+1}^{T} \frac{\partial L_k}{\partial H_t}
+$$
 
 The weight matrix $W_{hh}$, which connects the hidden states across time steps, requires special handling because the hidden state $H_t$ depends on the previous hidden state $H_{t-1}$. Using the chain rule, the gradient of the loss with respect to $W_{hh}$ is:
 
-$$\frac{\partial L}{\partial W_{hh}} = \sum_{t=1}^{T} \left( \frac{\partial L_t}{\partial H_t} \cdot \frac{\partial H_t}{\partial W_{hh}} \right)$$
+$$
+\frac{\partial L}{\partial W_{hh}} = \sum_{t=1}^{T} \left( \frac{\partial L_t}{\partial H_t} \cdot \frac{\partial H_t}{\partial W_{hh}} \right)
+$$
 
 The term $\frac{\partial H_t}{\partial W_{hh}}$ is influenced by the hidden state from the previous time step $H_{t-1}$, which introduces the recursive nature of BPTT. The recursive gradient computation for the hidden states can be expressed as:
 
-$$ \frac{\partial H_t}{\partial W_{hh}} = \frac{\partial H_t}{\partial H_{t-1}} \cdot \frac{\partial H_{t-1}}{\partial W_{hh}} $$
+$$
+\frac{\partial H_t}{\partial W_{hh}} = \frac{\partial H_t}{\partial H_{t-1}} \cdot \frac{\partial H_{t-1}}{\partial W_{hh}}
+$$
 
 This recursion continues until the first time step $t = 1$.
 
 Similarly, the gradient of the loss with respect to the input-to-hidden weight matrix $W_{xh}$ is:
 
-$$ \frac{\partial L}{\partial W_{xh}} = \sum_{t=1}^{T} \left( \frac{\partial L_t}{\partial H_t} \cdot \frac{\partial H_t}{\partial W_{xh}} \right) $$
+$$
+\frac{\partial L}{\partial W_{xh}} = \sum_{t=1}^{T} \left( \frac{\partial L_t}{\partial H_t} \cdot \frac{\partial H_t}{\partial W_{xh}} \right)
+$$
 
 where $\frac{\partial H_t}{\partial W_{xh}} = x_t$. The gradients with respect to the bias terms $b_h$ and $b_y$ are computed in a similar manner:
 
-$$\frac{\partial L}{\partial b_h} = \sum_{t=1}^{T} \frac{\partial L_t}{\partial H_t}$$
+$$
+\frac{\partial L}{\partial b_h} = \sum_{t=1}^{T} \frac{\partial L_t}{\partial H_t}
+$$
 
-$$\frac{\partial L}{\partial b_y} = \sum_{t=1}^{T} \delta_t$$
+$$
+\frac{\partial L}{\partial b_y} = \sum_{t=1}^{T} \delta_t
+$$
 
 Once the gradients are computed using BPTT, the weights are updated using gradient descent (or any variant like Adam):
 
-$$ W_{xh} \leftarrow W_{xh} - \eta \frac{\partial L}{\partial W_{xh}} $$
+$$
+W_{xh} \leftarrow W_{xh} - \eta \frac{\partial L}{\partial W_{xh}}
+$$
 
-$$ W_{hh}  \leftarrow W_{hh} - \eta \frac{\partial L}{\partial W_{hh}} $$
+$$
+W_{hh}  \leftarrow W_{hh} - \eta \frac{\partial L}{\partial W_{hh}}
+$$
 
-$$ W_{hy} \leftarrow W_{hy} - \eta \frac{\partial L}{\partial W_{hy}} $$
+$$
+W_{hy} \leftarrow W_{hy} - \eta \frac{\partial L}{\partial W_{hy}}
+$$
 
 where $\eta$ is the learning rate.
 
@@ -378,7 +406,9 @@ However, in practice, BPTT faces a critical limitation. As the gradients are pro
 
 Mathematically, if the Jacobian matrix of the recurrent layer has eigenvalues that are less than one, the gradient $\delta$ diminishes exponentially as it is propagated back in time:
 
-$$ \delta_t = \delta_{t+1} \cdot \frac{\partial H_t}{\partial H_{t+1}} \quad \text{where} \quad \frac{\partial H_t}{\partial H_{t+1}} \ll 1 $$
+$$
+\delta_t = \delta_{t+1} \cdot \frac{\partial H_t}{\partial H_{t+1}} \quad \text{where} \quad \frac{\partial H_t}{\partial H_{t+1}} \ll 1
+$$
 
 Here, $H_t$ represents the hidden state at time $t$, and $\frac{\partial H_t}{\partial H_{t+1}}$ denotes the derivative of the hidden state at time $t+1$ with respect to the hidden state at time $t$. When this derivative is much smaller than 1, the gradients shrink rapidly, leading to ineffective learning of long-term patterns.
 
@@ -398,7 +428,9 @@ and the candidate values to be added: $\tilde{C}_t = \tanh(W_C \cdot [H_{t-1}, X
 
 The overall update of the cell state is determined by:
 
-$$C_t = f_t \cdot C_{t-1} + i_t \cdot \tilde{C}_t$$
+$$
+C_t = f_t \cdot C_{t-1} + i_t \cdot \tilde{C}_t
+$$
 
 This formulation allows the LSTM to retain long-term information (via the forget gate) while updating with new information when necessary (via the input gate).
 
@@ -708,19 +740,25 @@ As the demand for more sophisticated sequence modeling grows, researchers and pr
 
 In standard RNNs, the model processes the input sequence step-by-step in a unidirectional manner, typically from the past to the future. However, in some applications, information from future time steps can also be crucial for accurate predictions. Bidirectional RNNs address this by employing two RNN layers: one that processes the sequence in the forward direction and another in the backward direction. The hidden states from both directions are then concatenated to form a comprehensive representation of each time step:
 
-$$H_t = [\overrightarrow{H_t}, \overleftarrow{H_t}]$$
+$$
+H_t = [\overrightarrow{H_t}, \overleftarrow{H_t}]
+$$
 
 where $\overrightarrow{H_t}$ and $\overleftarrow{H_t}$ represent the hidden states from the forward and backward passes, respectively.
 
 A Deep RNN is created by stacking multiple RNN layers on top of each other. Each layer in the network receives the hidden state from the previous layer and passes it to the next layer, effectively allowing the model to learn increasingly abstract and complex features at each level. The deep architecture enables the network to capture both local dependencies (in the lower layers) and global patterns (in the higher layers). The output of a Deep RNN at time step $t$ is given by:
 
-$$H_t^{(l)} = f(W_h^{(l)} H_{t-1}^{(l)} + W_x^{(l)} H_t^{(l-1)} + b_h^{(l)})$$
+$$
+H_t^{(l)} = f(W_h^{(l)} H_{t-1}^{(l)} + W_x^{(l)} H_t^{(l-1)} + b_h^{(l)})
+$$
 
 where $H_t^{(l)}$ is the hidden state at layer $l$, $W_h^{(l)}$ and $W_x^{(l)}$ are the weight matrices, and $f$ is a non-linear activation function.
 
 Attention mechanisms provide a way for RNNs to focus on specific parts of the input sequence that are most relevant to the current prediction. This is particularly beneficial in tasks like machine translation, where certain words in the source language may correspond to distant words in the target language. The attention mechanism computes a set of attention weights $\alpha_{t,s}$ for each time step ttt and source time step sss, indicating the importance of each input element for the current prediction:
 
-$$\alpha_{t,s} = \frac{\exp(e_{t,s})}{\sum_{s'} \exp(e_{t,s'})}$$
+$$
+\alpha_{t,s} = \frac{\exp(e_{t,s})}{\sum_{s'} \exp(e_{t,s'})}
+$$
 
 where $e_{t,s}$ is the alignment score, often computed as a dot product between the hidden state of the current time step and the hidden states of previous time steps.
 
@@ -1124,7 +1162,9 @@ To improve generalization and prevent overfitting, regularization techniques suc
 
 BPTT is essential for RNNs because it allows the network to learn from sequential data by updating the weights at each time step. Formally, given a sequence of inputs $X_1, X_2, \dots, X_T$ and corresponding hidden states $H_1, H_2, \dots, H_T$, BPTT computes the gradient of the loss function $L$ with respect to the parameters of the network $\theta$ by summing up the contributions of each time step:
 
-$$ \frac{\partial L}{\partial \theta} = \sum_{t=1}^{T} \frac{\partial L_t}{\partial \theta} $$
+$$
+\frac{\partial L}{\partial \theta} = \sum_{t=1}^{T} \frac{\partial L_t}{\partial \theta}
+$$
 
 where $L_t$ is the loss at time step $t$, and $\theta$ includes all trainable weights. The gradient is then used to update the weights during training. However, due to the recursive nature of RNNs, small gradients can shrink to near-zero values (vanishing gradients), while large gradients can explode (exploding gradients), complicating the optimization process.
 

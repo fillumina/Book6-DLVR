@@ -17,7 +17,9 @@ Rust plays an essential role in building and deploying LLMs due to its high-perf
 
 The core architecture of most LLMs is based on the transformer model, which has become the de facto standard in NLP due to its ability to model long-range dependencies in text more efficiently than previous models like RNNs (Recurrent Neural Networks). The transformer leverages self-attention mechanisms, which allow the model to focus on different parts of the input sequence at each layer. The self-attention mechanism computes attention scores between tokens in the input sequence to decide how much importance each token should have in relation to others:
 
-$$ \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right) V $$
+$$
+\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right) V
+$$
 
 Where:
 
@@ -258,7 +260,9 @@ Large Language Models (LLMs) rely on the transformer architecture, which is a hi
 
 The self-attention mechanism is the heart of transformer models and operates by computing a weighted combination of all words in a sequence. The mechanism uses queries (Q), keys (K), and values (V) to compare the relationship between different tokens. The attention weights are computed as:
 
-$$ \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V $$
+$$
+\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+$$
 
 Where $d_k$ is the dimensionality of the key vectors, and the softmax function normalizes the attention scores. This operation allows each word to attend to every other word in the sequence, enabling the model to understand contextual relationships, regardless of distance between tokens.
 
@@ -272,9 +276,13 @@ LLM architectures can be classified into three primary categories:
 
 A critical element of transformer models is positional encoding, which encodes information about the position of tokens in a sequence since transformers are not inherently sequential like RNNs. Positional encodings are added to the input embeddings and help the model understand the order of tokens. The most common method is to use sinusoidal functions, where the positional encoding for a token at position pospospos is defined as:
 
-$$ PE_{(pos, 2i)} = \sin\left(\frac{pos}{10000^{\frac{2i}{d}}}\right) $$
+$$
+PE_{(pos, 2i)} = \sin\left(\frac{pos}{10000^{\frac{2i}{d}}}\right)
+$$
 
-$$ PE_{(pos, 2i+1)} = \cos\left(\frac{pos}{10000^{\frac{2i}{d}}}\right) $$
+$$
+PE_{(pos, 2i+1)} = \cos\left(\frac{pos}{10000^{\frac{2i}{d}}}\right)
+$$
 
 Here, $d$ is the dimensionality of the embedding, and $i$ is the dimension index. These encodings are added to the word embeddings to provide a notion of position in the input sequence.
 
@@ -1343,7 +1351,9 @@ As LLMs scale to billions or even trillions of parameters, infrastructure manage
 
 Transfer learning in LLMs capitalizes on the vast knowledge encoded during pre-training, enabling the model to generalize across different domains. The formal mathematical framework behind transfer learning can be described by the concept of domain adaptation, where a model trained on a source domain ($\mathcal{D}_S$) with task $\mathcal{T}_S$ is adapted to a target domain ($\mathcal{D}_T$) with task $\mathcal{T}_T$. The pre-trained model learns general patterns in the source domain and applies this knowledge to the target domain, minimizing the need for extensive new data:
 
-$$ \mathcal{L}_{\text{fine-tune}} = \sum_{i=1}^{N_T} \mathcal{L}\left(f_{\theta}(x_i^{(T)}), y_i^{(T)}\right) $$
+$$
+\mathcal{L}_{\text{fine-tune}} = \sum_{i=1}^{N_T} \mathcal{L}\left(f_{\theta}(x_i^{(T)}), y_i^{(T)}\right)
+$$
 
 Where $f_{\theta}$ represents the LLM’s parameters after pre-training, $x_i^{(T)}$ and $y_i^{(T)}$ are the target domain's input-output pairs, and $\mathcal{L}$ is the loss function used during fine-tuning.
 
@@ -1351,7 +1361,9 @@ Zero-shot learning leverages the generalization power of LLMs by enabling the mo
 
 Multimodal models take LLMs a step further by integrating text with other forms of data, such as images or audio. This can be achieved using techniques like cross-attention mechanisms, which allow the model to align information from different modalities:
 
-$$ \text{Cross-Attention}(Q, K_{\text{text}}, V_{\text{image}}) = \text{softmax}\left(\frac{Q K_{\text{text}}^T}{\sqrt{d_k}}\right)V_{\text{image}} $$
+$$
+\text{Cross-Attention}(Q, K_{\text{text}}, V_{\text{image}}) = \text{softmax}\left(\frac{Q K_{\text{text}}^T}{\sqrt{d_k}}\right)V_{\text{image}}
+$$
 
 In this formulation, the text input serves as the query $Q$, and the key-value pairs come from different modalities, such as image embeddings ($K_{\text{image}}$, $V_{\text{image}}$), enabling the model to generate integrated text and image representations.
 

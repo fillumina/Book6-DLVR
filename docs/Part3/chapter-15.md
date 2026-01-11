@@ -19,27 +19,37 @@ Supervised learning is the traditional approach where models learn from labeled 
 
 In contrast, unsupervised learning aims to uncover hidden structures or patterns in a dataset $X = \{x_1, x_2, \ldots, x_n\}$, where each data point $x_i \in \mathbb{R}^d$ represents a d-dimensional vector. The goal of unsupervised learning is to derive a function $f: X \rightarrow Y$, where $Y$ is a structured or lower-dimensional representation of $X$. For example, clustering methods like K-means seek to group similar data points by minimizing the variance within each cluster. Mathematically, this involves solving the optimization problem:
 
-$$\min_{C, \mu} \sum_{j=1}^k \sum_{x \in C_j} \|x - \mu_j\|^2,$$
+$$
+\min_{C, \mu} \sum_{j=1}^k \sum_{x \in C_j} \|x - \mu_j\|^2,
+$$
 
 where $C_j$ denotes the set of points assigned to the $j$-th cluster, and $\mu_j$ is the centroid of that cluster. Another example is Gaussian Mixture Models (GMMs), which assume that the data is generated from a mixture of Gaussian distributions. The objective is to maximize the log-likelihood of the observed data under the model:
 
-$$ \max_{\theta} \sum_{i=1}^n \log \sum_{k=1}^K \pi_k \mathcal{N}(x_i | \mu_k, \Sigma_k), $$
+$$
+\max_{\theta} \sum_{i=1}^n \log \sum_{k=1}^K \pi_k \mathcal{N}(x_i | \mu_k, \Sigma_k),
+$$
 
 where $\theta = \{\pi_k, \mu_k, \Sigma_k\}$ represents the mixture weights, means, and covariances of the Gaussian components. Dimensionality reduction techniques such as Principal Component Analysis (PCA) focus on projecting data onto a lower-dimensional space while preserving as much variance as possible. This is achieved by finding the eigenvectors of the covariance matrix $\Sigma$, solving the optimization problem:
 
-$$ \max_{\mathbf{w}} \frac{\mathbf{w}^T \Sigma \mathbf{w}}{\mathbf{w}^T \mathbf{w}}, $$
+$$
+\max_{\mathbf{w}} \frac{\mathbf{w}^T \Sigma \mathbf{w}}{\mathbf{w}^T \mathbf{w}},
+$$
 
 where $\mathbf{w}$ represents the projection vectors. These methods are widely used across industries, including finance for risk modeling, healthcare for patient clustering, and e-commerce for customer segmentation.
 
 Self-supervised learning, positioned between supervised and unsupervised approaches, generates its own labels from the data using pretext tasks—tasks that do not require manual labels but leverage the data itself to provide supervisory signals. Mathematically, self-supervised learning involves a transformation function $T$ that creates a surrogate label $y_i = T(x_i)$ for each data point $x_i$. The goal is to train a model $f$ such that $f(x_i) \approx y_if(xi​)$, learning representations that capture the underlying structure of the data. A prominent example is contrastive learning, which aims to maximize the similarity between positive pairs (e.g., different views or augmentations of the same data point) and minimize the similarity between negative pairs. The contrastive loss function can be formulated as:
 
-$$ \mathcal{L} = -\log \frac{\exp(\text{sim}(f(x_i), f(x_i^+)) / \tau)}{\sum_{j=1}^N \exp(\text{sim}(f(x_i), f(x_j)) / \tau)}, $$
+$$
+\mathcal{L} = -\log \frac{\exp(\text{sim}(f(x_i), f(x_i^+)) / \tau)}{\sum_{j=1}^N \exp(\text{sim}(f(x_i), f(x_j)) / \tau)},
+$$
 
 where $\text{sim}$ is a similarity measure (e.g., cosine similarity), $\tau$ is a temperature parameter, $x_i^+$ is a positive example, and $x_j$ represents other samples in the dataset. This method encourages the model to learn invariant features that can be fine-tuned for downstream tasks.
 
 Another key example of self-supervised learning is masked language modeling (MLM), used in natural language processing models like BERT. Here, a portion of the input text is masked, and the task is to predict the masked words. This can be described mathematically as:
 
-$$ \mathcal{L}_{\text{MLM}} = -\sum_{i=1}^N \log P(x_i | x_{\backslash i}), $$
+$$
+\mathcal{L}_{\text{MLM}} = -\sum_{i=1}^N \log P(x_i | x_{\backslash i}),
+$$
 
 where $x_{\backslash i}$ represents the input sequence with the $i$-th token masked, and $P(x_i | x_{\backslash i})$ is the probability of the masked token given the context. The model learns contextual representations of words, which can be transferred to various NLP tasks like sentiment analysis, named entity recognition, and machine translation.
 
@@ -154,7 +164,9 @@ Self-supervised learning is a powerful paradigm in machine learning that allows 
 
 One of the central techniques in self-supervised learning is contrastive learning. The goal of contrastive learning is to train a model to bring similar data points (positive pairs) closer in the representation space while pushing dissimilar data points (negative pairs) further apart. Mathematically, this is often formalized using the InfoNCE loss, a common objective function in contrastive learning frameworks. Let $\mathbf{z}_i$ and $\mathbf{z}_j$ represent the embeddings of a positive pair—typically, different views or augmentations of the same data point—and $\mathbf{z}_k$ denote the embedding of a negative sample. The contrastive loss is defined as:
 
-$$ L_{\text{contrastive}} = -\log \frac{\exp(\text{sim}(\mathbf{z}_i, \mathbf{z}_j) / \tau)}{\sum_{k} \exp(\text{sim}(\mathbf{z}_i, \mathbf{z}_k) / \tau)}, $$
+$$
+L_{\text{contrastive}} = -\log \frac{\exp(\text{sim}(\mathbf{z}_i, \mathbf{z}_j) / \tau)}{\sum_{k} \exp(\text{sim}(\mathbf{z}_i, \mathbf{z}_k) / \tau)},
+$$
 
 where $\text{sim}(\cdot, \cdot)$ is a similarity function, often chosen as cosine similarity, and τ\\tauτ is a temperature hyperparameter that controls the sharpness of the distribution. The numerator emphasizes the similarity between positive pairs, while the denominator includes all negative pairs, encouraging the model to differentiate between similar and dissimilar data points. By minimizing this loss, the model learns to create representations that capture the underlying structure of the data, making it highly suitable for downstream tasks like classification and retrieval.
 
@@ -162,7 +174,9 @@ In practice, contrastive learning often uses Siamese networks—architectures th
 
 Another prominent self-supervised learning technique is predictive coding, which involves training a model to predict missing or future parts of the input data. This technique forces the model to capture contextual relationships within the data, leading to the development of richer representations. A well-known example is masked language modeling (MLM), which forms the basis of models like BERT. In MLM, certain tokens in a sentence are randomly masked, and the model's task is to predict the masked tokens based on the surrounding context. Formally, the objective is to maximize the probability of the masked tokens given the rest of the sentence:
 
-$$ \mathcal{L}_{\text{MLM}} = -\sum_{i=1}^N \log P(x_i | x_{\backslash i}), $$
+$$
+\mathcal{L}_{\text{MLM}} = -\sum_{i=1}^N \log P(x_i | x_{\backslash i}),
+$$
 
 where $x_{\backslash i}$ represents the input sequence with the $i$-th token masked, and $P(x_i | x_{\backslash i})$ is the model’s predicted probability of the masked token. By learning to predict missing elements, the model gains a deep understanding of language semantics and the relationships between words, which can be transferred to a variety of NLP tasks, such as sentiment analysis or named entity recognition.
 
@@ -301,37 +315,49 @@ Unsupervised learning is a foundational aspect of machine learning that empowers
 
 A fundamental technique in unsupervised learning is clustering, which aims to group data points into clusters such that similar points are grouped together while dissimilar points are separated. One of the most widely used clustering algorithms is k-means. This algorithm iteratively assigns each data point to the nearest cluster center and updates the cluster centers based on the mean of the assigned points, aiming to minimize the within-cluster variance. Let $X = \{x_1, x_2, \ldots, x_n\}$ represent a dataset consisting of nnn data points, where each $x_i \in \mathbb{R}^d$ is a $d$-dimensional vector. The k-means objective function is defined as:
 
-$$ J = \sum_{i=1}^k \sum_{x \in C_i} \lVert x - \mu_i \rVert^2, $$
+$$
+J = \sum_{i=1}^k \sum_{x \in C_i} \lVert x - \mu_i \rVert^2,
+$$
 
 where $C_i$ denotes the set of points assigned to cluster $i$, and $\mu_i$ is the centroid (mean) of those points. The algorithm alternates between two steps: assigning each point to the cluster with the nearest centroid and updating each centroid to the mean of the points assigned to it. This process continues until convergence, which occurs when the cluster assignments no longer change significantly. The k-means algorithm is particularly useful in market segmentation, customer behavior analysis, and image compression. For instance, in retail, k-means can segment customers based on purchase behavior, allowing businesses to create targeted marketing strategies.
 
 While k-means is effective for many clustering tasks, it has limitations in handling non-spherical clusters or data with varying densities. Gaussian Mixture Models (GMMs) provide a more flexible alternative by modeling the data as a mixture of multiple Gaussian distributions. GMMs use an Expectation-Maximization (EM) algorithm to estimate the parameters of the Gaussian components. The goal is to maximize the likelihood of the observed data under the model:
 
-$$ \mathcal{L}(\theta) = \sum_{i=1}^n \log \left( \sum_{j=1}^k \pi_j \mathcal{N}(x_i | \mu_j, \Sigma_j) \right), $$
+$$
+\mathcal{L}(\theta) = \sum_{i=1}^n \log \left( \sum_{j=1}^k \pi_j \mathcal{N}(x_i | \mu_j, \Sigma_j) \right),
+$$
 
 where $\theta$ represents the parameters $\{\pi_j, \mu_j, \Sigma_j\}$ for the mixture weights, means, and covariance matrices of the Gaussian components. The EM algorithm alternates between the expectation step (calculating the probability of each data point belonging to each Gaussian) and the maximization step (updating the parameters to maximize the expected log-likelihood). GMMs are commonly applied in speech recognition, anomaly detection, and image segmentation, where the data distribution is complex and multi-modal.
 
 Dimensionality reduction is another critical unsupervised technique that aims to reduce the number of features in a dataset while preserving its essential structure. This is particularly important when dealing with high-dimensional data, as it helps to simplify models, reduce computational costs, and mitigate the curse of dimensionality. Principal Component Analysis (PCA) is a widely used linear method for dimensionality reduction that projects the data onto a lower-dimensional subspace capturing the directions of maximum variance. Mathematically, given a dataset $X \in \mathbb{R}^{n \times d}$, where $n$ is the number of samples and $d$ is the dimensionality, PCA identifies the principal components by solving the eigenvalue decomposition of the covariance matrix:
 
-$$ \Sigma = \frac{1}{n} X^T X, $$
+$$
+\Sigma = \frac{1}{n} X^T X,
+$$
 
 where $\Sigma$ is the $d \times d$ covariance matrix of the data. PCA finds the eigenvectors (principal components) corresponding to the largest eigenvalues, which represent the directions along which the data varies the most. The data is then projected onto these principal components to obtain a lower-dimensional representation. PCA is widely used for data visualization, noise reduction, and feature extraction. For example, in genetics, PCA helps visualize the relationships between populations based on genetic variation. In finance, it is used to reduce the dimensionality of stock price data, allowing analysts to identify the most influential factors driving market movements.
 
 Autoencoders provide a non-linear approach to dimensionality reduction and representation learning, making them capable of capturing complex patterns in the data. An autoencoder is a neural network that consists of an encoder and a decoder. The encoder maps the input to a lower-dimensional latent space, while the decoder reconstructs the original input from this latent space. The model is trained to minimize the reconstruction error, often using mean squared error (MSE) as the loss function:
 
-$$ \mathcal{L}_{\text{MSE}} = \frac{1}{n} \sum_{i=1}^n \lVert x_i - \hat{x}_i \rVert^2, $$
+$$
+\mathcal{L}_{\text{MSE}} = \frac{1}{n} \sum_{i=1}^n \lVert x_i - \hat{x}_i \rVert^2,
+$$
 
 where $x_i$ is the original input, and $\hat{x}_i$ is the reconstructed output. By learning to reconstruct the input, autoencoders discover a compressed representation that retains the most salient features. Variants like denoising autoencoders add noise to the input data and train the model to recover the original, clean data, making them effective for tasks such as image denoising and anomaly detection. Autoencoders are also foundational in generative modeling, where they serve as building blocks for models like Variational Autoencoders (VAEs), which generate new data samples by learning a probabilistic latent space.
 
 Generative modeling seeks to model the underlying distribution of the data, allowing the generation of new, similar samples. Variational Autoencoders (VAEs) are a type of autoencoder that introduces a probabilistic framework, enabling the generation of data by sampling from a latent space. VAEs aim to maximize the evidence lower bound (ELBO), which is a combination of the reconstruction loss and a regularization term that encourages the latent space to follow a known distribution, such as a Gaussian:
 
-$$ \mathcal{L}_{\text{ELBO}} = \mathbb{E}_{q(z|x)}[\log p(x|z)] - D_{\text{KL}}(q(z|x) \parallel p(z)), $$
+$$
+\mathcal{L}_{\text{ELBO}} = \mathbb{E}_{q(z|x)}[\log p(x|z)] - D_{\text{KL}}(q(z|x) \parallel p(z)),
+$$
 
 where $q(z|x)$ is the approximate posterior, $p(z)$ is the prior distribution, and $D_{\text{KL}}$ denotes the Kullback-Leibler divergence. VAEs have been applied in fields like drug discovery for generating molecular structures, image generation, and anomaly detection.
 
 One of the primary challenges in unsupervised learning is evaluating model performance, as there are no explicit labels to compare against. Clustering metrics like the silhouette score provide insights into how well-separated and cohesive clusters are. The silhouette score for a data point iii is defined as:
 
-$$ s(i) = \frac{b(i) - a(i)}{\max(a(i), b(i))}, $$
+$$
+s(i) = \frac{b(i) - a(i)}{\max(a(i), b(i))},
+$$
 
 where $a(i)$ is the average distance between iii and other points in the same cluster, and $b(i)$ is the average distance between $i$ and points in the nearest neighboring cluster. A higher silhouette score indicates better-defined clusters. For dimensionality reduction and autoencoders, metrics like reconstruction error or explained variance ratio are used to assess how well the reduced representation captures the original data's structure.
 
@@ -520,31 +546,41 @@ Self-supervised and unsupervised learning have become pivotal approaches in mode
 
 In natural language processing (NLP), self-supervised learning has fundamentally transformed the field by enabling models to be pre-trained on extensive corpora of unlabeled text. This approach allows models to learn nuanced representations of language, capturing syntax, semantics, and context, which can then be fine-tuned for specific downstream tasks such as sentiment analysis, machine translation, or question answering. A quintessential example is BERT (Bidirectional Encoder Representations from Transformers), which uses a masked language modeling (MLM) objective during pre-training. In this approach, random tokens in a sentence are masked, and the model is trained to predict these masked tokens using the surrounding context. The objective function for this task is formulated as a cross-entropy loss:
 
-$$ L_{\text{MLM}} = -\sum_{i \in \text{masked}} \log P(x_i \mid x_{\setminus i}), $$
+$$
+L_{\text{MLM}} = -\sum_{i \in \text{masked}} \log P(x_i \mid x_{\setminus i}),
+$$
 
 where $P(x_i \mid x_{\setminus i})$ represents the probability of the masked token $x_i$ given the rest of the sequence $x_{\setminus i}$. This loss encourages the model to understand relationships between words, learning deep, contextual embeddings that can be transferred to a variety of tasks with minimal labeled data. The ability of models like BERT to generalize from pre-training to tasks such as named entity recognition or document classification has made them a staple in NLP pipelines across industries like customer service (for chatbots), legal (for document analysis), and healthcare (for clinical note analysis).
 
 In computer vision, self-supervised learning has emerged as a powerful approach for tasks like image classification, object detection, and segmentation. A widely adopted technique is contrastive learning, which trains models by distinguishing between positive and negative pairs of images. For example, in the SimCLR framework, an image is augmented in different ways to produce multiple views, and the model is trained to maximize the agreement between representations of these augmented views while minimizing the similarity between different images. Mathematically, this is achieved through the InfoNCE loss, which aims to bring positive pairs closer together in the representation space while pushing apart negative pairs:
 
-$$ L_{\text{contrastive}} = -\log \frac{\exp(\text{sim}(\mathbf{z}_i, \mathbf{z}_j) / \tau)}{\sum_{k} \exp(\text{sim}(\mathbf{z}_i, \mathbf{z}_k) / \tau)}, $$
+$$
+L_{\text{contrastive}} = -\log \frac{\exp(\text{sim}(\mathbf{z}_i, \mathbf{z}_j) / \tau)}{\sum_{k} \exp(\text{sim}(\mathbf{z}_i, \mathbf{z}_k) / \tau)},
+$$
 
 where $\mathbf{z}_i$ and $\mathbf{z}_j$ are the representations of two augmented versions of the same image, $\mathbf{z}_k$ is the representation of a negative example, $\text{sim}(\cdot, \cdot)$ denotes cosine similarity, and $\tau$ is a temperature parameter that controls the sharpness of the distribution. This method leads to feature embeddings that are invariant to transformations, such as rotations or color changes, making them highly effective for downstream tasks. Contrastive learning has been particularly impactful in fields like medical imaging, where obtaining labeled data is difficult. For example, in radiology, self-supervised models can learn from large datasets of unlabeled scans and later be fine-tuned for tasks like tumor detection or segmentation with fewer labeled examples.
 
 Unsupervised learning plays a crucial role in exploratory data analysis and feature extraction, where it helps uncover underlying structures within data. Techniques such as Principal Component Analysis (PCA) and clustering are widely used for this purpose. PCA reduces the dimensionality of data by projecting it onto a subspace that captures the directions of maximum variance. This is achieved by performing an eigenvalue decomposition of the covariance matrix of the data:
 
-$$ \Sigma = \frac{1}{n} X^T X, $$
+$$
+\Sigma = \frac{1}{n} X^T X,
+$$
 
 where $X \in \mathbb{R}^{n \times d}$ represents the dataset, nnn is the number of samples, $d$ is the dimensionality, and $\Sigma$ is the covariance matrix. The eigenvectors corresponding to the largest eigenvalues form the principal components, and the data is projected onto these components to reduce its dimensionality. PCA is extensively used in applications like finance, where it helps in reducing the complexity of stock market data, and genomics, where it visualizes the variation between different populations based on genetic data.
 
 Clustering methods such as k-means and Gaussian Mixture Models (GMMs) are used to group similar data points into clusters, helping to reveal hidden patterns in the data. The k-means algorithm aims to partition $n$ data points into $k$ clusters by minimizing the within-cluster variance:
 
-$$ J = \sum_{i=1}^k \sum_{x \in C_i} \lVert x - \mu_i \rVert^2, $$
+$$
+J = \sum_{i=1}^k \sum_{x \in C_i} \lVert x - \mu_i \rVert^2,
+$$
 
 where $C_i$ denotes the set of points assigned to cluster $i$, and $\mu_i$ is the centroid of those points. Clustering has practical applications across industries, such as market segmentation in retail, where customer data is clustered based on purchasing behavior, and image compression, where pixel values are clustered to reduce the color palette while preserving image quality.
 
 Anomaly detection is another domain where unsupervised learning is highly effective, particularly in identifying rare or unusual events that deviate from typical patterns. Autoencoders are commonly used for this purpose, as they learn to encode input data into a lower-dimensional representation and then decode it back to the original space. The model is trained to minimize the reconstruction error:
 
-$$ \mathcal{L}_{\text{reconstruction}} = \frac{1}{n} \sum_{i=1}^n \lVert x_i - \hat{x}_i \rVert^2, $$
+$$
+\mathcal{L}_{\text{reconstruction}} = \frac{1}{n} \sum_{i=1}^n \lVert x_i - \hat{x}_i \rVert^2,
+$$
 
 where $x_i$ is the input and $\hat{x}_i$ is the reconstructed output. During inference, high reconstruction errors may indicate anomalies, as they suggest that the input data is not well represented by the patterns learned during training. This approach is widely used in financial transaction monitoring to detect fraudulent activity, network security to identify unusual traffic patterns, and manufacturing to detect defects in production lines.
 

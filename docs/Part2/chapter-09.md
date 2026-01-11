@@ -14,15 +14,21 @@ One of the primary differences between self-attention and traditional operations
 
 Mathematically, self-attention works by computing attention scores for each pair of elements in the input. Given an input sequence $X = (x_1, x_2, \dots, x_T)$, self-attention computes a set of queries $Q$, keys $K$, and values $V$, where each of these matrices is derived from the input $X$ through learned transformations. The attention score between two elements $x_i$ and $x_j$ is calculated as the scaled dot product of their query and key vectors:
 
-$$a_{i,j} = \frac{Q_i \cdot K_j^T}{\sqrt{d_k}}$$
+$$
+a_{i,j} = \frac{Q_i \cdot K_j^T}{\sqrt{d_k}}
+$$
 
 where $d_k$ is the dimensionality of the key vectors, and the dot product measures the similarity between the elements. These attention scores are then normalized using a softmax function to produce attention weights:
 
-$$\alpha_{i,j} = \frac{\exp(a_{i,j})}{\sum_{j'} \exp(a_{i,j'})}$$
+$$
+\alpha_{i,j} = \frac{\exp(a_{i,j})}{\sum_{j'} \exp(a_{i,j'})}
+$$
 
 Finally, the output for each element is a weighted sum of the value vectors $V$, where the attention weights determine the contribution of each value:
 
-$$z_i = \sum_j \alpha_{i,j} V_j$$
+$$
+z_i = \sum_j \alpha_{i,j} V_j
+$$
 
 This formulation allows the model to assign different importance to each part of the input, enabling more context-aware processing. In tasks such as machine translation, for example, self-attention allows the model to understand how different words in a sentence relate to each other, making it easier to translate complex sentences where word order or grammatical structure differs between languages.
 
@@ -39,7 +45,9 @@ Next, we compute the attention mechanism for this sequence of tokens using self-
 
 Mathematically, we compute the query, key, and value matrices for all tokens in the sequence as follows:
 
-$$Q = X W_Q, \quad K = X W_K, \quad V = X W_V$$
+$$
+Q = X W_Q, \quad K = X W_K, \quad V = X W_V
+$$
 
 where $W_Q$, $W_K$, and $W_V$ are learnable parameter matrices, and $X$ is the matrix of input embeddings. Let’s assume the dimensionality of the embeddings is $d$, and each of $W_Q$, $W_K$, and $W_V$ is a $d \times d$ matrix. The query matrix $Q$ contains the query vectors for all tokens in the sequence, while $K$ contains the key vectors, and $V$ contains the value vectors.
 
@@ -269,15 +277,21 @@ The integration of self-attention into CNN architectures involves adding attenti
 
 Mathematically, self-attention in CNNs works similarly to how it operates in sequences, with some modifications to account for the spatial structure of images. Given an input feature map $X$ of dimensions $H \times W \times C$ (height, width, and channels), where each spatial location contains a feature vector, the self-attention mechanism computes a set of query ($Q$), key ($K$), and value ($V$) matrices. These matrices are learned projections of the input feature map, where $Q$, $K$, and $V$ are derived from the feature map by applying separate convolutional layers. The attention scores between different spatial locations $i$ and $j$ are computed as:
 
-$$a_{i,j} = \frac{Q_i \cdot K_j^T}{\sqrt{d_k}}$$
+$$
+a_{i,j} = \frac{Q_i \cdot K_j^T}{\sqrt{d_k}}
+$$
 
 Here, $Q_i$ and $K_j$ represent the query and key vectors at spatial locations $i$ and $j$, and $d_k$ is the dimensionality of the key vectors. The attention scores $a_{i,j}$ represent the degree of similarity between different regions in the image, and these scores are normalized using a softmax function to produce attention weights:
 
-$$\alpha_{i,j} = \frac{\exp(a_{i,j})}{\sum_{j'} \exp(a_{i,j'})}$$
+$$
+\alpha_{i,j} = \frac{\exp(a_{i,j})}{\sum_{j'} \exp(a_{i,j'})}
+$$
 
 Finally, the output feature for each spatial location is computed as a weighted sum of the value vectors:
 
-$$z_i = \sum_j \alpha_{i,j} V_j$$
+$$
+z_i = \sum_j \alpha_{i,j} V_j
+$$
 
 This process allows the model to aggregate information from different parts of the image dynamically, enabling it to focus on the most relevant regions for a given task, such as image classification or object detection.
 
@@ -604,11 +618,15 @@ The architecture of a self-attention RNN incorporates attention layers within th
 
 Mathematically, the self-attention mechanism within an RNN operates as follows. For each time step $t$, the model computes attention scores $a_{t,s}$ between the hidden state at time step $t$ and the hidden state at time step $s$, where $s \leq t$. These scores are calculated as the dot product between the query vector derived from $h_t$ and the key vector derived from $h_s$, scaled by the square root of the key dimension: $a_{t,s} = \frac{Q_t \cdot K_s^T}{\sqrt{d_k}}$. Here, $Q_t$ is the query vector for time step $t$, $K_s$ is the key vector for time step $s$, and $d_k$ is the dimensionality of the key vectors. The attention scores are then normalized using a softmax function to produce attention weights $\alpha_{t,s}$:
 
-$$\alpha_{t,s} = \frac{\exp(a_{t,s})}{\sum_{s'} \exp(a_{t,s'})}$$
+$$
+\alpha_{t,s} = \frac{\exp(a_{t,s})}{\sum_{s'} \exp(a_{t,s'})}
+$$
 
 These attention weights are used to compute a weighted sum of the value vectors $V_s$, where the value vectors are derived from the hidden states of the RNN. The final output of the attention mechanism at time step $t$ is:
 
-$$z_t = \sum_s \alpha_{t,s} V_s$$
+$$
+z_t = \sum_s \alpha_{t,s} V_s
+$$
 
 This context vector $z_t$ is then combined with the hidden state $h_t$ to produce a more contextually aware representation, improving the model’s ability to capture long-range dependencies. This combination can be achieved through simple concatenation or by passing $z_t$ through a feed-forward layer.
 
@@ -1070,7 +1088,9 @@ Transformer models have revolutionized deep learning by entirely relying on self
 
 The architecture of Transformer models consists of several key components: multi-head attention, positional encoding, and feed-forward networks. In the self-attention mechanism, each token in the input sequence attends to every other token through attention weights, capturing relationships regardless of their distance. For each token, queries, keys, and values are computed, and attention scores are calculated as: $a_{i,j} = \frac{Q_i \cdot K_j^T}{\sqrt{d_k}}$, where $Q_i$ is the query vector for the $i$-th token, $K_j$ is the key vector for the $j$-th token, and $d_k$ is the dimensionality of the key vectors. These scores are normalized using the softmax function to generate attention weights:
 
-$$\alpha_{i,j} = \frac{\exp(a_{i,j})}{\sum_{j'} \exp(a_{i,j'})}$$
+$$
+\alpha_{i,j} = \frac{\exp(a_{i,j})}{\sum_{j'} \exp(a_{i,j'})}
+$$
 
 The final output for each token is a weighted sum of the value vectors $V_j$: $z_i = \sum_j \alpha_{i,j} V_j$.
 
@@ -1078,9 +1098,13 @@ Multi-head attention is a key feature of Transformers. Instead of computing atte
 
 One challenge Transformers face is the lack of inherent positional information in the self-attention mechanism. Unlike RNNs, which process input sequentially, the self-attention mechanism processes all tokens in parallel, losing the notion of word order or token position. To address this, positional encoding is introduced, which adds position-specific information to the input tokens. This encoding allows the model to differentiate between tokens based on their positions in the sequence. The positional encoding is often represented as a set of sinusoidal functions:
 
-$$PE_{(pos, 2i)} = \sin\left(\frac{pos}{10000^{2i/d}}\right)$$
+$$
+PE_{(pos, 2i)} = \sin\left(\frac{pos}{10000^{2i/d}}\right)
+$$
 
-$$PE_{(pos, 2i+1)} = \cos\left(\frac{pos}{10000^{2i/d}}\right)$$
+$$
+PE_{(pos, 2i+1)} = \cos\left(\frac{pos}{10000^{2i/d}}\right)
+$$
 
 where $pos$ is the position in the sequence, $i$ is the dimension index, and $d$ is the dimensionality of the model. These encodings are added to the input embeddings before applying the self-attention mechanism, preserving the sequential nature of the data.
 
@@ -1421,7 +1445,9 @@ The loss function for training self-attention models depends on the task. In seq
 
 Regularization plays a significant role in preventing overfitting in self-attention models. Due to the large parameter space, these models are prone to overfitting, especially when trained on small or moderately sized datasets. Dropout is one of the most effective regularization techniques in self-attention models. Dropout randomly zeroes out a portion of the network’s activations during training, preventing the model from becoming overly reliant on any one part of the network. This technique is often applied to both the attention weights and the outputs of the feed-forward layers in self-attention models. Mathematically, dropout can be described as:
 
-$$\tilde{h} = h \cdot \text{Bernoulli}$$
+$$
+\tilde{h} = h \cdot \text{Bernoulli}
+$$
 
 where $h$ is the hidden layer, $p$ is the dropout rate, and $\tilde{h}$ is the layer after dropout is applied. The dropout rate typically ranges between 0.1 and 0.3 in self-attention models.
 
@@ -1429,7 +1455,9 @@ Self-attention models also require careful tuning of learning rates and batch si
 
 Another important consideration in training self-attention models is the use of gradient clipping. Self-attention models, especially Transformers, are prone to unstable gradients, where gradients can grow excessively large, leading to exploding gradients and training instability. Gradient clipping limits the gradients' norm during backpropagation, ensuring they do not exceed a predefined threshold. This helps maintain stable updates during training and prevents divergence. Mathematically, gradient clipping can be expressed as:
 
-$$g = g \cdot \min\left(1, \frac{\text{threshold}}{\| g \|_2}\right)$$
+$$
+g = g \cdot \min\left(1, \frac{\text{threshold}}{\| g \|_2}\right)
+$$
 
 where $g$ represents the gradients, and the threshold is a user-defined value, typically set around 1.0.
 

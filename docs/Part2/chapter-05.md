@@ -39,14 +39,18 @@ The evolution of CNNs from LeNet to AlexNet, VGG, ResNet, and EfficientNet repre
 
 Mathematically, a convolution operation can be expressed as:
 
-$$ y[i,j] = (X * K)[i,j] = \sum_{m} \sum_{n} X[i+m, j+n] \cdot K[m,n] $$
+$$
+y[i,j] = (X * K)[i,j] = \sum_{m} \sum_{n} X[i+m, j+n] \cdot K[m,n]
+$$
 
 where $X$ is the input image, $K$ is the convolutional kernel (filter), and $y$ is the output (feature map). The kernel slides across the image, applying the filter in a windowed fashion, and outputs the convolved feature map.
 
 - Convolutional Layers: These layers are the core of CNNs. A convolution operation applies several kernels (filters) to the input image, resulting in multiple feature maps. The convolution process reduces the dimensionality while preserving spatial relationships, thus efficiently learning important patterns such as edges, textures, and shapes.
 - Pooling Layers: Pooling layers are used to reduce the dimensionality of feature maps, which helps to lower computational complexity while maintaining critical information. The most common form of pooling is max pooling, where the maximum value is selected from a region of the feature map. For instance, for a pooling size of $2 \times 2$, the output is:
 
-$$ y[i,j] = \max(X[i:i+2, j:j+2]) $$
+$$
+y[i,j] = \max(X[i:i+2, j:j+2])
+$$
 
 - This reduction leads to a compact feature representation and helps prevent overfitting by reducing the number of parameters.
 - Fully Connected Layers: In the final stages of a CNN, fully connected layers (also known as dense layers) flatten the feature maps into a single vector and apply a fully connected neural network, producing the final classification or regression output.
@@ -220,7 +224,9 @@ In the first convolutional layer of TinyVGG, there are 3 x 10 = 30 unique kernel
 
 Convolution is the core operation in Convolutional Neural Networks (CNNs), used to extract features from input data, particularly images. Mathematically, a convolution operation is defined as:
 
-$$ y[i,j] = (X * K)[i,j] = \sum_{m} \sum_{n} X[i+m, j+n] \cdot K[m,n] $$
+$$
+y[i,j] = (X * K)[i,j] = \sum_{m} \sum_{n} X[i+m, j+n] \cdot K[m,n]
+$$
 
 Where $X$ is the input matrix (e.g., an image), $K$ is the kernel (or filter), and $y$ is the output feature map. The convolution theorem, crucial in signal processing, states that convolution in the time domain is equivalent to multiplication in the frequency domain. This property, while less used in standard CNNs, is relevant in certain optimization contexts where Fast Fourier Transforms (FFTs) are applied to speed up convolutions.
 
@@ -231,11 +237,15 @@ CNNs utilize several types of convolution operations to optimize feature extract
 - Standard Convolution: This is the traditional convolution operation where a kernel slides across the entire input matrix. It is computationally intensive but effective at capturing spatial hierarchies in data.
 - Depthwise Convolution: In this operation, each input channel (e.g., RGB channels of an image) is convolved with its own filter, rather than combining all channels with a single filter. Depthwise convolutions significantly reduce computational complexity while preserving spatial information. The mathematical operation is similar, but each channel $X_d$ has its own kernel $K_d$:
 
-$$ y_d[i,j] = \sum_{m} \sum_{n} X_d[i+m, j+n] \cdot K_d[m,n] $$
+$$
+y_d[i,j] = \sum_{m} \sum_{n} X_d[i+m, j+n] \cdot K_d[m,n]
+$$
 
 - Dilated Convolution: Dilated convolutions introduce gaps between kernel elements, allowing a larger receptive field without increasing the number of parameters. This is particularly useful in tasks requiring multi-scale context, such as semantic segmentation. The dilated convolution operation is represented as:
 
-$$ y[i,j] = \sum_{m} \sum_{n} X[i + d \cdot m, j + d \cdot n] \cdot K[m,n] $$
+$$
+y[i,j] = \sum_{m} \sum_{n} X[i + d \cdot m, j + d \cdot n] \cdot K[m,n]
+$$
 
 - Where $d$ is the dilation rate.
 
@@ -263,7 +273,9 @@ For example, in Tiny VGG, a stride of 1 is used for its convolutional layers, me
 
 Experiment with stride using the hyperparameter visualization to see how it affects input and output dimensions! The output size of a convolution operation can be calculated as:
 
-$$ \text{Output Size} = \left(\frac{\text{Input Size} - \text{Kernel Size} + 2 \times \text{Padding}}{\text{Stride}}\right) + 1 $$
+$$
+\text{Output Size} = \left(\frac{\text{Input Size} - \text{Kernel Size} + 2 \times \text{Padding}}{\text{Stride}}\right) + 1
+$$
 
 The choice of kernel size has a direct impact on the CNN's ability to extract features. Small kernels (e.g., 3x3 or 5x5) are common in modern CNN architectures like ResNet because they efficiently capture local patterns with fewer parameters, allowing for deeper networks. Larger kernels, while capturing broader contextual information, are more computationally expensive and prone to overfitting in smaller datasets.
 
@@ -535,17 +547,23 @@ Pooling layers play a critical role in reducing the dimensionality of feature ma
 
 - Max Pooling: In max pooling, the maximum value from a defined sub-region of the input feature map is selected. Formally, for a pooling size of $p \times p$:
 
-$$ y[i,j] = \max(X[i:i+p, j:j+p]) $$
+$$
+y[i,j] = \max(X[i:i+p, j:j+p])
+$$
 
 - This operation effectively downsamples the input by taking the largest value in each region, which helps retain strong activations while discarding weaker ones.
 - Average Pooling: Average pooling takes the average of the values in the sub-region, smoothing the feature map. Mathematically, it is represented as:
 
-$$ y[i,j] = \frac{1}{p^2} \sum_{m=0}^{p-1} \sum_{n=0}^{p-1} X[i+m, j+n] $$
+$$
+y[i,j] = \frac{1}{p^2} \sum_{m=0}^{p-1} \sum_{n=0}^{p-1} X[i+m, j+n]
+$$
 
 - This is often used when we want a smoother representation of features, although it can dilute strong activations.
 - Global Pooling: Global pooling reduces each feature map to a single value. In global max pooling, the maximum value across the entire feature map is taken, while global average pooling computes the average of all values in the feature map.
 
-$$ y = \max(X) \quad \text{or} \quad y = \frac{1}{N} \sum_{i=1}^{N} X[i] $$
+$$
+y = \max(X) \quad \text{or} \quad y = \frac{1}{N} \sum_{i=1}^{N} X[i]
+$$
 
 This type of pooling is often used in the final stages of CNN architectures before the fully connected layers, serving as a bridge between the convolutional part of the network and the classifier.
 
@@ -560,7 +578,9 @@ Downsampling through pooling has a significant effect on both the computational 
 
 Mathematically, after applying a pooling operation with a pool size of $p \times p$ and stride $s$, the output size can be calculated as:
 
-$$ \text{Output Size} = \left(\frac{\text{Input Size} - p}{s}\right) + 1 $$
+$$
+\text{Output Size} = \left(\frac{\text{Input Size} - p}{s}\right) + 1
+$$
 
 For example, with a pooling size of $2 \times 2$ and stride 2, the spatial dimensions of the feature map are halved. This reduction allows deeper layers to focus on higher-level features while maintaining efficiency.
 
@@ -907,25 +927,33 @@ Training a Convolutional Neural Network (CNN) involves a sequence of critical st
 
 The loss function plays a central role in CNN training, as it quantifies the error between the predicted outputs and the true labels. For classification tasks, the most commonly used loss function is Cross-Entropy Loss, which is effective for multi-class classification problems. The Cross-Entropy Loss is defined as:
 
-$$ L(y, \hat{y}) = - \sum_{i} y_i \log(\hat{y}_i) $$
+$$
+L(y, \hat{y}) = - \sum_{i} y_i \log(\hat{y}_i)
+$$
 
 In this equation, $y_i$ represents the true label (usually a one-hot encoded vector), and $\hat{y}_i$ is the predicted probability of class $i$. This loss function measures how well the predicted probability distribution aligns with the true distribution, where lower values indicate better performance. Cross-Entropy Loss penalizes incorrect predictions more heavily, thus driving the model to make accurate classifications.
 
 Once the loss is calculated, the next step in the training process is backpropagation, a method used to compute the gradients of the loss function with respect to each weight in the network. Backpropagation relies on the chain rule from calculus to propagate the error backward through the network, starting from the output layer and moving toward the input. The gradient for a weight $W_l$ in layer $l$ can be expressed as:
 
-$$ \frac{\partial L}{\partial W_l} = \frac{\partial L}{\partial y} \cdot \frac{\partial y}{\partial W_l}∂Wl​ $$
+$$
+\frac{\partial L}{\partial W_l} = \frac{\partial L}{\partial y} \cdot \frac{\partial y}{\partial W_l}∂Wl​
+$$
 
 This gradient provides information on how much a small change in each weight will affect the loss, guiding the update process. The computed gradients are essential for adjusting the weights in a way that minimizes the loss, improving the network’s predictions over time.
 
 The weight update step is handled by optimization algorithms, with Gradient Descent being the most widely used approach. Gradient Descent comes in various forms, but Adam (Adaptive Moment Estimation) has become the preferred optimizer in many deep learning tasks due to its efficiency and adaptability. Adam adjusts the learning rate for each parameter based on the first and second moments of the gradient, allowing for faster convergence. The weight update rule for Adam is:
 
-$$ W_{t+1} = W_t - \eta \frac{m_t}{\sqrt{v_t} + \epsilon} $$
+$$
+W_{t+1} = W_t - \eta \frac{m_t}{\sqrt{v_t} + \epsilon}
+$$
 
 Here, $m_t$ represents the first moment (mean of the gradient), and $v_t$ represents the second moment (uncentered variance of the gradient), with $\eta$ being the learning rate and $\epsilon$ a small constant to prevent division by zero. Adam's dynamic learning rate adjustment helps the optimizer navigate challenging loss landscapes, making it robust for a wide range of neural network architectures, including CNNs.
 
 While the above methods are crucial for improving a model’s accuracy, CNNs, especially deep ones, are prone to overfitting—a condition where the model performs exceptionally well on the training data but struggles with unseen data. Data augmentation is an effective strategy to address this problem. It involves artificially expanding the training dataset by applying various transformations to the input images, such as rotations, flips, random crops, and scaling. These transformations generate new variations of the original data, forcing the model to learn more generalized features rather than memorizing specific patterns. Mathematically, data augmentation can be represented as:
 
-$$X' = T(X)$$
+$$
+X' = T(X)
+$$
 
 where $T(X)$ is a transformation function applied to the input data $T(X)$, generating an augmented version $X'$. By increasing the diversity of the training data, data augmentation helps the model generalize better to real-world scenarios.
 
@@ -933,7 +961,9 @@ Another important aspect of CNN training is the selection and tuning of hyperpar
 
 In addition to data augmentation, regularization techniques are often used to prevent overfitting. L2 regularization, for instance, adds a penalty term to the loss function, which discourages the model from learning overly large weights. The L2 regularization term is expressed as:
 
-$$ L_{\text{reg}}(W) = L(W) + \lambda \|W\|^2 $$
+$$
+L_{\text{reg}}(W) = L(W) + \lambda \|W\|^2
+$$
 
 Here, $\lambda$ controls the strength of the regularization, with higher values enforcing smaller weight values. By penalizing large weights, L2 regularization encourages the network to learn simpler and more generalizable features. Another regularization technique, dropout, randomly deactivates a subset of neurons during training, forcing the network to learn redundant representations and preventing co-adaptation of neurons.
 

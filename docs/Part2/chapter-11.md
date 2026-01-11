@@ -20,31 +20,41 @@ Generative models can be mathematically formalized by defining the goal of learn
 
 Variational Autoencoders (VAEs) are a type of latent variable generative model that use neural networks to approximate both the likelihood of the data $p_\varphi(x \mid z)$ and the posterior distribution over the latent variables $q_\varphi(z \mid x)$, where $z$ is a latent variable that explains the data $x$. VAEs maximize the evidence lower bound (ELBO) to approximate the intractable marginal likelihood $\log p_\varphi(x)$. The ELBO is given by:
 
-$$ \log p_\varphi(x) \geq \mathbb{E}_{q_\varphi(z \mid x)} \left[ \log p_\varphi(x \mid z) \right] - D_{\text{KL}}(q_\varphi(z \mid x) \parallel p(z)), $$
+$$
+\log p_\varphi(x) \geq \mathbb{E}_{q_\varphi(z \mid x)} \left[ \log p_\varphi(x \mid z) \right] - D_{\text{KL}}(q_\varphi(z \mid x) \parallel p(z)),
+$$
 
 where $D_{\text{KL}}$ is the Kullback-Leibler divergence between the approximate posterior $q_\varphi(z \mid x)$ and the prior $p(z)$. VAEs allow efficient sampling by first drawing from the prior $p(z)$ and then using the learned decoder network to generate new samples $x$. Although VAEs offer tractable likelihoods and a principled probabilistic framework, the generated samples tend to be blurry due to the Gaussian assumption made in the latent space.
 
 Autoregressive models represent a class of generative models that decompose the joint distribution $p(x)$ into a product of conditional distributions using the chain rule of probability:
 
-$$p(x) = p(x_1) p(x_2 \mid x_1) \cdots p(x_n \mid x_1, \dots, x_{n-1}).$$
+$$
+p(x) = p(x_1) p(x_2 \mid x_1) \cdots p(x_n \mid x_1, \dots, x_{n-1}).
+$$
 
 These models, such as PixelCNN and WaveNet, directly model the data likelihood without introducing latent variables. Autoregressive models are trained by maximizing the likelihood of the data, and at test time, samples are generated sequentially by sampling one element at a time based on previously generated elements. While they provide exact likelihoods and are highly expressive, autoregressive models suffer from slow sampling since each new data point must be generated conditionally on all previous data points.
 
 Flow-based models, such as RealNVP and Glow, use invertible transformations to map a simple prior distribution (e.g., Gaussian) into a more complex data distribution. These models rely on bijective mappings $f_\varphi$, which transform a latent variable $z \sim p(z)$ into a data point $x = f_\varphi(z)$. The key advantage of flow-based models is that both the sampling process and the computation of exact log-likelihood are tractable, as the likelihood of the data can be computed using the change of variables formula:
 
-$$ \log p(x) = \log p(z) - \log \left| \det \frac{\partial f_\varphi^{-1}(x)}{\partial x} \right|. $$
+$$
+\log p(x) = \log p(z) - \log \left| \det \frac{\partial f_\varphi^{-1}(x)}{\partial x} \right|.
+$$
 
 Flow-based models provide exact and tractable likelihoods, but their expressiveness is often constrained by the requirement for the transformations to be invertible and have tractable Jacobian determinants.
 
 Energy-based models (EBMs) approach generative modeling by defining an energy function $E_\varphi(x)$ over the data space. The probability distribution over data is implicitly defined as:
 
-$$p_\varphi(x) = \frac{\exp(-E_\varphi(x))}{Z(\varphi)}$$
+$$
+p_\varphi(x) = \frac{\exp(-E_\varphi(x))}{Z(\varphi)}
+$$
 
 where $Z(\varphi)$ is the partition function or normalization constant. Unlike other models, EBMs do not provide a direct way to sample from the distribution; instead, sampling is typically done using Markov Chain Monte Carlo (MCMC) methods. The advantage of EBMs lies in their flexibility, as they can model complex and multimodal distributions. However, the intractability of the partition function makes learning and sampling computationally challenging.
 
 Diffusion models are a recent class of generative models that rely on a forward process that progressively corrupts data by adding noise over several steps, and a reverse process that learns to denoise this corrupted data to generate samples. Formally, the forward process defines a sequence of latent variables $\{x_0, x_1, \dots, x_T\}$ where $x_0$ is the data, and $x_T$ is a fully noised version of the data sampled from a Gaussian distribution. The reverse process learns a series of denoising steps to recover the data from the noise:
 
-$$ p_\varphi(x_{t-1} \mid x_t) = \mathcal{N}(x_{t-1}; \mu_\varphi(x_t, t), \Sigma_\varphi(x_t, t)), $$
+$$
+p_\varphi(x_{t-1} \mid x_t) = \mathcal{N}(x_{t-1}; \mu_\varphi(x_t, t), \Sigma_\varphi(x_t, t)),
+$$
 
 where $\mu_\varphi$ and $\Sigma_\varphi$ are parameterized by neural networks. Diffusion models have shown strong empirical results and provide flexibility in balancing sample quality and diversity, though they often require many sampling steps to generate high-quality data.
 
@@ -70,7 +80,9 @@ Generative Adversarial Networks (GANs) are an innovative approach to generative 
 
 The interaction between the Generator and Discriminator is framed as a two-player minimax optimization problem. The Generator's goal is to generate data that "fools" the Discriminator into classifying it as real, while the Discriminator aims to correctly distinguish between real and generated data. This setup leads to the following objective function:
 
-$$ \min_{\theta} \max_{\phi} V(D_\phi, G_\theta) = \mathbb{E}_{x \sim p_{\text{data}}(x)} [\log D_\phi(x)] + \mathbb{E}_{z \sim p_z(z)} [\log (1 - D_\phi(G_\theta(z)))]. $$
+$$
+\min_{\theta} \max_{\phi} V(D_\phi, G_\theta) = \mathbb{E}_{x \sim p_{\text{data}}(x)} [\log D_\phi(x)] + \mathbb{E}_{z \sim p_z(z)} [\log (1 - D_\phi(G_\theta(z)))].
+$$
 
 The first term, $\mathbb{E}_{x \sim p_{\text{data}}(x)} [\log D_\phi(x)]$, is the expectation over the real data distribution, encouraging the Discriminator to assign a high probability to real data. The second term, $\mathbb{E}_{z \sim p_z(z)} [\log (1 - D_\phi(G_\theta(z)))]$, is the expectation over the latent variable $z$, where the Generator aims to minimize this term by producing realistic data samples that make $D_\phi(G_\theta(z)) \approx 1$. The Discriminator tries to maximize its objective by correctly classifying real data as $1$ and generated data as $0$.
 
@@ -78,13 +90,17 @@ The GAN optimization problem can be viewed as a minimax game, where the Generato
 
 The KL divergence is a measure of how one probability distribution diverges from a reference distribution. Given two distributions $P$ and $Q$, the KL divergence from $Q$ to $P$ is defined as:
 
-$$ D_{\text{KL}}(P \parallel Q) = \int p(x) \log \frac{p(x)}{q(x)} dx. $$
+$$
+D_{\text{KL}}(P \parallel Q) = \int p(x) \log \frac{p(x)}{q(x)} dx.
+$$
 
 In the context of generative modeling, $P$ represents the true data distribution $p_{\text{data}}(x)$, and $Q$ represents the model’s distribution $p_\theta(x)$ (the distribution of generated samples). KL divergence is asymmetric, meaning that $D_{\text{KL}}(P \parallel Q) \neq D_{\text{KL}}(Q \parallel P)$, and it heavily penalizes cases where $q(x)$ assigns low probability to regions where $p(x)$ assigns high probability. This means that if the Generator misses important modes of the data, the KL divergence will significantly penalize the Generator.
 
 The JS divergence is a symmetrized version of the KL divergence and is bounded between 0 and 1. It is defined as:
 
-$$ D_{\text{JS}}(P \parallel Q) = \frac{1}{2} D_{\text{KL}}(P \parallel M) + \frac{1}{2} D_{\text{KL}}(Q \parallel M), $$
+$$
+D_{\text{JS}}(P \parallel Q) = \frac{1}{2} D_{\text{KL}}(P \parallel M) + \frac{1}{2} D_{\text{KL}}(Q \parallel M),
+$$
 
 where $M = \frac{1}{2}(P + Q)$ is the midpoint distribution between $P$ and $Q$. The JS divergence measures the similarity between two distributions and, unlike the KL divergence, does not penalize missing modes as severely. In the context of GANs, when the Discriminator is optimal, the training of the Generator can be seen as minimizing the JS divergence between the real data distribution $p_{\text{data}}(x)$ and the generated data distribution $p_\theta(x)$.
 
@@ -92,11 +108,15 @@ When the Discriminator is optimal, $D_\phi(x) = \frac{p_{\text{data}}(x)}{p_{\te
 
 The original GAN objective can lead to unstable training dynamics, particularly in the early stages when the Discriminator easily outperforms the Generator, causing vanishing gradients. To address this issue, a common reformulation is applied to the Generator’s objective. Instead of minimizing $\log (1 - D_\phi(G_\theta(z)))$, which tends to saturate when the Discriminator is confident, the Generator is modified to maximize $\log D_\phi(G_\theta(z))$. This alternative objective ensures that the Generator receives more meaningful gradients in the early stages of training:
 
-$$ \min_\theta \mathbb{E}_{z \sim p_z(z)} [-\log D_\phi(G_\theta(z))]. $$
+$$
+\min_\theta \mathbb{E}_{z \sim p_z(z)} [-\log D_\phi(G_\theta(z))].
+$$
 
 This reformulation leads to a new optimization problem:
 
-$$ \min_\theta \max_\phi \mathbb{E}_{x \sim p_{\text{data}}(x)} [\log D_\phi(x)] + \mathbb{E}_{z \sim p_z(z)} [-\log D_\phi(G_\theta(z))]. $$
+$$
+\min_\theta \max_\phi \mathbb{E}_{x \sim p_{\text{data}}(x)} [\log D_\phi(x)] + \mathbb{E}_{z \sim p_z(z)} [-\log D_\phi(G_\theta(z))].
+$$
 
 In this reformulated game, the Generator's objective becomes minimizing the negative log-likelihood of the Discriminator's confidence in its generated samples. This modification stabilizes the training process, as the Generator is no longer discouraged by vanishing gradients in the early phases of learning. The Discriminator, on the other hand, still seeks to maximize its ability to classify real and fake data, but the Generator is better positioned to improve over time with a more consistent gradient signal.
 
@@ -284,7 +304,9 @@ The optimal transport problem originated from the study of moving mass in an opt
 
 Formally, the Wasserstein distance between two distributions $p_{\text{data}}(x)$ and $p_\theta(x)$ is defined as:
 
-$$ W(p_{\text{data}}, p_\theta) = \inf_{\gamma \in \Pi(p_{\text{data}}, p_\theta)} \mathbb{E}_{(x, y) \sim \gamma} [\|x - y\|], $$
+$$
+W(p_{\text{data}}, p_\theta) = \inf_{\gamma \in \Pi(p_{\text{data}}, p_\theta)} \mathbb{E}_{(x, y) \sim \gamma} [\|x - y\|],
+$$
 
 where $\Pi(p_{\text{data}}, p_\theta)$ is the set of all possible joint distributions (also called couplings) $\gamma(x, y)$ with marginals $p_{\text{data}}(x)$ and $p_\theta(x)$. The goal is to find a coupling $\gamma$that minimizes the expected distance $\|x - y\|$, which represents the cost of transporting mass from the real distribution $p_{\text{data}}$ to the generated distribution $p_\theta$. The "Earth Mover’s distance" is an intuitive way to measure how much "work" is required to transform one distribution into another.
 
@@ -292,19 +314,27 @@ Directly minimizing the Wasserstein distance using the optimal transport formula
 
 Using this duality, the Wasserstein distance can be approximated as:
 
-$$ W(p_{\text{data}}, p_\theta) = \sup_{\|f\|_L \leq 1} \mathbb{E}_{x \sim p_{\text{data}}} [f(x)] - \mathbb{E}_{x \sim p_\theta} [f(x)], $$
+$$
+W(p_{\text{data}}, p_\theta) = \sup_{\|f\|_L \leq 1} \mathbb{E}_{x \sim p_{\text{data}}} [f(x)] - \mathbb{E}_{x \sim p_\theta} [f(x)],
+$$
 
 where $f$ is a 1-Lipschitz continuous function, meaning that for any two points $x_1$ and $x_2$, the function $f$ satisfies the condition:
 
-$$|f(x_1) - f(x_2)| \leq \|x_1 - x_2\|$$
+$$
+|f(x_1) - f(x_2)| \leq \|x_1 - x_2\|
+$$
 
 In WGAN, the Discriminator is replaced by a critic $f_w$, parameterized by $w$, which approximates this 1-Lipschitz function. The critic $f_w$ is optimized to maximize the difference between the expectations of $f_w(x)$ over the real data distribution and the generated data distribution, effectively estimating the Wasserstein distance. The objective function for the WGAN thus becomes:
 
-$$ \max_w \mathbb{E}_{x \sim p_{\text{data}}} [f_w(x)] - \mathbb{E}_{z \sim p_z(z)} [f_w(g_\theta(z))]. $$
+$$
+\max_w \mathbb{E}_{x \sim p_{\text{data}}} [f_w(x)] - \mathbb{E}_{z \sim p_z(z)} [f_w(g_\theta(z))].
+$$
 
 The Generator then minimizes this critic's output by reducing the Wasserstein distance between $p_{\text{data}}(x)$ and $p_\theta(x)$, leading to the following overall optimization problem:
 
-$$ \min_\theta \max_w \mathbb{E}_{x \sim p_{\text{data}}} [f_w(x)] - \mathbb{E}_{z \sim p_z(z)} [f_w(g_\theta(z))]. $$
+$$
+\min_\theta \max_w \mathbb{E}_{x \sim p_{\text{data}}} [f_w(x)] - \mathbb{E}_{z \sim p_z(z)} [f_w(g_\theta(z))].
+$$
 
 ![Figure](../../images/4HG3uqNnfrrynHQ7lsB4-1CY65b1iNvrfzj7EZQ0u-v1.jpeg)
 **Figure 6:** Wasserstein GAN model.
@@ -315,13 +345,17 @@ A key challenge in implementing WGAN is ensuring that the critic $f_w$ satisfies
 
 To address this issue, WGAN-GP (WGAN with Gradient Penalty) introduces a more effective way to enforce the Lipschitz constraint. Instead of clipping the weights, WGAN-GP adds a gradient penalty term to the critic's loss function. The gradient penalty enforces the 1-Lipschitz condition by penalizing the critic if the norm of its gradient exceeds 1. Specifically, the gradient penalty term is given by:
 
-$$ \lambda \mathbb{E}_{\hat{x} \sim p_{\hat{x}}} \left[ (\|\nabla_{\hat{x}} f_w(\hat{x})\|_2 - 1)^2 \right], $$
+$$
+\lambda \mathbb{E}_{\hat{x} \sim p_{\hat{x}}} \left[ (\|\nabla_{\hat{x}} f_w(\hat{x})\|_2 - 1)^2 \right],
+$$
 
 where $\hat{x}$ is sampled uniformly along straight lines between real data points and generated data points, and $\lambda$ is a penalty coefficient. This penalty encourages the norm of the gradient $\|\nabla_{\hat{x}} f_w(\hat{x})\|_2$ to be close to 1, ensuring that the critic remains approximately 1-Lipschitz.
 
 The overall WGAN-GP objective thus becomes:
 
-$$ \min_\theta \max_w \mathbb{E}_{x \sim p_{\text{data}}} [f_w(x)] - \mathbb{E}_{z \sim p_z(z)} [f_w(g_\theta(z))] + \lambda \mathbb{E}_{\hat{x} \sim p_{\hat{x}}} \left[ (\|\nabla_{\hat{x}} f_w(\hat{x})\|_2 - 1)^2 \right]. $$
+$$
+\min_\theta \max_w \mathbb{E}_{x \sim p_{\text{data}}} [f_w(x)] - \mathbb{E}_{z \sim p_z(z)} [f_w(g_\theta(z))] + \lambda \mathbb{E}_{\hat{x} \sim p_{\hat{x}}} \left[ (\|\nabla_{\hat{x}} f_w(\hat{x})\|_2 - 1)^2 \right].
+$$
 
 By using the gradient penalty instead of weight clipping, WGAN-GP ensures that the critic can effectively approximate the Wasserstein distance while maintaining stable and robust training dynamics.
 
@@ -691,11 +725,15 @@ Training Generative Adversarial Networks (GANs) is a delicate and often challeng
 
 In terms of loss functions, the most common choice in standard GANs is binary cross-entropy (BCE), where the Discriminator is trained to classify real data as 1 and generated data as 0. Mathematically, the loss for the Discriminator can be written as:
 
-$$ L_D = - \mathbb{E}_{x \sim p_{\text{data}}(x)} [\log D(x)] - \mathbb{E}_{z \sim p_z(z)} [\log(1 - D(G(z)))] $$
+$$
+L_D = - \mathbb{E}_{x \sim p_{\text{data}}(x)} [\log D(x)] - \mathbb{E}_{z \sim p_z(z)} [\log(1 - D(G(z)))]
+$$
 
 Here, $D(x)$ is the probability assigned by the Discriminator that $x$ is real, and $G(z)$ is the data generated by the Generator from the latent vector $z$. The Discriminator maximizes this objective, pushing $D(x)$ toward 1 for real data and $D(G(z))$ toward 0 for generated data. The Generator, on the other hand, is trained to minimize the loss:
 
-$$ L_G = - \mathbb{E}_{z \sim p_z(z)} [\log D(G(z))] $$
+$$
+L_G = - \mathbb{E}_{z \sim p_z(z)} [\log D(G(z))]
+$$
 
 This forces the Generator to produce outputs that can fool the Discriminator, maximizing $D(G(z))$ and thereby minimizing the loss. While this min-max game forms the foundation of GAN training, achieving a balanced and stable training process is far from trivial.
 
@@ -703,13 +741,19 @@ One of the key challenges in GAN training is mode collapse, where the Generator 
 
 Another common issue is vanishing gradients, where the Discriminator becomes overly confident and provides little feedback to the Generator. In such cases, the Generator struggles to improve, as the gradients become too small to update its weights effectively. One way to mitigate this is by using Wasserstein loss (WGAN), which provides more stable gradients. The Wasserstein GAN reformulates the loss function as:
 
-$$ L_D = - \mathbb{E}_{x \sim p_{\text{data}}(x)} [D(x)] + \mathbb{E}_{z \sim p_z(z)} [D(G(z))] $$
+$$
+L_D = - \mathbb{E}_{x \sim p_{\text{data}}(x)} [D(x)] + \mathbb{E}_{z \sim p_z(z)} [D(G(z))]
+$$
 
-$$L_G = - \mathbb{E}_{z \sim p_z(z)} [D(G(z))]$$
+$$
+L_G = - \mathbb{E}_{z \sim p_z(z)} [D(G(z))]
+$$
 
 In WGAN, the Discriminator (referred to as the Critic in this case) is not bounded by the sigmoid activation function and provides continuous values, leading to smoother gradient updates for the Generator. Additionally, WGAN uses gradient penalty to enforce Lipschitz continuity:
 
-$$ L_{\text{GP}} = \lambda \mathbb{E}_{\hat{x} \sim p_{\hat{x}}} \left[ \left( \|\nabla_{\hat{x}} D(\hat{x})\|_2 - 1 \right)^2 \right] $$
+$$
+L_{\text{GP}} = \lambda \mathbb{E}_{\hat{x} \sim p_{\hat{x}}} \left[ \left( \|\nabla_{\hat{x}} D(\hat{x})\|_2 - 1 \right)^2 \right]
+$$
 
 where $\hat{x}$ is an interpolated sample between real and generated data, and $\lambda$ is a weighting term.
 
@@ -1052,7 +1096,9 @@ As Generative Adversarial Networks (GANs) evolved, several advanced GAN architec
 
 Deep Convolutional GANs (DCGANs) extend the original GAN architecture by incorporating convolutional layers into both the Generator and Discriminator. In standard GANs, fully connected layers are often used, which may not capture the spatial hierarchies present in image data. DCGANs address this by using transposed convolutions in the Generator to generate images, and regular convolutions in the Discriminator to classify real versus fake images. Mathematically, the transposed convolution operation, which is used to upsample latent vectors in the Generator, is defined as:
 
-$$O = (I - 1) \times s + k$$
+$$
+O = (I - 1) \times s + k
+$$
 
 where $O$ is the output size, $I$ is the input size, $s$ is the stride, and $k$ is the kernel size. The transposed convolution effectively reverses the downsampling process performed by normal convolution, enabling the Generator to transform low-dimensional latent vectors into high-dimensional images. By leveraging convolutional layers, DCGANs generate higher quality and more realistic images, making them popular for image-based tasks like generating faces, artwork, and scenes.
 
@@ -1061,7 +1107,9 @@ where $O$ is the output size, $I$ is the input size, $s$ is the stride, and $k$ 
 
 Conditional GANs (cGANs) introduce another key innovation by allowing the generative process to be conditioned on additional information, such as class labels or other features. This provides greater control over the types of data the Generator produces. For example, in an image generation task, the Generator can be conditioned on a specific label (e.g., "cat" or "dog") to generate an image of the desired class. In cGANs, the Generator receives not only a random latent vector zzz but also a conditioning input yyy, such as a class label, and produces an output $G(z, y)$. Similarly, the Discriminator takes both the generated image and the conditioning information and attempts to classify them as real or fake. The loss function for cGANs is extended to include this conditional information:
 
-$$ L_D = - \mathbb{E}_{x \sim p_{\text{data}}(x)} [\log D(x | y)] - \mathbb{E}_{z \sim p_z(z)} [\log(1 - D(G(z | y)))] $$
+$$
+L_D = - \mathbb{E}_{x \sim p_{\text{data}}(x)} [\log D(x | y)] - \mathbb{E}_{z \sim p_z(z)} [\log(1 - D(G(z | y)))]
+$$
 
 The conditional framework enables the model to generate highly structured data based on input conditions, providing fine control over the generative process and making cGANs ideal for tasks such as image-to-image translation, super-resolution, and text-to-image synthesis.
 
@@ -1070,9 +1118,13 @@ The conditional framework enables the model to generate highly structured data b
 
 One of the most significant advancements in GAN architecture is the Wasserstein GAN (WGAN), which improves the training stability of GANs by introducing the Wasserstein loss. Standard GANs often suffer from issues like vanishing gradients, where the Generator fails to receive meaningful feedback, leading to unstable training. WGANs address this by replacing the traditional binary cross-entropy loss with the Wasserstein distance (also known as the Earth Mover's distance), which provides a smoother and more informative gradient for the Generator to learn from. The Wasserstein loss is defined as:
 
-$$ L_D = - \mathbb{E}_{x \sim p_{\text{data}}(x)} [D(x)] + \mathbb{E}_{z \sim p_z(z)} [D(G(z))] $$
+$$
+L_D = - \mathbb{E}_{x \sim p_{\text{data}}(x)} [D(x)] + \mathbb{E}_{z \sim p_z(z)} [D(G(z))]
+$$
 
-$$ L_G = - \mathbb{E}_{z \sim p_z(z)} [D(G(z))] $$
+$$
+L_G = - \mathbb{E}_{z \sim p_z(z)} [D(G(z))]
+$$
 
 In this formulation, the Discriminator (referred to as the Critic in WGANs) no longer outputs probabilities but instead estimates the Wasserstein distance between the real and generated data distributions. The Lipschitz continuity constraint is enforced by clipping the weights of the Critic to a small range, ensuring that the gradients remain well-behaved during training. WGANs have demonstrated improved convergence properties and are more robust to issues like mode collapse, where the Generator produces limited or repetitive outputs.
 
@@ -1237,7 +1289,9 @@ Evaluating the performance of Generative Adversarial Networks (GANs) remains one
 
 The Inception Score (IS) is a metric that leverages a pre-trained classifier, usually the Inception network, to evaluate the quality of generated images. The idea behind IS is that good generative models should produce images that belong to clear, well-defined classes, while also generating a diverse set of images across different classes. Mathematically, the IS is computed as:
 
-$$ IS(G) = \exp \left( \mathbb{E}_{x \sim p_g} \left[ D_{KL}(p(y|x) \| p(y)) \right] \right) $$
+$$
+IS(G) = \exp \left( \mathbb{E}_{x \sim p_g} \left[ D_{KL}(p(y|x) \| p(y)) \right] \right)
+$$
 
 where $p(y|x)$ is the predicted class distribution for a generated image $x$, and $p(y)$ is the marginal class distribution. The Kullback-Leibler (KL) divergence between these two distributions quantifies how much information the generated image contains about the predicted class. Higher IS values indicate that the GAN is generating images that are both realistic (i.e., they are classified into meaningful classes) and diverse (i.e., they span multiple classes).
 
@@ -1245,7 +1299,9 @@ However, IS has several limitations. One key criticism is that it only captures 
 
 To address these limitations, the Fréchet Inception Distance (FID) was introduced as a more robust metric. FID compares the distribution of generated images with the distribution of real images in the feature space of a pre-trained classifier (again, typically the Inception network). FID measures the Fréchet distance between these two distributions, with lower FID scores indicating that the generated data is more similar to the real data. The FID is computed as:
 
-$$ FID = \| \mu_r - \mu_g \|^2 + \text{Tr}(\Sigma_r + \Sigma_g - 2(\Sigma_r \Sigma_g)^{1/2}) $$
+$$
+FID = \| \mu_r - \mu_g \|^2 + \text{Tr}(\Sigma_r + \Sigma_g - 2(\Sigma_r \Sigma_g)^{1/2})
+$$
 
 where $\mu_r$ and $\mu_g$ are the means of the real and generated image distributions, and $\Sigma_r$ and $\Sigma_g$ are their covariance matrices. The FID metric captures both the mean difference and the covariance (or shape) of the two distributions, making it a more comprehensive measure of how closely the generated images resemble the real data.
 
